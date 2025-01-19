@@ -4,17 +4,62 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Smart News</title>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="../static/css/style.css">
     <link href="https://fonts.googleapis.com/css2?family=The+Seasons&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
 </head>
 <body>
     <header>
-        <div class="sandwich-icon">&#9776;</div>
-        <div class="project-name">Smart News</div>
-        <div class="login-icon">&#128100;</div>
+        <div class="sandwich-icon" onclick="toggleSidebar()">&#9776;</div>
+        <div class="project-name">
+            <span class="large-letter">S</span>mart <span class="large-letter">N</span>ews
+        </div>
+        <div class="login-icon"><img src="../static/css/images/icons8-login-50.png" alt="login icon"></div>
     </header>
+
+    <!-- Sidebar -->
+<aside id="sidebar">
+    <button class="close-btn" onclick="closeSidebar()">&#10006;</button> <!-- Close Button -->
+    <ul>
+        <li><a href="#">Home</a></li>
+        <li><a href="#">Categories</a></li>
+        <li><a href="#">Trending</a></li>
+        <li><a href="#">Contact</a></li>
+    </ul>
+</aside>
+
+
+    <!-- Search Bar -->
+<div class="search-container">
+    <div class="search-box">
+        <button class="search-icon" ><img src="../static/css/images/magnifying-glass.png" alt="search icon"></button>
+        <input type="text" class="search-bar" placeholder="Search...">
+        <button class="mic-icon"><img src="../static/css/images/microphone-black-shape.png" alt="microphone"></button>
+    </div>
+</div>
+
+<!-- News containers portion -->
+<div class="news-section" id="news-section">
+    <!-- News containers will be generated here dynamically -->
+</div>
+
     <footer>
         <p>&copy; 2023 Smart News. All rights reserved.</p>
     </footer>
+
+    <script>
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            sidebar.classList.toggle('active');
+        }
+
+        function closeSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            sidebar.classList.remove('active'); // Remove active class to hide the sidebar
+        }
+    </script>
+    <script src="../static/css/script.js"></script>
+    
 </body>
 </html>
