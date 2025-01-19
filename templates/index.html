@@ -19,22 +19,61 @@
     </header>
 
     <!-- Sidebar -->
-<aside id="sidebar">
-    <button class="close-btn" onclick="closeSidebar()">&#10006;</button> <!-- Close Button -->
-    <ul>
-        <li><a href="#">Home</a></li>
-        <li><a href="#">Categories</a></li>
-        <li><a href="#">Trending</a></li>
-        <li><a href="#">Contact</a></li>
-    </ul>
-</aside>
+    <div class="sidebar" id="sidebar">
+        <button class="close-btn" onclick="closeSidebar()">&#10006;</button> <!-- Close Button -->
+        <!-- <button class="sidebar-login-btn">
+            <i class="fas fa-user"></i> Login
+        </button> -->
+        <nav>
+            <ul>
+                <li><a href="#"><i class="fas fa-home"></i> Home</a></li>
+                <li><a href="#"><i class="fas fa-info-circle"></i> About Us</a></li>
+                <li class="categories-dropdown">
+                    <a href="#"><i class="fas fa-list"></i> Categories <i class="fas fa-chevron-down"></i></a>
+                    <div class="dropdown-content">
+                        <div class="domain-section">
+                            <h3>Domain</h3>
+                            <select id="domainSelect">
+                                <option value="business">Business</option>
+                                <option value="technology">Technology</option>
+                                <option value="sports">Sports</option>
+                                <option value="entertainment">Entertainment</option>
+                            </select>
+                        </div>
+                        <div class="country-section">
+                            <h3>Country</h3>
+                            <select id="countrySelect">
+                                <option value="in">India</option>
+                                <option value="us">United States</option>
+                                <option value="gb">United Kingdom</option>
+                                <option value="au">Australia</option>
+                            </select>
+                        </div>
+                    </div>
+                </li>
+                <li><a href="#"><i class="fas fa-cloud-sun"></i> Weather</a></li>
+                <li><a href="#"><i class="fas fa-history"></i> Historical News</a></li>
+                <li class="language-dropdown">
+                    <a href="#"><i class="fas fa-language"></i> Language <i class="fas fa-chevron-down"></i></a>
+                    <div class="dropdown-content">
+                        <select id="languageSelect">
+                            <option value="en">English</option>
+                            <option value="hi">Hindi</option>
+                            <option value="mr">Marathi</option>
+                        </select>
+                    </div>
+                </li>
+            </ul>
+        </nav>
+    </div>
+
 
 
     <!-- Search Bar -->
 <div class="search-container">
     <div class="search-box">
         <button class="search-icon" ><img src="../static/css/images/magnifying-glass.png" alt="search icon"></button>
-        <input type="text" class="search-bar" placeholder="Search...">
+        <input type="text" class="search-bar" placeholder="Search News...">
         <button class="mic-icon"><img src="../static/css/images/microphone-black-shape.png" alt="microphone"></button>
     </div>
 </div>

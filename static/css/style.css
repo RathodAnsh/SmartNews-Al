@@ -50,6 +50,7 @@ header {
 header .project-name {
     font-family: 'The Seasons', serif; /* Custom font from Google Fonts */
     font-size: 48px; /* Adjust size as per your image */
+    align-items: center;
     color: #fff; /* White color for text */
     text-transform: uppercase; /* Makes the text uppercase */
     letter-spacing: 3px; /* Adds spacing between letters */
@@ -67,43 +68,100 @@ header .project-name .large-letter {
     text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.7); /* More pronounced shadow */
 }
 
-
-#sidebar {
+.sidebar {
     position: fixed;
     top: 0;
-    left: -250px;
-    height: 100%;
-    width: 250px;
-    background: #444;
+    left: -300px;
+    width: 280px;
+    height: 100vh;
+    background-color: #444;
+    box-shadow: 2px 0 5px rgba(0,0,0,0.1);
     transition: left 0.3s ease;
-    padding-top: 60px;
+    z-index: 1000;
 }
 
-#sidebar.active {
+.sidebar.active {
     left: 0;
 }
 
-#sidebar ul {
+/* .sidebar-header {
+    padding: 1rem;
+    display: flex;
+    justify-content: flex-end;
+} */
+
+
+/* .sidebar-login-btn {
+    display: block;
+    width: 90%;
+    margin: 1rem auto;
+    padding: 0.8rem;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1rem;
+} */
+
+.sidebar nav ul {
     list-style: none;
-    padding: 0;
+    padding: 1rem;
 }
 
-#sidebar ul li {
+.sidebar nav ul li {
+    margin-bottom: 1rem;
+    border-bottom: 1px solid #9e9797;
     padding: 15px 20px;
-    border-bottom: 1px solid #555;
+    letter-spacing: 1px;
 }
 
-#sidebar ul li a {
-    color: #fff;
+.sidebar nav ul li a {
     text-decoration: none;
+    color: #ffffff;
     font-size: 18px;
+    font-family: 'The Seasons', serif;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
 }
+
+.categories-dropdown, .language-dropdown {
+    position: relative;
+}
+
+.dropdown-content {
+    display: none;
+    padding: 1rem;
+    background-color: #8f8c8c;
+    margin-top: 0.5rem;
+    color: #ffffff;
+    border-radius: 5px;
+}
+
+.categories-dropdown:hover .dropdown-content,
+.language-dropdown:hover .dropdown-content {
+    display: block;
+}
+
+.domain-section, .country-section {
+    margin-bottom: 1rem;
+}
+
+select {
+    width: 100%;
+    padding: 0.5rem;
+    margin-top: 0.5rem;
+    border: 1px solid #ffffff;
+    border-radius: 5px;
+}
+
 
 /* Close Button Styling */
 .close-btn {
     position: absolute;
     top: 10px;
-    right: -40px; /* Close button appears beside the sidebar */
+    right: -40px; /*Close button appears beside the sidebar */
     background: #fff;
     color: #444;
     border: none;
@@ -113,8 +171,8 @@ header .project-name .large-letter {
     cursor: pointer;
     box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.3);
     transition: background 0.3s ease;
-    display: none; /* Initially hidden */
-}
+    display: none; /* Initially hidden  */
+} 
 
 #sidebar.active .close-btn {
     display: block; /* Show close button only when sidebar is active */
