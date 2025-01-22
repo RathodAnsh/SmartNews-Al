@@ -29,15 +29,12 @@
         </div>
     </header>
 
+    <!-- Sidebar -->
     <div class="sidebar" id="sidebar">
-        <div class="sidebar-header">
-            <button class="close-btn" id="closeBtn">
-                <i class="fas fa-times"></i>
-            </button>
-        </div>
-        <button class="sidebar-login-btn">
+        <button class="close-btn" onclick="closeSidebar()">&#10006;</button> <!-- Close Button -->
+        <!-- <button class="sidebar-login-btn">
             <i class="fas fa-user"></i> Login
-        </button>
+        </button> -->
         <nav>
             <ul>
                 <li><a href="#"><i class="fas fa-home"></i> Home</a></li>
@@ -81,8 +78,18 @@
         </nav>
     </div>
 
+
+
+    <!-- Search Bar -->
+<div class="search-container">
+    <div class="search-box">
+        <button class="search-icon" ><img src="../static/css/images/magnifying-glass.png" alt="search icon"></button>
+        <input type="text" class="search-bar" placeholder="Search News...">
+        <button class="mic-icon"><img src="../static/css/images/microphone-black-shape.png" alt="microphone"></button>
+    </div>
+
     <div class="overlay" id="overlay"></div>
 
-    <script src="../static/css/main.js"></script>
+    <script src="../static/css/script.js"></script>
 </body>
 </html>
