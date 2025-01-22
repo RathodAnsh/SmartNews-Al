@@ -5,28 +5,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Smart News</title>
     <link rel="stylesheet" href="../static/css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=The+Seasons&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Crimson+Text:wght@400;600&display=swap" rel="stylesheet">
+
 </head>
 <body>
     <header>
-        <div class="header-content">
-            <button id="menuBtn" class="menu-btn">
-                <i class="fas fa-bars"></i>
-            </button>
-            <h1 class="logo">Smart News</h1>
-            <div class="header-right">
-                <div class="search-container">
-                    <input type="text" id="searchInput" placeholder="Search news...">
-                    <button class="search-btn">
-                        <i class="fas fa-search"></i>
-                    </button>
-                </div>
-                <button class="login-btn">
-                    <i class="fas fa-user"></i>
-                </button>
-            </div>
+        <div class="sandwich-icon" onclick="toggleSidebar()">&#9776;</div>
+        <div class="project-name">
+            <span class="large-letter">S</span>mart <span class="large-letter">N</span>ews
         </div>
+        <div class="login-icon"><img src="../static/css/images/icons8-login-50.png" alt="login icon"></div>
     </header>
 
     <!-- Sidebar -->
@@ -87,9 +76,29 @@
         <input type="text" class="search-bar" placeholder="Search News...">
         <button class="mic-icon"><img src="../static/css/images/microphone-black-shape.png" alt="microphone"></button>
     </div>
+</div>
 
-    <div class="overlay" id="overlay"></div>
+<!-- News containers portion -->
+<div class="news-section" id="news-section">
+    <!-- News containers will be generated here dynamically -->
+</div>
 
+    <footer>
+        <p>&copy; 2023 Smart News. All rights reserved.</p>
+    </footer>
+
+    <script>
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            sidebar.classList.toggle('active');
+        }
+
+        function closeSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            sidebar.classList.remove('active'); // Remove active class to hide the sidebar
+        }
+    </script>
     <script src="../static/css/script.js"></script>
+    
 </body>
 </html>
