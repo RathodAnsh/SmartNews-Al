@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather Data</title>
+    <link rel="stylesheet" href="../static/css/weather.css">
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+    <div class="app">
+        <!-- Header -->
+        <header>
+            <div class="container header-content">
+                <button class="icon-button">
+                    <i data-lucide="menu"></i>
+                </button>
+                <h1>WEATHER DATA</h1>
+                <div class="spacer"></div>
+            </div>
+        </header>
+        
+        <div class="container main-content">
+            <!-- Search Bar -->
+            <div class="search-bar">
+                <input type="text" value="Bengaluru" placeholder="Search city...">
+                <button class="icon-button">
+                    <i data-lucide="search"></i>
+                </button>
+            </div>
+
+            <!-- Main Weather Card -->
+            <div class="weather-card">
+                <div class="weather-info">
+                    <div>
+                        <h1 class="temperature">34°C</h1>
+                        <p class="feels-like">Feels like 32.90°C</p>
+                        <p class="location">Bengaluru, IN</p>
+                        <p class="date">Wednesday, April 3 at 5:10 PM</p>
+                    </div>
+                    <div class="weather-icons">
+                        <i data-lucide="cloud"></i>
+                        <i data-lucide="sun"></i>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Weather Details Grid -->
+            <div class="weather-details">
+                <div class="detail-card" data-index="0">
+                    <div class="detail-header">
+                        <h3>Humidity</h3>
+                        <i data-lucide="droplets"></i>
+                    </div>
+                    <p class="detail-value">31%</p>
+                </div>
+                <div class="detail-card" data-index="1">
+                    <div class="detail-header">
+                        <h3>Wind Speed</h3>
+                        <i data-lucide="wind"></i>
+                    </div>
+                    <p class="detail-value">4m/s</p>
+                </div>
+                <div class="detail-card" data-index="2">
+                    <div class="detail-header">
+                        <h3>Sun Schedule</h3>
+                    </div>
+                    <div class="sun-schedule">
+                        <div class="schedule-item">
+                            <span>Sunrise</span>
+                            <i data-lucide="sunrise"></i>
+                        </div>
+                        <p class="time">5:14 AM</p>
+                        <div class="schedule-item">
+                            <span>Sunset</span>
+                            <i data-lucide="sunset"></i>
+                        </div>
+                        <p class="time">5:31 PM</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Weekly Forecast -->
+            <div class="weekly-forecast">
+                <h2>This Week</h2>
+                <div class="forecast-grid">
+                    <div class="forecast-card" data-index="3">
+                        <p class="day">Wednesday</p>
+                        <i data-lucide="sun"></i>
+                        <p class="temp-range"><span>22°C</span> - <span>35°C</span></p>
+                    </div>
+                    <div class="forecast-card" data-index="4">
+                        <p class="day">Thursday</p>
+                        <i data-lucide="sun"></i>
+                        <p class="temp-range"><span>22°C</span> - <span>35°C</span></p>
+                    </div>
+                    <div class="forecast-card" data-index="5">
+                        <p class="day">Friday</p>
+                        <i data-lucide="cloud"></i>
+                        <p class="temp-range"><span>22°C</span> - <span>35°C</span></p>
+                    </div>
+                    <div class="forecast-card" data-index="6">
+                        <p class="day">Saturday</p>
+                        <i data-lucide="cloud"></i>
+                        <p class="temp-range"><span>22°C</span> - <span>35°C</span></p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Share Button -->
+            <div class="share-button-container">
+                <button class="share-button">
+                    <i data-lucide="share-2"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+    <script src="../static/css/weather.js"></script>
+</body>
+</html>

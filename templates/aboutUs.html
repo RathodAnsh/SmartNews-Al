@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Smart News</title>
+  <link rel="stylesheet" href="../static/css/aboutUs.css">
+  <link href="https://fonts.googleapis.com/css2?family=The+Seasons&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+</head>
+<body>
+  <div class="main-container">
+    <div class="header">
+      <h1>SMART NEWS</h1>
+    </div>
+
+    <div class="about-box">
+      <h2>About Us</h2>
+      <p>
+        Welcome to Smart News, your go-to web app for staying informed with the latest and most relevant news.
+        We use advanced AI algorithms to deliver personalized news tailored to your interests, ensuring you
+        never miss a story that matters. Stay smart, stay updated, and explore the world with us!
+      </p>
+    </div>
+
+    <div class="button-container">
+      <button id="next-button">Next</button>
+    </div>
+  </div>
+  <script>
+    const pages = [
+  "Welcome to Smart News, your go-to web app for staying informed with the latest and most relevant news. We use advanced AI algorithms to deliver personalized news tailored to your interests, ensuring you never miss a story that matters.",
+  "Our mission is to provide a seamless news experience, empowering you with the knowledge and insights you need to stay ahead in today's fast-paced world. Explore diverse topics and breaking stories, all in one place.",
+  "Join us today and transform how you consume news. Smart News is here to make your life smarter, more informed, and better connected. Let's get started!"
+];
+
+let currentPage = 0;
+
+const contentText = document.getElementById("content-text");
+const actionButton = document.getElementById("action-button");
+
+// Load initial content
+function loadPage() {
+  contentText.textContent = pages[currentPage];
+  actionButton.textContent = currentPage === pages.length - 1 ? "Get Started" : "Next";
+}
+
+// Button click logic
+actionButton.addEventListener("click", () => {
+  if (currentPage < pages.length - 1) {
+    currentPage++;
+    loadPage();
+  } else {
+    // Redirect to main dashboard (index.html)
+    window.location.href = "index.html";
+  }
+});
+
+loadPage();
+
+  </script>
+</body>
+</html>
