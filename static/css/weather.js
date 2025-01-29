@@ -1,66 +1,44 @@
-// Initialize Lucide icons
-lucide.createIcons();
+// Initialize search functionality
+const searchInput = document.getElementById('searchInput');
+const locationBtn = document.querySelector('.location-btn');
 
-// Get DOM elements
-const searchInput = document.querySelector('.search-bar input');
-const detailCards = document.querySelectorAll('.detail-card');
-const forecastCards = document.querySelectorAll('.forecast-card');
-const shareButton = document.querySelector('.share-button');
+// Add event listeners
+searchInput.addEventListener('input', handleSearch);
+locationBtn.addEventListener('click', getCurrentLocation);
 
-// Handle search input
-searchInput.addEventListener('input', (e) => {
-    const city = e.target.value;
-    document.querySelector('.location').textContent = `${city}, IN`;
-});
-
-// Handle card hover effects
-function handleCardHover(cards) {
-    cards.forEach(card => {
-        const icon = card.querySelector('[data-lucide]');
-        
-        card.addEventListener('mouseenter', () => {
-            if (icon) {
-                icon.style.transform = 'scale(1.25)';
-                icon.style.transition = 'transform 0.3s';
-            }
-        });
-
-        card.addEventListener('mouseleave', () => {
-            if (icon) {
-                icon.style.transform = 'scale(1)';
-            }
-        });
-    });
+// Search handler
+function handleSearch(e) {
+    const searchQuery = e.target.value;
+    // This will be connected to the weather API later
+    console.log('Searching for:', searchQuery);
 }
 
-// Apply hover effects to cards
-handleCardHover(detailCards);
-handleCardHover(forecastCards);
-
-// Handle share button click
-shareButton.addEventListener('click', () => {
-    // Add share functionality here
-    alert('Share functionality will be implemented with the API integration');
-});
-
-// Update current time
-function updateTime() {
-    const now = new Date();
-    const options = {
-        weekday: 'long',
-        month: 'long',
-        day: 'numeric',
-        hour: 'numeric',
-        minute: 'numeric',
-        hour12: true
-    };
-    const dateString = now.toLocaleDateString('en-US', options);
-    document.querySelector('.date').textContent = dateString;
+// Get current location
+function getCurrentLocation() {
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+            (position) => {
+                const { latitude, longitude } = position.coords;
+                // This will be connected to the weather API later
+                console.log('Current location:', { latitude, longitude });
+            },
+            (error) => {
+                console.error('Error getting location:', error);
+            }
+        );
+    } else {
+        console.error('Geolocation is not supported by this browser.');
+    }
 }
 
-// Update time initially and every minute
-updateTime();
-setInterval(updateTime, 60000);
+// Update current time and date
+function updateDateTime() {
+    const dateElement = document.querySelector('.weather-info');
+    const date = new Date();
+    const options = { weekday: 'long', day: 'numeric', month: 'short' };
+    const formattedDate = date.toLocaleDateString('en-US', options);
+    dateElement.firstElementChild.textContent = formattedDate;
+}
 
-// Add smooth scroll behavior
-document.documentElement.style.scrollBehavior = 'smooth';
+// Initialize the date
+updateDateTime();
