@@ -15,7 +15,7 @@ body {
 .container {
     max-width: 1280px;
     margin: 0 auto;
-    padding: 1rem;
+    padding: 1.5rem;
 }
 
 /* Header styles */
@@ -24,6 +24,8 @@ header {
     align-items: center;
     justify-content: space-between;
     margin-bottom: 2rem;
+    flex-wrap: wrap;
+    gap: 1rem;
 }
 
 .logo {
@@ -50,8 +52,6 @@ header {
     top: 50%;
     transform: translateY(-50%);
     color: rgb(156, 163, 175);
-    width: 1.25rem;
-    height: 1.25rem;
 }
 
 #searchInput {
@@ -66,7 +66,32 @@ header {
 }
 
 #searchInput:focus {
-    box-shadow: 0 0 0 2px rgb(168, 85, 247);
+    box-shadow: 0 0 0 2px rgb(147, 51, 234);
+}
+
+.suggestions {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    background: transparent;
+    border: 1px solid rgb(31, 41, 55);
+    z-index: 1000;
+}
+
+.suggestions div {
+    padding: 0.5rem;
+    cursor: pointer;
+}
+
+.suggestions div:hover {
+    background: #f0f0f0;
+}
+
+#citySearch {
+    width: 300px;
+    padding: 0.5rem;
+    font-size: 1rem;
 }
 
 .location-btn {
@@ -86,6 +111,43 @@ header {
     background-color: rgb(126, 34, 206);
 }
 
+/* Loading spinner */
+.loading-spinner {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 60vh;
+}
+
+.spinner {
+    width: 3rem;
+    height: 3rem;
+    border: 2px solid rgb(147, 51, 234);
+    border-top-color: transparent;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* Error message */
+.error-message {
+    background-color: rgba(239, 68, 68, 0.1);
+    border: 1px solid rgb(239, 68, 68);
+    color: rgb(239, 68, 68);
+    padding: 1rem;
+    border-radius: 0.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.hidden {
+    display: none;
+}
+
 /* Grid layout */
 .grid-container {
     display: grid;
@@ -99,8 +161,20 @@ header {
     }
     
     .forecast-card {
-        grid-column: span 3;
+        grid-column: 1 / -1;
     }
+}
+
+.temp-unit-selection {
+    display: flex;
+    justify-content: center;
+    margin: 1rem 0;
+}
+
+.temp-unit-selection label {
+    margin: 0 1rem;
+    font-size: 1rem;
+    cursor: pointer;
 }
 
 /* Card styles */
@@ -110,57 +184,44 @@ header {
     background-color: rgb(31, 41, 55);
     border-radius: 0.75rem;
     padding: 1.5rem;
-    transition: all 0.2s;
-}
-
-.weather-card:hover,
-.details-card:hover,
-.forecast-card:hover {
-    box-shadow: 0 0 1rem rgba(168, 85, 247, 0.1);
 }
 
 /* Current weather styles */
+.current-weather {
+    text-align: center;
+}
+
 .current-weather h2 {
-    font-size: 2.25rem;
+    font-size: 3rem;
     font-weight: 700;
     margin-bottom: 0.5rem;
 }
 
 .weather-desc {
-    color: rgb(156, 163, 175);
+    font-size: 1.25rem;
     margin-bottom: 0.5rem;
 }
 
 .weather-info {
     display: flex;
     align-items: center;
-    gap: 0.5rem;
-    font-size: 0.875rem;
+    justify-content: center;
+    gap: 1.5rem;
     color: rgb(156, 163, 175);
 }
 
 /* Highlights styles */
 .highlights-grid {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
     gap: 1rem;
-}
-
-@media (min-width: 1024px) {
-    .highlights-grid {
-        grid-template-columns: repeat(4, 1fr);
-    }
+    margin-bottom: 1.5rem;
 }
 
 .highlight-item {
-    background-color: rgba(55, 65, 81, 0.5);
-    border-radius: 0.5rem;
-    padding: 1rem;
-    transition: background-color 0.2s;
-}
-
-.highlight-item:hover {
     background-color: rgb(55, 65, 81);
+    padding: 1rem;
+    border-radius: 0.5rem;
 }
 
 .label {
@@ -172,18 +233,8 @@ header {
     display: flex;
     align-items: center;
     gap: 0.5rem;
-    font-size: 1.25rem;
+    font-size: 1.125rem;
     font-weight: 600;
-}
-
-.badge {
-    display: inline-block;
-    margin-top: 0.5rem;
-    font-size: 0.75rem;
-    background-color: rgba(34, 197, 94, 0.2);
-    color: rgb(34, 197, 94);
-    padding: 0.25rem 0.5rem;
-    border-radius: 9999px;
 }
 
 /* Sun times styles */
@@ -192,21 +243,16 @@ header {
 }
 
 .sun-grid {
-    display: flex;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
     gap: 1rem;
     margin-top: 1rem;
 }
 
 .sun-item {
-    flex: 1;
-    background-color: rgba(55, 65, 81, 0.5);
-    border-radius: 0.5rem;
-    padding: 1rem;
-    transition: background-color 0.2s;
-}
-
-.sun-item:hover {
     background-color: rgb(55, 65, 81);
+    padding: 1rem;
+    border-radius: 0.5rem;
 }
 
 .sun-icon {
@@ -220,34 +266,26 @@ header {
 /* Forecast styles */
 .forecast-grid {
     display: grid;
-    grid-template-columns: repeat(5, 1fr);
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
     gap: 1rem;
     margin-top: 1rem;
 }
 
 .forecast-item {
-    background-color: rgba(55, 65, 81, 0.5);
-    border-radius: 0.5rem;
-    padding: 1rem;
-    text-align: center;
-    transition: background-color 0.2s;
-}
-
-.forecast-item:hover {
     background-color: rgb(55, 65, 81);
+    padding: 1rem;
+    border-radius: 0.5rem;
+    text-align: center;
 }
 
-.day {
-    color: rgb(156, 163, 175);
-    margin-bottom: 0.5rem;
-}
-
-.forecast-item i {
-    margin: 0.5rem 0;
+.forecast-item img {
+    width: 4rem;
+    height: 4rem;
+    margin: 0.5rem auto;
 }
 
 h3 {
-    font-size: 1.125rem;
+    font-size: 1.25rem;
     font-weight: 600;
     margin-bottom: 1rem;
 }
