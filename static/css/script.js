@@ -1,52 +1,77 @@
-const newsData = [
-  {
-    image: "../static/css/images/news-image1.jpg",
-    title: "Breaking News Title 1",
-    description: "This is a brief description of the first news. Stay informed with the latest updates.",
-  },
-  {
-    image: "../static/css/images/news-image2.jpg",
-    title: "Breaking News Title 2",
-    description: "This is a brief description of the second news. Stay informed with the latest updates.",
-  },
-  {
-    image: "../static/css/images/news-image3.jpg",
-    title: "Breaking News Title 3",
-    description: "This is a brief description of the third news. Stay informed with the latest updates.",
-  },
-  {
-      image: "../static/css/images/news-image3.jpg",
-      title: "Breaking News Title 3",
-      description: "This is a brief description of the third news. Stay informed with the latest updates.",
-  },
-  {
-      image: "../static/css/images/news-image3.jpg",
-      title: "Breaking News Title 3",
-      description: "This is a brief description of the third news. Stay informed with the latest updates.",
-  },
-];
+const API_KEY = "ea641ccea1a542c4b4804508afec633e";
+const url = "https://newsapi.org/v2/everything";
 
-const newsSection = document.getElementById("news-section");
+window.addEventListener("load", () => fetchNews("India"));
 
-newsData.forEach((news) => {
-  const container = document.createElement("div");
-  container.classList.add("news-container");
+function reload() {
+  window.location.reload();
+}
 
-  container.innerHTML = `
-    <div class="news-card">
-      <div class="news-image-container">
-        <img src="${news.image}" alt="${news.title}" class="news-image">
-      </div>
-      <div class="news-content">
-        <h3 class="news-title">${news.title}</h3>
-        <p class="news-description">${news.description}</p>
-        <div class="news-actions">
-          <button class="icon-button"><i class="fas fa-thumbs-up"></i></button>
-          <button class="icon-button"><i class="fas fa-share"></i></button>
-        </div>
-      </div>
-    </div>
-  `;
+async function fetchNews(query) {
+  try {
+    const res = await fetch(`${url}?q=${query}&apiKey=${API_KEY}`);
+    const data = await res.json();
+    
+    if (data.articles) {
+      bindData(data.articles);
+    } else {
+      console.error("No articles found.");
+    }
+  } catch (error) {
+    console.error("Error fetching news:", error);
+  }
+}
 
-  newsSection.appendChild(container);
+function bindData(articles) {
+  const cardsContainer = document.querySelector("#cards-container");
+  const newsCardTemplate = document.querySelector("#template-news-card");
+
+  cardsContainer.innerHTML = "";
+
+  articles.forEach((article) => {
+    if (!article.urlToImage) return;
+    const cardClone = newsCardTemplate.content.cloneNode(true);
+    fillDataInCard(cardClone, article);
+    cardsContainer.appendChild(cardClone);
+  });
+}
+
+function fillDataInCard(cardClone, article) {
+  const newsImg = cardClone.querySelector("#news-img");
+  const newsTitle = cardClone.querySelector("#news-title");
+  const newsDesc = cardClone.querySelector("#news-desc");
+  const newsSource = cardClone.querySelector("#news-source");
+
+  newsImg.src = article.urlToImage;
+  newsTitle.innerHTML = article.title;
+  newsDesc.innerHTML = article.description;
+
+  const date = new Date(article.publishedAt).toLocaleString("en-us", {
+    timeZone: "Asia/Jakarta"
+  });
+
+  newsSource.innerHTML = `${article.source.name} • ${date}`;
+  cardClone.firstElementChild.addEventListener("click", () => {
+    window.open(article.url, "_blank");
+  });
+}
+
+const searchButton = document.getElementById("search-button");
+const searchText = document.getElementById("search-text");
+
+// Function to handle the search action
+function handleSearch() {
+  const query = searchText.value.trim();
+  if (!query) return;
+  fetchNews(query);
+}
+
+// Event listener for button click
+searchButton.addEventListener("click", handleSearch);
+
+// Event listener for 'Enter' key press
+searchText.addEventListener("keydown", (event) => {
+  if (event.key === "Enter") {
+    handleSearch();
+  }
 });

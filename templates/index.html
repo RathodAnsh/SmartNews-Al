@@ -12,7 +12,7 @@
 <body>
     <header>
         <div class="sandwich-icon" onclick="toggleSidebar()">&#9776;</div>
-        <div class="project-name">
+        <div onclick="reload()" class="project-name">
             <span class="large-letter">S</span>mart <span class="large-letter">N</span>ews
         </div>
         <div class="login-icon"><img src="../static/css/images/icons8-login-50.png" alt="login icon"></div>
@@ -70,18 +70,30 @@
 
 
     <!-- Search Bar -->
-<div class="search-container">
-    <div class="search-box">
-        <button class="search-icon" ><img src="../static/css/images/magnifying-glass.png" alt="search icon"></button>
-        <input type="text" class="search-bar" placeholder="Search News...">
-        <button class="mic-icon"><img src="../static/css/images/microphone-black-shape.png" alt="microphone"></button>
+    <div class="search-bar">
+        <input type="text" id="search-text" class="news-input" placeholder="e.g. Science">
+        <button id="search-button" class="search-button">Search</button>
     </div>
-</div>
 
 <!-- News containers portion -->
-<div class="news-section" id="news-section">
-    <!-- News containers will be generated here dynamically -->
-</div>
+<main>
+    <div class="cards-container container flex" id="cards-container">
+
+    </div>
+</main>
+
+<template id="template-news-card">
+    <div class="card">
+        <div class="card-header">
+            <img src="https://via.placeholder.com/400x200" alt="news-image" id="news-img">
+        </div>
+        <div class="card-content">
+            <h3 id="news-title">This is title</h3>
+            <h6 class="news-source" id="news-source">End Gadget 31/1/2025</h6>
+            <p class="news-desc" id="news-desc">Lorem ipsum dolor sit amet consectetur adipisicing elit. Nisi, distinctio iusto. Architecto labore quae tenetur ipsum sequi ullam harum id!</p>
+        </div>
+    </div>
+</template>
 
     <footer>
         <p>&copy; 2023 Smart News. All rights reserved.</p>
