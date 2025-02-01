@@ -124,6 +124,7 @@ header .logo .large-letter {
     padding-bottom: 10px;
     padding-top: 7px;
     cursor: pointer;
+    border-radius: 9999px;
     letter-spacing: 1px;
     font-weight: 600;
     transition: background-color 0.3s;
