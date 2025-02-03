@@ -78,7 +78,7 @@ function showPopup() {
   popup.innerHTML = `
       <div class="popup-content">
           <span class="close-btnn" onclick="this.parentElement.parentElement.remove()">&times;</span>
-          <p>No News Regarding Your Title</p>
+          <p>No News Regarding Your Title.</p>
       </div>
   `;
   document.body.appendChild(popup);
