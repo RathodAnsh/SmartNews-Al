@@ -1,4 +1,3 @@
-/* General Reset */
 body, html {
     margin: 0;
     padding: 0;
@@ -6,9 +5,15 @@ body, html {
     font-family: 'The Seasons', serif;
     background: #ffffff;
     color: #fff;
+    padding-top: 80px; /* Prevent content from hiding behind the fixed header */
 }
 
 header {
+    position: fixed; /* Make header fixed at the top */
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1000; /* Ensure it's above other elements */
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -24,16 +29,16 @@ header {
     font-size: 54px;
     font-weight: bolder;
     margin-top: 15px;
-    margin-right: 5px;
+    margin-right: 35px;
 }
 
 .login-icon img {
-    width: 1em;  /* Make the image size equal to the font size */
-    height: 1em; /* Make the image size equal to the font size */
-    object-fit: contain; /* Ensure the image doesn't stretch */
+    width: 1em;
+    height: 1em;
+    object-fit: contain;
 }
 
-.sandwich-icon{
+.sandwich-icon {
     cursor: pointer;
     font-size: 29px;
     position: absolute;
@@ -43,29 +48,27 @@ header {
     border: none;
     border-radius: 50%;
     padding: 6px 12px;
-    cursor: pointer;
     box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.3);
 }
 
 header .project-name {
-    font-family: 'The Seasons', serif; /* Custom font from Google Fonts */
-    font-size: 48px; /* Adjust size as per your image */
+    font-family: 'The Seasons', serif;
+    font-size: 48px;
     align-items: center;
-    color: #fff; /* White color for text */
-    text-transform: uppercase; /* Makes the text uppercase */
-    letter-spacing: 3px; /* Adds spacing between letters */
-    margin: 0 auto; /* Centers the text within the header */
-    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5); /* Adds subtle shadow */
+    color: #fff;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    margin: 0 auto;
+    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
     position: relative;
-    top: 0px; /* Adjust vertical alignment */
+    top: 0px;
 }
 
-/* Styling for Larger "S" and "N" */
 header .project-name .large-letter {
-    font-size: 65px; /* Larger size for S and N */
+    font-size: 65px;
     font-weight: bold;
     color: #fff;
-    text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.7); /* More pronounced shadow */
+    text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.7);
 }
 
 .sidebar {
@@ -178,6 +181,43 @@ select {
     display: block; /* Show close button only when sidebar is active */
 }
 
+/* Pop-up Styling */
+.popup {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: rgba(0, 0, 0, 0.8);
+    color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    text-align: center;
+    z-index: 1000;
+    width: 300px;
+}
+
+.popup-content {
+    position: relative;
+}
+
+.popup p {
+    font-size: 18px;
+    margin: 10px 0;
+}
+
+.close-btnn {
+    position: absolute;
+    top: -10px;
+    right: -10px;
+    background: #fff;
+    color: #000;
+    font-size: 20px;
+    padding: 5px 10px;
+    border-radius: 50%;
+    cursor: pointer;
+    border: none;
+}
+
 /* Toggle Button Styling
 #toggle-btn {
     position: absolute;
@@ -245,13 +285,12 @@ main {
     justify-content: center;
     align-items: center;
     gap: 10px; /* Space between input and button */
-    margin-top: 20px;
 }
 
 /* Style for the Input Field */
 .news-input {
     width: 250px;
-    height: 40px;
+    height: 20px;
     padding: 10px;
     font-size: 16px;
     border: 2px solid #bbd0e2;

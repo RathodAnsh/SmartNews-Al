@@ -104,7 +104,10 @@ header {
     border-radius: 9999px;
     padding: 0.5rem 1rem;
     cursor: pointer;
-    transition: background-color 0.2s;
+    border-radius: 9999px;
+    letter-spacing: 1px;
+    font-weight: 600;
+    transition: background-color 0.3s;
 }
 
 .location-btn:hover {

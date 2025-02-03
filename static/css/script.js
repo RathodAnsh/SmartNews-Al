@@ -11,24 +11,39 @@ async function fetchNews(query) {
   try {
     const res = await fetch(`${url}?q=${query}&apiKey=${API_KEY}`);
     const data = await res.json();
-    
-    if (data.articles) {
-      bindData(data.articles);
+
+    if (data.articles && data.articles.length > 0) {
+      displayNews(removeDuplicates(data.articles));
     } else {
-      console.error("No articles found.");
+      showPopup(); // Show pop-up if no news is found
     }
   } catch (error) {
     console.error("Error fetching news:", error);
   }
 }
 
-function bindData(articles) {
+// Function to remove duplicate news articles (checks both title & URL)
+function removeDuplicates(articles) {
+  const seenTitles = new Set();
+  const seenUrls = new Set();
+
+  return articles.filter(article => {
+    if (!seenTitles.has(article.title) && !seenUrls.has(article.url)) {
+      seenTitles.add(article.title);
+      seenUrls.add(article.url);
+      return true;
+    }
+    return false;
+  });
+}
+
+function displayNews(articles) {
   const cardsContainer = document.querySelector("#cards-container");
   const newsCardTemplate = document.querySelector("#template-news-card");
 
-  cardsContainer.innerHTML = "";
+  cardsContainer.innerHTML = ""; // Clear previous news
 
-  articles.forEach((article) => {
+  articles.forEach(article => {
     if (!article.urlToImage) return;
     const cardClone = newsCardTemplate.content.cloneNode(true);
     fillDataInCard(cardClone, article);
@@ -44,7 +59,7 @@ function fillDataInCard(cardClone, article) {
 
   newsImg.src = article.urlToImage;
   newsTitle.innerHTML = article.title;
-  newsDesc.innerHTML = article.description;
+  newsDesc.innerHTML = article.description || "No description available.";
 
   const date = new Date(article.publishedAt).toLocaleString("en-us", {
     timeZone: "Asia/Jakarta"
@@ -54,6 +69,19 @@ function fillDataInCard(cardClone, article) {
   cardClone.firstElementChild.addEventListener("click", () => {
     window.open(article.url, "_blank");
   });
+}
+
+// Function to show pop-up when no news is found
+function showPopup() {
+  const popup = document.createElement("div");
+  popup.classList.add("popup");
+  popup.innerHTML = `
+      <div class="popup-content">
+          <span class="close-btnn" onclick="this.parentElement.parentElement.remove()">&times;</span>
+          <p>No News Regarding Your Title</p>
+      </div>
+  `;
+  document.body.appendChild(popup);
 }
 
 const searchButton = document.getElementById("search-button");
