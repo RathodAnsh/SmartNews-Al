@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 
 </head>
-<body>
+<body>  
     <header>
         <div class="sandwich-icon" onclick="toggleSidebar()">&#9776;</div>
         <div onclick="reload()" class="project-name">
@@ -87,15 +87,17 @@
         <div class="card-header">
             <img src="https://via.placeholder.com/400x200" alt="news-image" id="news-img">
         </div>
+
+        <div class="news-actions">
+            <button class="icon-button like-btn"><i class="fas fa-heart"></i></button>
+            <button class="icon-button share-btn"><i class="fas fa-share"></i></button>
+            <button class="icon-button summarize-btn"><i class="fas fa-file-alt"></i></button>
+        </div>
+
         <div class="card-content">
             <h3 id="news-title">This is title</h3>
             <h6 class="news-source" id="news-source">End Gadget 31/1/2025</h6>
-            <p class="news-desc" id="news-desc">Lorem ipsum dolor sit amet consectetur adipisicing elit. Nisi, distinctio iusto. Architecto labore quae tenetur ipsum sequi ullam harum id!</p>
-        </div>
-        <div class="news-actions">
-            <button class="like-btn"><i class="heart-icon">❤️</i></button>
-            <button class="share-btn"><i class="share-icon">🔗</i></button>
-            <button class="chatbot-btn"><i class="chatbot-icon">📄</i></button>
+            <p class="news-desc" id="news-desc">Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>
         </div>
     </div>
 </template>

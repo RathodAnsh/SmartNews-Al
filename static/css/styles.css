@@ -276,6 +276,8 @@ main {
 .card-content {
     padding: 12px;
     color: black;
+    position: relative;
+    top: -70px;
 }
 
 .news-source {
@@ -411,6 +413,7 @@ main {
     display: flex;
     gap: 10px;
     margin-top: 10px;
+    margin-right: -20px;
   }
   
   /* Icon Buttons */
@@ -426,8 +429,44 @@ main {
   .icon-button:hover {
     color: #007bff;
   }
-  
-  
+
+  .news-actions {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 10px;
+    border-top: 1px solid #ddd;
+    background-color: #f9f9f9;
+    border-radius: 0 0 8px 8px;
+    margin-bottom: 50px;
+    margin-left: -250px;
+  }
+
+  /* Icon Buttons */
+  .icon-button {
+    background: none;
+    border: none;
+    font-size: 1.4em;
+    cursor: pointer;
+    color: #666;
+    transition: transform 0.2s ease, color 0.3s ease;
+  }
+
+  .icon-button:hover {
+    transform: scale(1.1);
+  }
+
+  .like-btn:hover {
+    color: red;
+  }
+
+  .share-btn:hover {
+    color: blue;
+  }
+
+  .summarize-btn:hover {
+    color: green;
+  }
 
   footer {
     text-align: center;
