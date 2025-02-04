@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@700&family=EB+Garamond:wght@400&display=swap');
+
 /* Reset and base styles */
 * {
     margin: 0;
@@ -6,9 +8,9 @@
 }
 
 body {
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-    background-color: rgb(17, 24, 39);
-    color: white;
+    font-family: 'The Seasons', serif; ;
+    background: linear-gradient(to bottom, #f8f8f8, #e0e0e0);
+    color: #222;
     min-height: 100vh;
 }
 
@@ -23,86 +25,104 @@ header {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    margin-bottom: 2rem;
-    flex-wrap: wrap;
-    gap: 1rem;
+    margin-bottom: 1rem;
+    background: #595757;
+    padding: 5px;
+    border-bottom: 3px solid #222;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
-.logo {
+header .logo {
     display: flex;
     align-items: center;
-    gap: 0.5rem;
+    letter-spacing: 3px;
+    color: #fffefe;
+    text-transform:uppercase ;
+    text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.7);
+    position: relative;
+    font-size: 33px;
+    font-weight: 500px;
+    margin:0 auto
+    /* text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.7); */
+    
+}
+
+.cloud-logo{
+    color: #ffffff;
+    margin-left: 0pxs;
+}
+
+header .logo .large-letter {
+    font-size: 44px; /* Larger size for S and N */
+    font-weight: bold;
+    color: #fff;
+    text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.7); /* More pronounced shadow */
+    margin-bottom: 16px;
+    margin-top: 10px;
+    letter-spacing: 2px;
+    
 }
 
 .logo span {
-    font-size: 1.25rem;
-    font-weight: 600;
+    font-size: 1.6rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: #f6f6f6;
+    letter-spacing: 2px;
+    
 }
 
 .search-container {
     position: relative;
     flex: 1;
     max-width: 28rem;
-    margin: 0 2rem;
+    margin: 0 7.5rem;
+    align-items: center;
 }
 
 .search-icon {
     position: absolute;
     left: 0.75rem;
-    top: 50%;
+    height: 100px;
+    padding-top: 35px;
     transform: translateY(-50%);
-    color: rgb(156, 163, 175);
+    color: #080808;
 }
 
 #searchInput {
     width: 100%;
-    background-color: rgb(31, 41, 55);
-    border: none;
-    border-radius: 9999px;
+    background-color: #ffffff;
+    border: 3px solid #222;
+    border-radius: 7px;
     padding: 0.5rem 1rem 0.5rem 2.5rem;
-    color: white;
+    color: #0e0e0e;
     outline: none;
     transition: all 0.2s;
 }
 
 #searchInput:focus {
-    box-shadow: 0 0 0 2px rgb(147, 51, 234);
+    box-shadow: 0 0 5px rgba(34, 34, 34, 0.5);
 }
 
-.suggestions {
-    position: absolute;
-    top: 100%;
-    left: 0;
-    width: 100%;
-    background: transparent;
-    border: 1px solid rgb(31, 41, 55);
-    z-index: 1000;
+.suggestion{
+    font-size: 120px;
+    color: #ffffff;
 }
 
-.suggestions div {
-    padding: 0.5rem;
-    cursor: pointer;
-}
-
-.suggestions div:hover {
-    background: #f0f0f0;
-}
-
-#citySearch {
-    width: 300px;
-    padding: 0.5rem;
-    font-size: 1rem;
-}
 
 .location-btn {
+
+    background: #ffffff;
     display: flex;
     align-items: center;
-    gap: 0.5rem;
-    background-color: rgb(147, 51, 234);
-    color: white;
-    border: none;
-    border-radius: 9999px;
+    color: #0a0a0a;
+    border: 2px solid #080808;
+    border-radius: 5px;
+    font-family: 'EB Garamond', serif;
+    font-size: 16px;
     padding: 0.5rem 1rem;
+    padding-bottom: 10px;
+    padding-top: 7px;
     cursor: pointer;
     border-radius: 9999px;
     letter-spacing: 1px;
@@ -111,10 +131,61 @@ header {
 }
 
 .location-btn:hover {
-    background-color: rgb(126, 34, 206);
+    background: #6c8ae4;
 }
 
-/* Loading spinner */
+/* Cards and layout */
+.weather-card,
+.details-card,
+.forecast-card {
+    background: #ffffff;
+    border: 2px solid #222;
+    border-radius: 5px;
+    padding: 1.5rem;
+    box-shadow: 3px 3px 6px rgba(0, 0, 0, 0.2);
+    color: #222;
+}
+
+h3 {
+    font-size: 1.5rem;
+    font-family:'EB Garamond', serif ;
+    font-weight: 700;
+    border-bottom: 2px solid #222;
+    padding-bottom: 0.5rem;
+    color: #0f0f0f;
+}
+
+.highlight-item, .sun-item, .forecast-item {
+    background: #ffffff;
+    border: 1px solid #222;
+    font-family: 'EB Garamond', serif;
+    padding: 1rem;
+    border-radius: 5px;
+    box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.15);
+    color: #040404;
+}
+
+/* Grid layout */
+.grid-container {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+}
+
+@media (min-width: 1024px) {
+    .grid-container {
+        grid-template-columns: 1fr 2fr;
+    }
+}
+
+.forecast-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+/* Spinner */
 .loading-spinner {
     display: flex;
     justify-content: center;
@@ -125,7 +196,7 @@ header {
 .spinner {
     width: 3rem;
     height: 3rem;
-    border: 2px solid rgb(147, 51, 234);
+    border: 2px solid #cbc4c4;
     border-top-color: transparent;
     border-radius: 50%;
     animation: spin 1s linear infinite;
@@ -139,17 +210,19 @@ header {
 
 /* Error message */
 .error-message {
-    background-color: rgba(239, 68, 68, 0.1);
-    border: 1px solid rgb(239, 68, 68);
-    color: rgb(239, 68, 68);
+    background-color: #ffffff;
+    border: 2px solid red;
+    color: red;
     padding: 1rem;
-    border-radius: 0.5rem;
+    border-radius: 5px;
     margin-bottom: 1.5rem;
+    font-weight: bold;
 }
 
 .hidden {
     display: none;
 }
+
 
 /* Grid layout */
 .grid-container {
@@ -176,7 +249,9 @@ header {
 
 .temp-unit-selection label {
     margin: 0 1rem;
-    font-size: 1rem;
+    font-size: 23px;
+    font-weight: 600;
+    font-family: 'Cormorant Garamond', serif ;
     cursor: pointer;
 }
 
@@ -184,7 +259,7 @@ header {
 .weather-card,
 .details-card,
 .forecast-card {
-    background-color: rgb(31, 41, 55);
+    background-color: rgb(156, 167, 183);
     border-radius: 0.75rem;
     padding: 1.5rem;
 }
@@ -198,11 +273,15 @@ header {
     font-size: 3rem;
     font-weight: 700;
     margin-bottom: 0.5rem;
+    font-family: 'EB Garamond', serif;
 }
 
 .weather-desc {
     font-size: 1.25rem;
     margin-bottom: 0.5rem;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 22px;
+    font-weight: 100;
 }
 
 .weather-info {
@@ -210,7 +289,10 @@ header {
     align-items: center;
     justify-content: center;
     gap: 1.5rem;
-    color: rgb(156, 163, 175);
+    color: rgb(0, 0, 0);
+    font-family: 'EB Garamond', serif;
+    font-size: 20px;
+    font-weight: 500;
 }
 
 /* Highlights styles */
@@ -222,14 +304,17 @@ header {
 }
 
 .highlight-item {
-    background-color: rgb(55, 65, 81);
+    background-color: rgb(254, 254, 255);
     padding: 1rem;
     border-radius: 0.5rem;
 }
 
 .label {
-    color: rgb(156, 163, 175);
+    color: rgb(0, 0, 0);
     margin-bottom: 0.5rem;
+    font-family: 'EB Garamond', serif;
+    font-size: 19px;
+    font-weight: 400;
 }
 
 .value {
@@ -238,7 +323,30 @@ header {
     gap: 0.5rem;
     font-size: 1.125rem;
     font-weight: 600;
+    
 }
+
+.heat{
+    color: #a43306;
+    font-size: 10px;
+} 
+
+.drop{
+    color: #0660c0;
+}
+
+.air{
+    color: #035e0f;
+}
+
+.press{
+    color: #b30707;
+}
+
+.visible{
+    color: #565353;
+}
+
 
 /* Sun times styles */
 .sun-times {
@@ -253,17 +361,17 @@ header {
 }
 
 .sun-item {
-    background-color: rgb(55, 65, 81);
+    background-color: rgb(255, 255, 255);
     padding: 1rem;
     border-radius: 0.5rem;
 }
 
 .sun-icon {
-    color: rgb(234, 179, 8);
+    color: rgb(199, 151, 8);
 }
 
 .moon-icon {
-    color: rgb(96, 165, 250);
+    color: rgb(40, 130, 240);
 }
 
 /* Forecast styles */
@@ -275,20 +383,22 @@ header {
 }
 
 .forecast-item {
-    background-color: rgb(55, 65, 81);
+    background-color: rgb(87, 110, 135);
     padding: 1rem;
     border-radius: 0.5rem;
     text-align: center;
+    
 }
 
 .forecast-item img {
-    width: 4rem;
-    height: 4rem;
+    width: 5rem;
+    height: 5rem;
     margin: 0.5rem auto;
 }
 
 h3 {
-    font-size: 1.25rem;
+    font-size: 23px;
     font-weight: 600;
     margin-bottom: 1rem;
+
 }
