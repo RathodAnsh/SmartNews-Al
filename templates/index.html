@@ -53,7 +53,7 @@
                 </li>
                 <li><a href="weather.html"><i class="fas fa-cloud-sun"></i> Weather</a></li>
                 <li><a href="#"><i class="fas fa-history"></i> Historical News</a></li>
-                <li class="language-dropdown">
+                <!-- <li class="language-dropdown">
                     <a href="#"><i class="fas fa-language"></i> Language <i class="fas fa-chevron-down"></i></a>
                     <div class="dropdown-content">
                         <select id="languageSelect">
@@ -62,7 +62,9 @@
                             <option value="mr">Marathi</option>
                         </select>
                     </div>
-                </li>
+                </li> -->
+
+                <div id="google_translate_element"></div>
             </ul>
         </nav>
     </div>
@@ -119,5 +121,15 @@
     </script>
     <script src="../static/css/script.js"></script>
     
+    <script type="text/javascript">
+        function googleTranslateElementInit() {
+            new google.translate.TranslateElement({
+                pageLanguage: 'en',
+                includedLanguages: 'en,hi,mr',
+                layout: google.translate.TranslateElement.InlineLayout.SIMPLE
+            }, 'google_translate_element');
+        }
+    </script>
+    <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>    
 </body>
 </html>
