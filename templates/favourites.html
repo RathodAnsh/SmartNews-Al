@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart News</title>
+    <link rel="stylesheet" href="../static/css/favourites.css">
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+    <div class="flex min-h-screen">
+        <!-- Sidebar -->
+        <div id="sidebar" class="sidebar">
+            <button class="close-button" onclick="toggleSidebar()">
+                <i data-lucide="x"></i>
+            </button>
+            
+            <nav class="sidebar-nav">
+                <div class="nav-links">
+                    <a href="index.html" class="nav-link">
+                        <i class="a" data-lucide="home"></i>
+                        Home
+                    </a>
+                    <a href="#" class="nav-link">
+                        <i class="a" data-lucide="info"></i>
+                        About Us
+                    </a>
+                    <div class="nav-link">
+                        <i class="a" data-lucide="menu"></i>
+                        Categories
+                    </div>
+                    <a href="#" class="nav-link">
+                        <i class="a" data-lucide="cloud"></i>
+                        Weather
+                    </a>
+                    <a href="#" class="nav-link">
+                        <i class="a" data-lucide="history"></i>
+                        Historical News
+                    </a>
+                    <a href="#" class="nav-link active">
+                        <i class="a" data-lucide="heart"></i>
+                        Favourites
+                    </a>
+                    <a href="#" class="nav-link">
+                        <i class="a" data-lucide="languages"></i>
+                        Language
+                    </a>
+                </div>
+            </nav>
+        </div>
+
+        <!-- Main Content -->
+        <div id="main-content" class="main-content">
+            <!-- Header -->
+            <header class="header">
+                <div class="header-container">
+                    <button class="menu-button" onclick="toggleSidebar()">
+                        <i class="m" data-lucide="menu"></i>
+                    </button>
+                    <!-- <h1 class="header-title">SMART NEWS</h1> -->
+                    <div class="project-name">
+                        <span class="large-letter">S</span>mart <span class="large-letter">N</span>ews
+                    </div>
+                    <!-- <button class="login-button">
+                        <i data-lucide="log-in"></i>
+                    </button> -->
+                </div>
+            </header>
+
+            <!-- Favorites Content -->
+            <main class="main-container">
+                <div class="page-header">
+                    <h2>Your Favorite Articles</h2>
+                    <p>Articles you've saved for later reading</p>
+                </div>
+
+                <div class="articles-grid" id="articles-container">
+                    <!-- Articles will be inserted here by JavaScript -->
+                </div>
+            </main>
+        </div>
+    </div>
+    <script src="../static/css/favourites.js"></script>
+</body>
+</html>
