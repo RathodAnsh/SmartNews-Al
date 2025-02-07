@@ -1,6 +1,19 @@
 // Initialize Lucide icons
 lucide.createIcons();
 
+// Sidebar state
+let isSidebarOpen = true;
+
+// Toggle sidebar function
+function toggleSidebar() {
+    const sidebar = document.getElementById('sidebar');
+    const mainContent = document.getElementById('main-content');
+    isSidebarOpen = !isSidebarOpen;
+    
+    sidebar.classList.toggle('closed');
+    mainContent.classList.toggle('expanded');
+}
+
 // Function to load favorite articles from localStorage
 function loadFavorites() {
     const articlesContainer = document.getElementById('articles-container');
