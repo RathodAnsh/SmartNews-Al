@@ -118,6 +118,7 @@ function fillDataInCard(cardClone, article, translatedTitle, translatedDesc) {
   const newsTitle = cardClone.querySelector("#news-title");
   const newsDesc = cardClone.querySelector("#news-desc");
   const newsSource = cardClone.querySelector("#news-source");
+  const likeButton = cardClone.querySelector(".like-btn");
 
   newsImg.src = article.urlToImage;
   newsTitle.innerHTML = translatedTitle;
@@ -128,6 +129,18 @@ function fillDataInCard(cardClone, article, translatedTitle, translatedDesc) {
   });
 
   newsSource.innerHTML = `${article.source.name} • ${date}`;
+
+  // Add event listener for like button
+  likeButton.addEventListener("click", (event) => {
+    event.stopPropagation(); // Prevent card click event
+    addToFavorites({
+      title: translatedTitle,
+      source: newsSource.innerHTML,
+      desc: translatedDesc,
+      img: newsImg.src
+    });
+  });
+
   cardClone.firstElementChild.addEventListener("click", () => {
     window.open(article.url, "_blank");
   });
@@ -146,20 +159,27 @@ function showPopup() {
   document.body.appendChild(popup);
 }
 
+// Function to store liked news in localStorage
+function addToFavorites(news) {
+  let favorites = JSON.parse(localStorage.getItem('favorites')) || [];
+  if (!favorites.some(item => item.title === news.title)) {
+    favorites.push(news);
+    localStorage.setItem('favorites', JSON.stringify(favorites));
+    alert("Added to Favorites!");
+  }
+}
+
+// Search functionality
 const searchButton = document.getElementById("search-button");
 const searchText = document.getElementById("search-text");
 
-// Function to handle the search action
 function handleSearch() {
   const query = searchText.value.trim();
   if (!query) return;
   fetchNews(query);
 }
 
-// Event listener for button click
 searchButton.addEventListener("click", handleSearch);
-
-// Event listener for 'Enter' key press
 searchText.addEventListener("keydown", (event) => {
   if (event.key === "Enter") {
     handleSearch();
