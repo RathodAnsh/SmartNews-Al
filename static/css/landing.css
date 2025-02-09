@@ -20,34 +20,44 @@ body {
 
 .bg-news-gradient {
     background: linear-gradient(
-        135deg,
-        #000000 0%,
-        #1a1a1a 25%,
-        #2a2a2a 50%,
-        #1a1a1a 75%,
-        #000000 100%
+        to right,
+        rgba(0, 0, 0, 0.95),
+        rgba(0, 0, 0, 0.9)
     );
-    background-size: 400% 400%;
-    animation: gradientMove 15s ease infinite;
+}
+
+.newspaper-background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url('https://images.unsplash.com/photo-1504711434969-e33886168f5c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2400&q=80');
+    background-size: cover;
+    background-position: center;
+    opacity: 0.15;
+    animation: zoomPan 30s ease-in-out infinite alternate;
+}
+
+.headlines-background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 300%;
+    height: 100%;
+    background-image: url('https://images.unsplash.com/photo-1504711434969-e33886168f5c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2400&q=80');
+    background-size: contain;
+    background-position: left center;
+    opacity: 0.1;
+    animation: slideBackground 40s linear infinite;
+    filter: contrast(120%) brightness(1.2);
 }
 
 .radial-overlay {
     position: absolute;
     inset: 0;
-    background: radial-gradient(circle at center, transparent 0%, rgba(0,0,0,0.6) 100%);
-}
-
-.shimmer-effect {
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(
-        90deg,
-        transparent,
-        rgba(255, 255, 255, 0.05),
-        transparent
-    );
-    background-size: 200% 100%;
-    animation: backgroundShimmer 3s infinite linear;
+    background: radial-gradient(circle at center, rgba(0,0,0,0.4) 0%, rgba(0,0,0,0.92) 100%);
+    z-index: 1;
 }
 
 .content {
@@ -57,6 +67,7 @@ body {
     flex-direction: column;
     gap: 3rem;
     animation: fadeIn 0.5s ease-out forwards;
+    position: relative;
 }
 
 .content.fade-out {
@@ -64,27 +75,47 @@ body {
 }
 
 .title {
-    font-size: 6rem;
+    font-size: 7rem;
     font-weight: 300;
-    color: rgba(255, 255, 255, 0.9);
+    color: rgba(255, 255, 255, 0.95);
     letter-spacing: 0.1em;
     margin-bottom: 0.5rem;
+    position: relative;
 }
 
 .title-typing {
     display: inline-block;
+    position: relative;
     white-space: nowrap;
-    overflow: hidden;
-    border-right: 3px solid rgba(255, 255, 255, 0.8);
-    animation: 
-        titleTyping 2.5s steps(40, end),
-        blink 0.8s step-end infinite;
+}
+
+.letter {
+    display: inline-block;
+    opacity: 0;
+    transform-origin: 50% 50%;
+    animation: letterReveal 0.8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
 }
 
 .first-letter {
-    font-size: 1.2em;
-    font-weight: 400;
-    text-shadow: 0 0 20px rgba(255, 255, 255, 0.1);
+    font-size: 1.4em;
+    font-weight: 600;
+    color: #ffffff;
+    text-shadow: 
+        0 0 15px rgba(255, 255, 255, 0.6),
+        0 0 30px rgba(255, 255, 255, 0.4),
+        0 0 45px rgba(255, 255, 255, 0.2);
+    position: relative;
+}
+
+.first-letter::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    background: linear-gradient(90deg, transparent, #fff, transparent);
+    animation: lineGlow 3s ease-in-out infinite;
 }
 
 .quote-container {
@@ -95,15 +126,17 @@ body {
 }
 
 .quote {
-    font-size: 1.25rem;
-    color: rgba(156, 163, 175, 1);
+    font-size: 1.4rem;
+    color: rgba(255, 255, 255, 0.8);
     font-style: italic;
     font-weight: 300;
-    animation: fadeIn 0.5s ease-out forwards;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+    letter-spacing: 0.05em;
+    transition: all 0.5s ease;
 }
 
 .loading-container {
-    width: 8rem;
+    width: 10rem;
     margin: 0 auto;
 }
 
@@ -113,6 +146,7 @@ body {
     height: 2px;
     background: rgba(255, 255, 255, 0.1);
     overflow: hidden;
+    border-radius: 2px;
 }
 
 .loading-bar::after {
@@ -122,14 +156,52 @@ body {
     left: 0;
     width: 30%;
     height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.8), transparent);
     animation: pulse 2s ease-in-out infinite;
 }
 
-/* Animations */
+@keyframes zoomPan {
+    0% {
+        transform: scale(1) translate(0, 0);
+    }
+    100% {
+        transform: scale(1.1) translate(-2%, -2%);
+    }
+}
+
+@keyframes slideBackground {
+    0% {
+        transform: translateX(0);
+    }
+    100% {
+        transform: translateX(-66.666%);
+    }
+}
+
+@keyframes letterReveal {
+    0% {
+        opacity: 0;
+        transform: rotateX(-90deg) translateY(30px);
+    }
+    50% {
+        opacity: 0.5;
+        transform: rotateX(-20deg) translateY(15px);
+    }
+    100% {
+        opacity: 1;
+        transform: rotateX(0deg) translateY(0);
+    }
+}
+
 @keyframes fadeIn {
-    from { opacity: 0; }
-    to { opacity: 1; }
+    from { 
+        opacity: 0; 
+        transform: translateY(30px) scale(0.9); 
+    }
+    to { 
+        opacity: 1; 
+        transform: translateY(0) scale(1); 
+    }
 }
 
 @keyframes fadeOut {
@@ -143,52 +215,38 @@ body {
     }
 }
 
-@keyframes titleTyping {
-    from { width: 0; }
-    to { width: 100%; }
-}
-
-@keyframes blink {
-    from, to { border-color: transparent; }
-    50% { border-color: rgba(255, 255, 255, 0.8); }
-}
-
-@keyframes backgroundShimmer {
-    0% {
-        background-position: -1000px 0;
-    }
-    100% {
-        background-position: 1000px 0;
-    }
-}
-
-@keyframes gradientMove {
-    0% {
-        background-position: 0% 50%;
+@keyframes lineGlow {
+    0%, 100% {
+        opacity: 0.3;
+        transform: scaleX(0.8);
     }
     50% {
-        background-position: 100% 50%;
-    }
-    100% {
-        background-position: 0% 50%;
+        opacity: 1;
+        transform: scaleX(1.2);
     }
 }
 
 @keyframes pulse {
-    0%, 100% {
-        opacity: 0.4;
+    0% {
+        opacity: 0.6;
+        transform: translateX(-100%) scaleX(0.8);
     }
     50% {
-        opacity: 0.8;
+        opacity: 1;
+        transform: translateX(50%) scaleX(1.2);
+    }
+    100% {
+        opacity: 0.6;
+        transform: translateX(200%) scaleX(0.8);
     }
 }
 
 @media (max-width: 768px) {
     .title {
-        font-size: 4rem;
+        font-size: 4.5rem;
     }
     
     .quote {
-        font-size: 1rem;
+        font-size: 1.1rem;
     }
 }

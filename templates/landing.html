@@ -5,21 +5,24 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Smart News</title>
     <link rel="stylesheet" href="../static/css/landing.css">
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@300&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@300;400;600&display=swap" rel="stylesheet">
 </head>
 <body>
     <div class="min-h-screen bg-news-gradient flex items-center justify-center relative overflow-hidden">
-        <!-- Enhanced background effects -->
+        <!-- Newspaper background -->
+        <div class="newspaper-background"></div>
+        
+        <!-- Moving headlines background -->
+        <div class="headlines-background"></div>
+        
+        <!-- Overlay -->
         <div class="radial-overlay"></div>
-        <div class="shimmer-effect"></div>
         
         <!-- Content container -->
         <div class="content">
             <!-- Title with typing animation -->
             <h1 class="title">
-                <div class="title-typing">
-                    <span class="first-letter">S</span>MART <span class="first-letter">N</span>EWS
-                </div>
+                <div class="title-typing"></div>
             </h1>
             
             <!-- Simple fade animation for quotes -->
@@ -33,7 +36,6 @@
             </div>
         </div>
     </div>
-
     <script src="../static/css/landing.js"></script>
 </body>
 </html>
