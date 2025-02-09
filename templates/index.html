@@ -7,7 +7,6 @@
     <link rel="stylesheet" href="../static/css/styles.css">
     <link href="https://fonts.googleapis.com/css2?family=The+Seasons&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-
 </head>
 <body>  
     <header>
@@ -20,10 +19,7 @@
 
     <!-- Sidebar -->
     <div class="sidebar" id="sidebar">
-        <button class="close-btn" onclick="closeSidebar()">&#10006;</button> <!-- Close Button -->
-        <!-- <button class="sidebar-login-btn">
-            <i class="fas fa-user"></i> Login
-        </button> -->
+        <button class="close-btn" onclick="closeSidebar()">&#10006;</button>
         <nav>
             <ul>
                 <li><a href="index.html"><i class="fas fa-home"></i> Home</a></li>
@@ -35,8 +31,13 @@
                             <h3>Domain</h3>
                             <select id="domainSelect">
                                 <option value="business">Business</option>
-                                <option value="technology">Technology</option>
+                                <option value="technology">Politics</option>
                                 <option value="sports">Sports</option>
+                                <option value="entertainment">Technology</option>
+                                <option value="entertainment">Startups</option>
+                                <option value="entertainment">Science</option>
+                                <option value="entertainment">Travel</option>
+                                <option value="entertainment">Fashion</option>
                                 <option value="entertainment">Entertainment</option>
                             </select>
                         </div>
@@ -44,9 +45,7 @@
                             <h3>Country</h3>
                             <select id="countrySelect">
                                 <option value="in">India</option>
-                                <option value="us">United States</option>
-                                <option value="gb">United Kingdom</option>
-                                <option value="au">Australia</option>
+                                <option value="ir">International</option>
                             </select>
                         </div>
                     </div>
@@ -54,59 +53,61 @@
                 <li><a href="weather.html"><i class="fas fa-cloud-sun"></i> Weather</a></li>
                 <li><a href="#"><i class="fas fa-history"></i> Historical News</a></li>
                 <li><a href="favourites.html"><i class="fas fa-heart"></i> Favourites</a></li>
-                <!-- <li class="language-dropdown">
-                    <a href="#"><i class="fas fa-language"></i> Language <i class="fas fa-chevron-down"></i></a>
-                    <div class="dropdown-content">
-                        <select id="languageSelect">
-                            <option value="en">English</option>
-                            <option value="hi">Hindi</option>
-                            <option value="mr">Marathi</option>
-                        </select>
-                    </div>
-                </li> -->
-
                 <div id="google_translate_element"></div>
             </ul>
         </nav>
     </div>
-
-
-
+    
     <!-- Search Bar -->
     <div class="search-bar">
         <input type="text" id="search-text" class="news-input" placeholder="Search for news..."> 
         <button id="search-button" class="search-button">Search</button>
     </div>
 
-<!-- News containers portion -->
-<main>
-    <div class="cards-container container flex" id="cards-container">
+    <!-- News containers portion -->
+    <main>
+        <div class="cards-container container flex" id="cards-container"></div>
+        <!-- Load More button container will be added dynamically -->
+    </main>
 
+    <!-- News Card Template -->
+    <template id="template-news-card">
+        <div class="news-card animated">
+            <div class="news-image">
+                <img src="https://via.placeholder.com/400x200" alt="news-image" id="news-img">
+            </div>
+            <div class="card-content">
+                <h3 id="news-title" class="news-title">This is title</h3>
+                <h6 id="news-source" class="news-source">End Gadget • 31/1/2025</h6>
+                <p id="news-desc" class="news-desc">Lorem ipsum dolor sit amet consectetur.</p>
+                <a id="news-url" class="read-more-btn" href="#" target="_blank">Read More</a>
+                <div class="news-actions">
+                    <button class="action-btn like-btn"><i class="fas fa-heart"></i></button>
+                    <button class="action-btn share-btn"><i class="fas fa-share"></i></button>
+                    <button class="action-btn summarize-btn"><i class="fas fa-file-alt"></i></button>
+                </div>
+            </div>
+        </div>
+    </template>
+
+    <!-- <Scroll to Top Button (added dynamically) -->
+    <div class="scroll-to-top" id="scrollToTop">
+        <i class="fas fa-arrow-up"></i>
     </div>
-</main>
 
-<template id="template-news-card">
-    <div class="card">
-        <div class="card-header">
-            <img src="https://via.placeholder.com/400x200" alt="news-image" id="news-img">
-        </div>
-
-        <div class="news-actions">
-            <button class="icon-button like-btn"><i class="fas fa-heart"></i></button>
-            <button class="icon-button share-btn"><i class="fas fa-share"></i></button>
-            <button class="icon-button summarize-btn"><i class="fas fa-file-alt"></i></button>
-        </div>
-
-        <div class="card-content">
-            <h3 id="news-title">This is title</h3>
-            <h6 class="news-source" id="news-source">End Gadget 31/1/2025</h6>
-            <p class="news-desc" id="news-desc">Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>
-        </div>
+    <!-- Chatbot Button (added dynamically) -->
+    <div class="chatbot-button">
+        <i class="fas fa-robot"></i>
     </div>
-</template>
+
+    <!-- Chatbot Popup (added dynamically) -->
+    <div class="chatbot-popup">
+        <span class="close-popup">&times;</span>
+        <p>Our chatbot is currently under development. We're working hard to bring you an amazing conversational experience soon! 🚀</p>
+    </div>
 
     <footer>
-        <p>&copy; 2023 Smart News. All rights reserved.</p>
+        <p>&copy; 2025 Smart News. All rights reserved.</p>
     </footer>
 
     <script>
@@ -117,7 +118,7 @@
 
         function closeSidebar() {
             const sidebar = document.getElementById('sidebar');
-            sidebar.classList.remove('active'); // Remove active class to hide the sidebar
+            sidebar.classList.remove('active');
         }
     </script>
     <script src="../static/css/script.js"></script>
