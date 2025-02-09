@@ -21,15 +21,38 @@
                         <i class="a" data-lucide="home"></i>
                         Home
                     </a>
-                    <a href="#" class="nav-link">
+                    <a href="aboutus.html" class="nav-link">
                         <i class="a" data-lucide="info"></i>
                         About Us
                     </a>
                     <div class="nav-link">
                         <i class="a" data-lucide="menu"></i>
                         Categories
+                        <div class="dropdown-content">
+                            <div class="domain-section">
+                                <h3>Domain</h3>
+                                <select id="domainSelect">
+                                    <option value="business">Business</option>
+                                    <option value="technology">Politics</option>
+                                    <option value="sports">Sports</option>
+                                    <option value="entertainment">Technology</option>
+                                    <option value="entertainment">Startups</option>
+                                    <option value="entertainment">Science</option>
+                                    <option value="entertainment">Travel</option>
+                                    <option value="entertainment">Fashion</option>
+                                    <option value="entertainment">Entertainment</option>
+                                </select>
+                            </div>
+                            <div class="country-section">
+                                <h3>Country</h3>
+                                <select id="countrySelect">
+                                    <option value="in">India</option>
+                                    <option value="ir">International</option>
+                                </select>
+                            </div>
+                        </div>
                     </div>
-                    <a href="#" class="nav-link">
+                    <a href="weather.html" class="nav-link">
                         <i class="a" data-lucide="cloud"></i>
                         Weather
                     </a>
@@ -37,14 +60,14 @@
                         <i class="a" data-lucide="history"></i>
                         Historical News
                     </a>
-                    <a href="#" class="nav-link active">
+                    <a href="favourites.html" class="nav-link">
                         <i class="a" data-lucide="heart"></i>
                         Favourites
                     </a>
-                    <a href="#" class="nav-link">
+                    <div href="#" class="nav-link" id="google_translate_element">
                         <i class="a" data-lucide="languages"></i>
                         Language
-                    </a>
+                    </div>
                 </div>
             </nav>
         </div>
@@ -81,5 +104,15 @@
         </div>
     </div>
     <script src="../static/css/favourites.js"></script>
+    <script type="text/javascript">
+        function googleTranslateElementInit() {
+            new google.translate.TranslateElement({
+                pageLanguage: 'en',
+                includedLanguages: 'en,hi,mr',
+                layout: google.translate.TranslateElement.InlineLayout.SIMPLE
+            }, 'google_translate_element');
+        }
+    </script>
+    <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script> 
 </body>
 </html>

@@ -7,120 +7,138 @@
     <link rel="stylesheet" href="../static/css/styles.css">
     <link href="https://fonts.googleapis.com/css2?family=The+Seasons&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="https://unpkg.com/lucide@latest"></script>
 </head>
 <body>  
-    <header>
-        <div class="sandwich-icon" onclick="toggleSidebar()">&#9776;</div>
-        <div onclick="reload()" class="project-name">
-            <span class="large-letter">S</span>mart <span class="large-letter">N</span>ews
-        </div>
-        <div class="login-icon"><a href="login.html"><img src="../static/css/images/icons8-login-50.png"  alt="login icon"></a></div>
-    </header>
-
-    <!-- Sidebar -->
-    <div class="sidebar" id="sidebar">
-        <button class="close-btn" onclick="closeSidebar()">&#10006;</button>
-        <nav>
-            <ul>
-                <li><a href="index.html"><i class="fas fa-home"></i> Home</a></li>
-                <li><a href="aboutus.html"><i class="fas fa-info-circle"></i> About Us</a></li>
-                <li class="categories-dropdown">
-                    <a href="#"><i class="fas fa-list"></i> Categories <i class="fas fa-chevron-down"></i></a>
-                    <div class="dropdown-content">
-                        <div class="domain-section">
-                            <h3>Domain</h3>
-                            <select id="domainSelect">
-                                <option value="business">Business</option>
-                                <option value="technology">Politics</option>
-                                <option value="sports">Sports</option>
-                                <option value="entertainment">Technology</option>
-                                <option value="entertainment">Startups</option>
-                                <option value="entertainment">Science</option>
-                                <option value="entertainment">Travel</option>
-                                <option value="entertainment">Fashion</option>
-                                <option value="entertainment">Entertainment</option>
-                            </select>
-                        </div>
-                        <div class="country-section">
-                            <h3>Country</h3>
-                            <select id="countrySelect">
-                                <option value="in">India</option>
-                                <option value="ir">International</option>
-                            </select>
+    <div class="flex min-h-screen">
+        <!-- Sidebar -->
+        <div id="sidebar" class="sidebar">
+            <button class="close-button" onclick="toggleSidebar()">
+                <i data-lucide="x"></i>
+            </button>
+            
+            <nav class="sidebar-nav">
+                <div class="nav-links">
+                    <a href="index.html" class="nav-link">
+                        <i class="a" data-lucide="home"></i>
+                        Home
+                    </a>
+                    <a href="aboutus.html" class="nav-link">
+                        <i class="a" data-lucide="info"></i>
+                        About Us
+                    </a>
+                    <div class="nav-link">
+                        <i class="a" data-lucide="menu"></i>
+                        Categories
+                        <div class="dropdown-content">
+                            <div class="domain-section">
+                                <h3>Domain</h3>
+                                <select id="domainSelect">
+                                    <option value="business">Business</option>
+                                    <option value="technology">Politics</option>
+                                    <option value="sports">Sports</option>
+                                    <option value="entertainment">Technology</option>
+                                    <option value="entertainment">Startups</option>
+                                    <option value="entertainment">Science</option>
+                                    <option value="entertainment">Travel</option>
+                                    <option value="entertainment">Fashion</option>
+                                    <option value="entertainment">Entertainment</option>
+                                </select>
+                            </div>
+                            <div class="country-section">
+                                <h3>Country</h3>
+                                <select id="countrySelect">
+                                    <option value="in">India</option>
+                                    <option value="ir">International</option>
+                                </select>
+                            </div>
                         </div>
                     </div>
-                </li>
-                <li><a href="weather.html"><i class="fas fa-cloud-sun"></i> Weather</a></li>
-                <li><a href="#"><i class="fas fa-history"></i> Historical News</a></li>
-                <li><a href="favourites.html"><i class="fas fa-heart"></i> Favourites</a></li>
-                <div id="google_translate_element"></div>
-            </ul>
-        </nav>
-    </div>
-    
-    <!-- Search Bar -->
-    <div class="search-bar">
-        <input type="text" id="search-text" class="news-input" placeholder="Search for news..."> 
-        <button id="search-button" class="search-button">Search</button>
-    </div>
-
-    <!-- News containers portion -->
-    <main>
-        <div class="cards-container container flex" id="cards-container"></div>
-        <!-- Load More button container will be added dynamically -->
-    </main>
-
-    <!-- News Card Template -->
-    <template id="template-news-card">
-        <div class="news-card animated">
-            <div class="news-image">
-                <img src="https://via.placeholder.com/400x200" alt="news-image" id="news-img">
-            </div>
-            <div class="card-content">
-                <h3 id="news-title" class="news-title">This is title</h3>
-                <h6 id="news-source" class="news-source">End Gadget • 31/1/2025</h6>
-                <p id="news-desc" class="news-desc">Lorem ipsum dolor sit amet consectetur.</p>
-                <a id="news-url" class="read-more-btn" href="#" target="_blank">Read More</a>
-                <div class="news-actions">
-                    <button class="action-btn like-btn"><i class="fas fa-heart"></i></button>
-                    <button class="action-btn share-btn"><i class="fas fa-share"></i></button>
-                    <button class="action-btn summarize-btn"><i class="fas fa-file-alt"></i></button>
+                    <a href="weather.html" class="nav-link">
+                        <i class="a" data-lucide="cloud"></i>
+                        Weather
+                    </a>
+                    <a href="#" class="nav-link">
+                        <i class="a" data-lucide="history"></i>
+                        Historical News
+                    </a>
+                    <a href="favourites.html" class="nav-link">
+                        <i class="a" data-lucide="heart"></i>
+                        Favourites
+                    </a>
+                    <div href="#" class="nav-link" id="google_translate_element">
+                        <i class="a" data-lucide="languages"></i>
+                        Language
+                    </div>
                 </div>
-            </div>
+            </nav>
         </div>
-    </template>
 
-    <!-- <Scroll to Top Button (added dynamically) -->
-    <div class="scroll-to-top" id="scrollToTop">
-        <i class="fas fa-arrow-up"></i>
-    </div>
+        <div id="main-content" class="main-content">
+            <header class="header">
+                <div class="header-container">
+                    <button class="menu-button" onclick="toggleSidebar()">
+                        <i class="m" data-lucide="menu"></i>
+                    </button>
+                    <!-- <h1 class="header-title">SMART NEWS</h1> -->
+                    <div onclick="reload()" class="project-name">
+                        <span class="large-letter">S</span>mart <span class="large-letter">N</span>ews
+                    </div>
+                <div class="login-icon"><a href="login.html"><img src="../static/css/images/icons8-login-50.png"  alt="login icon"></a></div>
+            </header>
+    
+            <!-- Search Bar -->
+            <div class="search-bar">
+                <input type="text" id="search-text" class="news-input" placeholder="Search for news..."> 
+                <button id="search-button" class="search-button">Search</button>
+            </div>
 
-    <!-- Chatbot Button (added dynamically) -->
-    <div class="chatbot-button">
-        <i class="fas fa-robot"></i>
-    </div>
+            <!-- News containers portion -->
+            <main>
+                <div class="cards-container container flex" id="cards-container"></div>
+                <!-- Load More button container will be added dynamically -->
+            </main>
 
-    <!-- Chatbot Popup (added dynamically) -->
-    <div class="chatbot-popup">
-        <span class="close-popup">&times;</span>
-        <p>Our chatbot is currently under development. We're working hard to bring you an amazing conversational experience soon! 🚀</p>
-    </div>
+            <!-- News Card Template -->
+            <template id="template-news-card">
+                <div class="news-card animated">
+                    <div class="news-image">
+                        <img src="https://via.placeholder.com/400x200" alt="news-image" id="news-img">
+                    </div>
+                    <div class="card-content">
+                        <h3 id="news-title" class="news-title">This is title</h3>
+                        <h6 id="news-source" class="news-source">End Gadget • 31/1/2025</h6>
+                        <p id="news-desc" class="news-desc">Lorem ipsum dolor sit amet consectetur.</p>
+                        <a id="news-url" class="read-more-btn" href="#" target="_blank">Read More</a>
+                        <div class="news-actions">
+                            <button class="action-btn like-btn"><i class="fas fa-heart"></i></button>
+                            <button class="action-btn share-btn"><i class="fas fa-share"></i></button>
+                            <button class="action-btn summarize-btn"><i class="fas fa-file-alt"></i></button>
+                        </div>
+                    </div>
+                </div>
+            </template>
+
+            <!-- <Scroll to Top Button (added dynamically) -->
+            <div class="scroll-to-top" id="scrollToTop">
+                <i class="fas fa-arrow-up"></i>
+            </div>
+
+            <!-- Chatbot Button (added dynamically) -->
+            <div class="chatbot-button">
+                <i class="fas fa-robot"></i>
+            </div>
+
+            <!-- Chatbot Popup (added dynamically) -->
+            <div class="chatbot-popup">
+                <span class="close-popup">&times;</span>
+                <p>Our chatbot is currently under development. We're working hard to bring you an amazing conversational experience soon! 🚀</p>
+            </div>
 
     <footer>
         <p>&copy; 2025 Smart News. All rights reserved.</p>
     </footer>
 
-    <script>
-        function toggleSidebar() {
-            const sidebar = document.getElementById('sidebar');
-            sidebar.classList.toggle('active');
-        }
-
-        function closeSidebar() {
-            const sidebar = document.getElementById('sidebar');
-            sidebar.classList.remove('active');
-        }
-    </script>
     <script src="../static/css/script.js"></script>
     
     <script type="text/javascript">

@@ -69,3 +69,50 @@ function removeFavorite(title) {
 
 // Load favorites on page load
 document.addEventListener('DOMContentLoaded', loadFavorites);
+
+document.addEventListener("DOMContentLoaded", () => {
+    // Get the current page URL
+    const currentPage = window.location.pathname.split("/").pop();
+
+    // Select all nav links
+    const navLinks = document.querySelectorAll(".nav-link");
+
+    navLinks.forEach(link => {
+        // Get the href attribute of each link
+        const linkPage = link.getAttribute("href");
+
+        // Check if the link matches the current page
+        if (linkPage === currentPage) {
+            link.classList.add("active");
+        } else {
+            link.classList.remove("active");
+        }
+        
+        // Add click event listener to set active class when clicked
+        link.addEventListener("click", function () {
+            navLinks.forEach(nav => nav.classList.remove("active")); // Remove active class from all
+            this.classList.add("active"); // Add active class to clicked one
+        });
+    });
+    
+    // Initialize UI elements
+    createScrollToTopButton();
+
+    const categorySelect = document.getElementById("category-select");
+    const countrySelect = document.getElementById("country-select");
+
+    function handleCategoryChange() {
+        const category = categorySelect.value;
+        const country = countrySelect.value;
+        const query = `${category} ${country}`.trim();
+
+        fetchNews(query, false);
+    }
+
+    if (categorySelect && countrySelect) {
+        categorySelect.addEventListener("change", handleCategoryChange);
+        countrySelect.addEventListener("change", handleCategoryChange);
+    } else {
+        console.error("Category or Country select elements not found.");
+    }
+});

@@ -57,7 +57,7 @@ body {
 }
 
 .nav-link {
-    display: flex;
+    display: block;
     align-items: center;
     padding: 1rem 1rem;
     color: white;
@@ -74,6 +74,8 @@ body {
 
 .nav-link.active {
     background-color: #4f46e5;
+    color: white;
+    font-weight: bold;
 }
 
 .nav-link i {
@@ -84,6 +86,7 @@ body {
 
 .a{
     margin-right: 10px;
+    margin-top: 1px;
 }
 
 /* Main content styles */
@@ -174,6 +177,38 @@ header .project-name .large-letter {
     letter-spacing: 0.05em;
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
 } */
+
+
+
+
+.nav-link, .language-dropdown {
+    position: relative;
+}
+
+.dropdown-content {
+    display: none;
+    padding: 1rem;
+    background-color: #8f8c8c;
+    margin-top: 0.5rem;
+    color: #ffffff;
+    border-radius: 5px;
+}
+
+.nav-link:hover .dropdown-content {
+    display: block;
+}
+
+.domain-section, .country-section {
+    margin-bottom: 1rem;
+}
+
+select {
+    width: 100%;
+    padding: 0.5rem;
+    margin-top: 0.5rem;
+    border: 1px solid #ffffff;
+    border-radius: 5px;
+}
 
 /* Main container styles */
 .main-container {

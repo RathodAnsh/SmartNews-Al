@@ -1,3 +1,19 @@
+// Initialize Lucide icons
+lucide.createIcons();
+
+// Sidebar state
+let isSidebarOpen = true;
+
+// Toggle sidebar function
+function toggleSidebar() {
+    const sidebar = document.getElementById('sidebar');
+    const mainContent = document.getElementById('main-content');
+    isSidebarOpen = !isSidebarOpen;
+    
+    sidebar.classList.toggle('closed');
+    mainContent.classList.toggle('expanded');
+}
+
 const API_KEY = "ea641ccea1a542c4b4804508afec633e";
 const url = "https://newsapi.org/v2/everything";
 
@@ -235,6 +251,30 @@ function createChatbotButton() {
 }
 
 document.addEventListener("DOMContentLoaded", () => {
+    // Get the current page URL
+    const currentPage = window.location.pathname.split("/").pop();
+
+    // Select all nav links
+    const navLinks = document.querySelectorAll(".nav-link");
+
+    navLinks.forEach(link => {
+        // Get the href attribute of each link
+        const linkPage = link.getAttribute("href");
+
+        // Check if the link matches the current page
+        if (linkPage === currentPage) {
+            link.classList.add("active");
+        } else {
+            link.classList.remove("active");
+        }
+        
+        // Add click event listener to set active class when clicked
+        link.addEventListener("click", function () {
+            navLinks.forEach(nav => nav.classList.remove("active")); // Remove active class from all
+            this.classList.add("active"); // Add active class to clicked one
+        });
+    });
+    
     // Initialize UI elements
     createScrollToTopButton();
     createChatbotButton();
