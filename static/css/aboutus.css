@@ -6,14 +6,15 @@ body, html {
     box-sizing: border-box;
     font-family: 'Playfair Display', serif;
     background: 
-        linear-gradient(rgba(123, 120, 120, 0.632), rgba(255, 255, 255, 0.6)), /* Even fade effect */
+        
         url('../css/images/newspaper-background-concept.jpg');
     background-size: cover;
     background-repeat: no-repeat;
+    background-color:#181717;
     background-position: center;
-    
     color: #000;
     height: 110vh;
+    background-blend-mode: overlay;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -25,9 +26,10 @@ body, html {
 /* Full-width header */
 header {
     width: 100%;
-    background: linear-gradient(to left, #a29999, #030303);
+    /* background: linear-gradient(to left, #5c5959, #030303); */
     color: #fff;
     text-align: center;
+    margin-top: 30px;
     padding: 20px 0;
     position: absolute;
     top: 0;
@@ -40,13 +42,13 @@ header .project-name {
     text-transform: uppercase;
     letter-spacing: 3px;
     position: relative;
-    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
+    text-shadow: 2px 2px 5px rgba(239, 235, 235, 0.5);
 }
 
 header .project-name .large-letter {
     font-size: 65px;
     font-weight: bold;
-    text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.7);
+    text-shadow: 3px 3px 6px rgba(235, 228, 228, 0.7);
 }
 
 /* Content section with paper background */

@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart News - Login</title>
+    <link rel="stylesheet" href="../static/css/login.css">
+</head>
+<body>
+    <div class="container">
+        <div class="content">
+            <!-- Newspaper-style Header -->
+            <div class="header">
+                <div class="logo-container">
+                    <div class="logo">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M4 7V4h16v3"></path>
+                            <path d="M9 20h6"></path>
+                            <path d="M12 4v16"></path>
+                        </svg>
+                    </div>
+                    <h1 class="title">
+                        <div class="title-typing">
+                            <span class="first-letter">S</span>MART <span class="first-letter">N</span>EWS
+                        </div>
+                    </h1>
+                    <div class="established">
+                        <span class="line"></span>
+                        <p>Est. 2025</p>
+                        <span class="line"></span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Login Form -->
+            <div class="login-container">
+                <div class="welcome-text">
+                    <h2>Welcome Back</h2>
+                    <p>Your daily news awaits.</p>
+                </div>
+                
+                <form id="loginForm" class="login-form">
+                    <div class="form-group">
+                        <label for="email">Email Address</label>
+                        <div class="input-container">
+                            <svg class="icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <rect width="20" height="16" x="2" y="4" rx="2"></rect>
+                                <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path>
+                            </svg>
+                            <input type="email" id="email" placeholder="your@email.com" required>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="password">Password</label>
+                        <div class="input-container">
+                            <svg class="icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <rect width="18" height="11" x="3" y="11" rx="2" ry="2"></rect>
+                                <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                            </svg>
+                            <input type="password" id="password" placeholder="••••••••" required>
+                        </div>
+                    </div>
+
+                    <div class="form-options">
+                        <div class="remember-me">
+                            <input type="checkbox" id="remember-me">
+                            <label for="remember-me">Remember me</label>
+                        </div>
+                        <a href="#" class="forgot-password">Forgot password?</a>
+                    </div>
+
+                    <button type="submit" class="submit-btn">
+                        Sign In
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M5 12h14"></path>
+                            <path d="m12 5 7 7-7 7"></path>
+                        </svg>
+                    </button>
+
+                    <div class="social-login">
+                        <p>Or sign in with</p>
+                        <div class="social-buttons">
+                            <!-- Google Sign In Button -->
+                            <button id="google-signin-button" class="google-btn">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 48 48">
+                                    <path fill="#4285F4" d="M46.6 24.5c0-1.7-.2-3.4-.5-5H24v9.5h13.1c-.6 3.1-2.5 5.8-5.1 7.5v6.2h8.2c4.8-4.4 6.4-10.9 6.4-18z"/>
+                                    <path fill="#34A853" d="M24 47c5.8 0 10.6-1.9 14.2-5.2l-8.2-6.2c-2.3 1.5-5.1 2.4-8.2 2.4-6.3 0-11.6-4.2-13.5-9.8H.8v6.3C4.5 42 13 47 24 47z"/>
+                                    <path fill="#FBBC05" d="M10.5 28c-.5-1.5-.8-3-.8-4.5s.3-3.1.8-4.5V12H.8C-1 15-2 19-2 24s1 9 2.8 12h9.7v-8z"/>
+                                    <path fill="#EA4335" d="M24 9.5c3.5 0 6.6 1.2 9.1 3.6l6.8-6.8C35.5 2.5 30.5 0 24 0 13 0 4.5 5 0.8 12h9.7c1.9-5.6 7.2-9.8 13.5-9.8z"/>
+                                </svg>
+                                Sign in with Google
+                            </button>
+
+                            <!-- Guest Sign In Button -->
+                            <button class="guest-btn">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <circle cx="12" cy="8" r="4"></circle>
+                                    <path d="M16 14H8c-2 0-4 1-4 3v2h16v-2c0-2-2-3-4-3z"></path>
+                                </svg>
+                                Sign in as Guest
+                            </button>
+
+                    
+                            <!-- <button class="x-btn">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M18 2L2 22"></path>
+                                    <path d="M2 2l16 20"></path>
+                                </svg>
+                                Sign in with X
+                            </button> -->
+                        </div>
+                    </div>
+                    
+                </form>
+
+                <!-- <div class="signup-prompt">
+                    <p>Don't have an account? <a href="index.html">Subscribe Now</a></p>
+                </div> -->
+            </div>
+
+            <!-- Footer -->
+            <div class="footer">
+                <p>Breaking news, delivered daily</p>
+            </div>
+        </div>
+    </div>
+    <script src="../static/css/login.js" defer type="module"></script>
+</body>
+</html>
