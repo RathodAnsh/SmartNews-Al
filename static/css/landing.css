@@ -1,0 +1,194 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    min-height: 100vh;
+    font-family: 'Playfair Display', serif;
+}
+
+.min-h-screen {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.bg-news-gradient {
+    background: linear-gradient(
+        135deg,
+        #000000 0%,
+        #1a1a1a 25%,
+        #2a2a2a 50%,
+        #1a1a1a 75%,
+        #000000 100%
+    );
+    background-size: 400% 400%;
+    animation: gradientMove 15s ease infinite;
+}
+
+.radial-overlay {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at center, transparent 0%, rgba(0,0,0,0.6) 100%);
+}
+
+.shimmer-effect {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(255, 255, 255, 0.05),
+        transparent
+    );
+    background-size: 200% 100%;
+    animation: backgroundShimmer 3s infinite linear;
+}
+
+.content {
+    text-align: center;
+    z-index: 10;
+    display: flex;
+    flex-direction: column;
+    gap: 3rem;
+    animation: fadeIn 0.5s ease-out forwards;
+}
+
+.content.fade-out {
+    animation: fadeOut 1s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+.title {
+    font-size: 6rem;
+    font-weight: 300;
+    color: rgba(255, 255, 255, 0.9);
+    letter-spacing: 0.1em;
+    margin-bottom: 0.5rem;
+}
+
+.title-typing {
+    display: inline-block;
+    white-space: nowrap;
+    overflow: hidden;
+    border-right: 3px solid rgba(255, 255, 255, 0.8);
+    animation: 
+        titleTyping 2.5s steps(40, end),
+        blink 0.8s step-end infinite;
+}
+
+.first-letter {
+    font-size: 1.2em;
+    font-weight: 400;
+    text-shadow: 0 0 20px rgba(255, 255, 255, 0.1);
+}
+
+.quote-container {
+    height: 2rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.quote {
+    font-size: 1.25rem;
+    color: rgba(156, 163, 175, 1);
+    font-style: italic;
+    font-weight: 300;
+    animation: fadeIn 0.5s ease-out forwards;
+}
+
+.loading-container {
+    width: 8rem;
+    margin: 0 auto;
+}
+
+.loading-bar {
+    position: relative;
+    width: 100%;
+    height: 2px;
+    background: rgba(255, 255, 255, 0.1);
+    overflow: hidden;
+}
+
+.loading-bar::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 30%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+    animation: pulse 2s ease-in-out infinite;
+}
+
+/* Animations */
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes fadeOut {
+    0% {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+    }
+    100% {
+        opacity: 0;
+        transform: scale(0.9) translateY(-30px);
+    }
+}
+
+@keyframes titleTyping {
+    from { width: 0; }
+    to { width: 100%; }
+}
+
+@keyframes blink {
+    from, to { border-color: transparent; }
+    50% { border-color: rgba(255, 255, 255, 0.8); }
+}
+
+@keyframes backgroundShimmer {
+    0% {
+        background-position: -1000px 0;
+    }
+    100% {
+        background-position: 1000px 0;
+    }
+}
+
+@keyframes gradientMove {
+    0% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
+@keyframes pulse {
+    0%, 100% {
+        opacity: 0.4;
+    }
+    50% {
+        opacity: 0.8;
+    }
+}
+
+@media (max-width: 768px) {
+    .title {
+        font-size: 4rem;
+    }
+    
+    .quote {
+        font-size: 1rem;
+    }
+}
