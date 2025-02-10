@@ -284,6 +284,7 @@ function removeDuplicates(articles) {
   return Array.from(seenArticles.values())
 }
 
+// Update the displayNews function to initialize share buttons after adding cards
 async function displayNews(articles) {
   const cardsContainer = document.querySelector("#cards-container")
   const newsCardTemplate = document.querySelector("#template-news-card")
@@ -299,6 +300,9 @@ async function displayNews(articles) {
   })
 
   displayedCount += articles.length
+  
+  // Initialize share buttons after adding new cards
+  initializeShareButtons()
 }
 
 // Update fillDataInCard function to handle image loading errors
@@ -308,7 +312,7 @@ function fillDataInCard(cardClone, article) {
   const newsDesc = cardClone.querySelector("#news-desc")
   const newsSource = cardClone.querySelector("#news-source")
   const readMoreBtn = cardClone.querySelector(".read-more-btn")
-
+  readMoreBtn.href = article.url;
   // Add error handling for images
   newsImg.onerror = () => {
     newsImg.src = 'path/to/fallback/image.jpg' // Add a fallback image
@@ -335,6 +339,7 @@ function fillDataInCard(cardClone, article) {
   })
 }
 
+// Update the loadMore function
 function loadMore() {
   const remainingNews = allNews.slice(displayedCount, displayedCount + loadMoreCount)
   if (remainingNews.length > 0) {
@@ -520,3 +525,131 @@ document.addEventListener("click", function (event) {
     console.error("Domain or Country select elements not found.")
   }
 })
+
+// Add this function to handle share functionality
+function initializeShareButtons() {
+    document.querySelectorAll('.share-btn').forEach(button => {
+        button.addEventListener('click', function(e) {
+            e.stopPropagation();
+            
+            // Get the news card details
+            const newsCard = this.closest('.news-card');
+            // Fix: Get the correct URL from the read-more button
+            const newsUrl = newsCard.querySelector('.read-more-btn').href;
+            const newsTitle = newsCard.querySelector('.news-title').textContent;
+            
+            // Validate URL before sharing
+            if (newsUrl === '#' || !newsUrl) {
+                console.error('Invalid news URL');
+                return;
+            }
+            
+            // Remove any existing share menus
+            removeExistingShareMenus();
+            
+            // Create and show the share menu
+            const shareMenu = createShareMenu(newsUrl, newsTitle);
+            
+            // Position the menu next to the share button
+            const buttonRect = this.getBoundingClientRect();
+            shareMenu.style.top = `${buttonRect.bottom + window.scrollY + 5}px`;
+            shareMenu.style.left = `${buttonRect.left}px`;
+            
+            // Add overlay
+            const overlay = document.createElement('div');
+            overlay.className = 'share-menu-overlay';
+            document.body.appendChild(overlay);
+            overlay.style.display = 'block';
+            
+            // Close menu when clicking outside
+            overlay.addEventListener('click', removeExistingShareMenus);
+        });
+    });
+}
+
+function createShareMenu(url, title) {
+    const shareMenu = document.createElement('div');
+    shareMenu.className = 'share-menu';
+    
+    // Make sure we're using the actual news URL
+    const encodedUrl = encodeURIComponent(url);
+    const encodedTitle = encodeURIComponent(title);
+    
+    const shareOptions = [
+        {
+            name: 'WhatsApp',
+            icon: 'fab fa-whatsapp',
+            url: `https://api.whatsapp.com/send?text=${encodedTitle}%0A${encodedUrl}`
+        },
+        {
+            name: 'Telegram',
+            icon: 'fab fa-telegram',
+            url: `https://t.me/share/url?url=${encodedUrl}&text=${encodedTitle}`
+        },
+        {
+            name: 'X (Twitter)',
+            icon: 'fab fa-x-twitter',
+            url: `https://twitter.com/intent/tweet?url=${encodedUrl}&text=${encodedTitle}`
+        },
+        {
+            name: 'LinkedIn',
+            icon: 'fab fa-linkedin',
+            url: `https://www.linkedin.com/sharing/share-offsite/?url=${encodedUrl}`
+        }
+    ];
+    
+    shareOptions.forEach(option => {
+        const shareOption = document.createElement('div');
+        shareOption.className = 'share-option';
+        shareOption.innerHTML = `
+            <i class="${option.icon}"></i>
+            <span>${option.name}</span>
+        `;
+        shareOption.addEventListener('click', () => {
+            window.open(option.url, '_blank');
+            removeExistingShareMenus();
+        });
+        shareMenu.appendChild(shareOption);
+    });
+    
+    // Add copy link option
+    const copyOption = document.createElement('div');
+    copyOption.className = 'share-option copy-link';
+    copyOption.innerHTML = `
+        <i class="fas fa-link"></i>
+        <span>Copy Link</span>
+    `;
+    copyOption.addEventListener('click', () => {
+        navigator.clipboard.writeText(url)
+            .then(() => {
+                copyOption.innerHTML = `
+                    <i class="fas fa-check"></i>
+                    <span>Copied!</span>
+                `;
+                setTimeout(() => {
+                    copyOption.innerHTML = `
+                        <i class="fas fa-link"></i>
+                        <span>Copy Link</span>
+                    `;
+                    removeExistingShareMenus();
+                }, 2000);
+            });
+    });
+    shareMenu.appendChild(copyOption);
+    
+    document.body.appendChild(shareMenu);
+    setTimeout(() => shareMenu.classList.add('active'), 0);
+    
+    return shareMenu;
+}
+
+function removeExistingShareMenus() {
+    document.querySelectorAll('.share-menu').forEach(menu => menu.remove());
+    document.querySelectorAll('.share-menu-overlay').forEach(overlay => overlay.remove());
+}
+
+// Call this function after loading news cards
+document.addEventListener('DOMContentLoaded', initializeShareButtons);
+
+// Add this line where you create new news cards (if dynamic loading is implemented)
+// initializeShareButtons();
