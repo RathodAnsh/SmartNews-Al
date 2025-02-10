@@ -35,8 +35,8 @@ function loadFavorites() {
             </div>
             <div class="news-content">
                 <h3 class="news-title">${newsItem.title}</h3>
-                <p class="news-desc">${newsItem.description}</p>
                 <p class="news-source"><strong>Source:</strong> ${newsItem.source}</p>
+                <p class="news-desc">${newsItem.description}</p>
                 <a class="read-more-btn" href="${newsItem.url}" target="_blank">Read More</a>
                 <button class="remove-btn" data-index="${index}">
                     <i data-lucide="trash-2"></i> Remove

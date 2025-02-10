@@ -340,17 +340,19 @@ select {
 
 /* News Card Styling */
 .news-card {
-    display: flex;
-    align-items: center;
-    background-color: #fff;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    padding: 15px;
     width: 100%;
-    max-height: 500px;
+    max-height: 350px;
     margin-right: 50px;
     margin-left: 60px;
-    transition: transform 0.2s ease-in-out;
+    background: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    display: flex;
+    flex-direction: row;
+    padding: 15px;
+    gap: 15px;
 }
 
 .news-card:hover {
@@ -359,60 +361,65 @@ select {
 
 /* Image Section */
 .news-image {
-    flex-shrink: 0;
-    width: 150px; /* Adjusted size */
-    height: 100px;
-    border-radius: 8px;
+    border-radius: 20px;
     overflow: hidden;
-    margin-right: 15px;
+    width: 400px; /* Match the placeholder size */
+    height: 200px; /* Match the placeholder size */
 }
 
 .news-image img {
     width: 100%;
     height: 100%;
-    object-fit: cover;
+    object-fit: contain; /* Ensures the entire image fits without cropping */
+    border-radius: 10px;
+    display: block;
 }
 
 /* Content Section */
 .news-content {
-    flex-grow: 1;
+    flex: 1;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
 }
 
-/* Title */
+/* Title & Source */
 .news-title {
-    font-size: 18px;
+    font-size: 1.8rem;
     font-weight: bold;
-    color: #222;
-    margin-bottom: 5px;
+    color: #1f2937;
+    margin-top: 2px;
 }
 
-/* Source */
 .news-source {
-    font-size: 14px;
-    color: #007bff;
-    font-weight: bold;
+    font-size: 0.98rem;
+    color: #4625eb;
+    font-weight: 500;
+    margin-top: 5px;
+    letter-spacing: 0.07rem;
 }
 
 /* Description */
 .news-desc {
-    font-size: 14px;
+    font-size: 1.2rem;
     color: #555;
-    margin-bottom: 10px;
+    line-height: 1.2;
+    margin-top: 5px;
 }
 
 /* Read More Button */
 .read-more-btn {
-    font-size: 14px;
-    color: #007bff;
+    font-size: 0.98rem;
+    color: #4625eb;
     text-decoration: none;
-    font-weight: bold;
+    font-weight: 600;
+    transition: color 0.3s ease;
+    margin-top: 10px;
+    letter-spacing: 0.07rem;
 }
 
 .read-more-btn:hover {
-    text-decoration: underline;
+    color: #0056b3;
 }
 
 /* Styled Remove Button */
