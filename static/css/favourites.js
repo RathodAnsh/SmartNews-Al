@@ -37,7 +37,7 @@ function loadFavorites() {
                 <h3 class="news-title">${newsItem.title}</h3>
                 <p class="news-source"><strong>Source:</strong> ${newsItem.source}</p>
                 <p class="news-desc">${newsItem.description}</p>
-                <a class="read-more-btn" href="${newsItem.url}" target="_blank">Read More</a>
+                <a class="read-more-btn" href="${newsItem.url}" target="_blank" rel="noopener noreferrer">Read More</a>
                 <button class="remove-btn" data-index="${index}">
                     <i data-lucide="trash-2"></i> Remove
                 </button>
@@ -49,9 +49,16 @@ function loadFavorites() {
 
     // Attach event listeners to remove buttons dynamically
     document.querySelectorAll(".remove-btn").forEach(button => {
-        button.addEventListener("click", function () {
+        button.addEventListener("click", function (event) {
             const index = this.getAttribute("data-index");
             removeFromFavorites(index);
+        });
+    });
+
+    // Ensure read-more buttons open correct URLs
+    document.querySelectorAll(".read-more-btn").forEach(button => {
+        button.addEventListener("click", function (event) {
+            event.stopPropagation(); // Prevent interference from parent elements
         });
     });
 
