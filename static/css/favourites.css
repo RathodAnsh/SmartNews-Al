@@ -329,3 +329,135 @@ select {
         height: 12rem;
     }
 }
+
+/* Center the News Cards */
+.articles-grid {
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Centers the cards */
+    gap: 15px;
+}
+
+/* News Card Styling */
+.news-card {
+    display: flex;
+    align-items: center;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 15px;
+    width: 100%;
+    max-height: 500px;
+    margin-right: 50px;
+    margin-left: 60px;
+    transition: transform 0.2s ease-in-out;
+}
+
+.news-card:hover {
+    transform: translateY(-3px);
+}
+
+/* Image Section */
+.news-image {
+    flex-shrink: 0;
+    width: 150px; /* Adjusted size */
+    height: 100px;
+    border-radius: 8px;
+    overflow: hidden;
+    margin-right: 15px;
+}
+
+.news-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* Content Section */
+.news-content {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+/* Title */
+.news-title {
+    font-size: 18px;
+    font-weight: bold;
+    color: #222;
+    margin-bottom: 5px;
+}
+
+/* Source */
+.news-source {
+    font-size: 14px;
+    color: #007bff;
+    font-weight: bold;
+}
+
+/* Description */
+.news-desc {
+    font-size: 14px;
+    color: #555;
+    margin-bottom: 10px;
+}
+
+/* Read More Button */
+.read-more-btn {
+    font-size: 14px;
+    color: #007bff;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.read-more-btn:hover {
+    text-decoration: underline;
+}
+
+/* Styled Remove Button */
+.remove-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #dc3545;
+    color: white;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 5px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background 0.2s ease-in-out;
+    gap: 8px; /* Space between icon and text */
+    width: fit-content;
+    margin-top: 10px;
+}
+
+.remove-btn i {
+    font-size: 16px;
+}
+
+.remove-btn:hover {
+    background-color: #c82333;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .news-card {
+        flex-direction: column;
+        align-items: flex-start;
+        width: 90%; /* Adjust for smaller screens */
+    }
+
+    .news-image {
+        width: 100%;
+        height: auto;
+        margin-bottom: 10px;
+    }
+
+    .remove-btn {
+        width: 100%;
+        justify-content: center;
+    }
+}
+

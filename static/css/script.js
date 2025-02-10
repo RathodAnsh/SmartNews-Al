@@ -14,8 +14,8 @@ function toggleSidebar() {
     mainContent.classList.toggle('expanded');
 }
 
-const API_KEY = "ea641ccea1a542c4b4804508afec633e";
-const url = "https://newsapi.org/v2/everything";
+const API_KEY = "ea641ccea1a542c4b4804508afec633e"
+const url = "https://newsapi.org/v2/everything"
 
 let allNews = []
 let displayedCount = 0
@@ -450,68 +450,40 @@ function createChatbotButton() {
 }
 
 document.addEventListener("DOMContentLoaded", () => {
-    // Get the current page URL
-    const currentPage = window.location.pathname.split("/").pop();
+  // Initialize UI elements
+  createScrollToTopButton()
+  createChatbotButton()
 
-    // Select all nav links
-    const navLinks = document.querySelectorAll(".nav-link");
+  function addToFavorites(newsCard) {
+    let favorites = JSON.parse(localStorage.getItem("favorites")) || [];
 
-    navLinks.forEach(link => {
-        // Get the href attribute of each link
-        const linkPage = link.getAttribute("href");
+    const newsItem = {
+        image: newsCard.querySelector("img").src,
+        title: newsCard.querySelector(".news-title").innerText,
+        description: newsCard.querySelector(".news-desc").innerText,
+        source: newsCard.querySelector(".news-source").innerText,
+        url: newsCard.querySelector(".read-more-btn").href
+    };
 
-        // Check if the link matches the current page
-        if (linkPage === currentPage) {
-            link.classList.add("active");
-        } else {
-            link.classList.remove("active");
-        }
-        
-        // Add click event listener to set active class when clicked
-        link.addEventListener("click", function () {
-            navLinks.forEach(nav => nav.classList.remove("active")); // Remove active class from all
-            this.classList.add("active"); // Add active class to clicked one
-        });
-    });
-    
-    // Function to save news to localStorage
-    function addToFavorites(newsItem) {
-        let favorites = JSON.parse(localStorage.getItem("favorites")) || [];        
-        favorites.push(newsItem);
+    // Check if the news is already in favorites
+    if (!favorites.some(fav => fav.title === newsItem.title)) {
+        favorites.unshift(newsItem); // Add latest news at the beginning
         localStorage.setItem("favorites", JSON.stringify(favorites));
         alert("News added to favorites!");
+    } else {
+        alert("This news is already in favorites!");
     }
+}
 
-    // Add event listener to like button inside your card creation function
-    function createNewsCard(article) {
-        const cardClone = document.querySelector("#template-card").content.cloneNode(true);
-        
-        cardClone.querySelector("#news-title").innerText = article.title;
-        cardClone.querySelector("#news-desc").innerText = article.description;
-        cardClone.querySelector("#news-img").src = article.urlToImage;
-        cardClone.querySelector("#news-source").innerText = article.source.name;
-        
-        // Handle Like Button Click
-        cardClone.querySelector(".like-button").addEventListener("click", function (event) {
-            event.stopPropagation();
-            addToFavorites({
-                title: article.title,
-                description: article.description,
-                image: article.urlToImage,
-                source: article.source.name,
-                url: article.url
-            });
-        });
-
-        cardClone.firstElementChild.addEventListener("click", () => {
-            window.open(article.url, "_blank");
-        });
-
-        document.querySelector("#news-container").appendChild(cardClone);
+// Event listener for Like button clicks
+document.addEventListener("click", function (event) {
+    if (event.target.closest(".like-btn")) {
+        const newsCard = event.target.closest(".news-card");
+        if (newsCard) {
+            addToFavorites(newsCard);
+        }
     }
-    // Initialize UI elements
-    createScrollToTopButton();
-    createChatbotButton();
+});
 
   const categorySelect = document.getElementById("category-select")
   const countrySelect = document.getElementById("country-select")

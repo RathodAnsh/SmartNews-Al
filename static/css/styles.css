@@ -365,17 +365,20 @@ select {
 
 /* News Image - Left side fixed image */
 .news-image {
-    border-radius: 10px;
+    border-radius: 20px;
     overflow: hidden;
-    width: 500px;
+    width: 400px; /* Match the placeholder size */
+    height: 300px; /* Match the placeholder size */
 }
 
 .news-image img {
     width: 100%;
     height: 100%;
-    object-fit: cover;
+    object-fit: contain; /* Ensures the entire image fits without cropping */
     border-radius: 10px;
+    display: block;
 }
+
 
 /* Content Section - Right side */
 .card-content {
@@ -417,7 +420,7 @@ select {
     text-decoration: none;
     font-weight: bold;
     transition: color 0.3s ease;
-    margin-top: 25px;
+    margin-top: 10px;
     letter-spacing: 0.07rem;
 }
 
