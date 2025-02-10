@@ -329,7 +329,7 @@ body {
 }
 
 /* Guest Button */
-.guest-btn {
+/* .guest-btn {
     background-color: #6b7280;
     color: white;
 }
@@ -337,7 +337,7 @@ body {
 .guest-btn:hover {
     background-color: #4b5563;
     transform: scale(1.05);
-}
+} */
 /* X (Twitter) Button */
 /* .x-btn {
     background-color: rgb(40, 38, 38);
