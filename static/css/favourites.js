@@ -9,7 +9,7 @@ function toggleSidebar() {
     const sidebar = document.getElementById('sidebar');
     const mainContent = document.getElementById('main-content');
     isSidebarOpen = !isSidebarOpen;
-    
+
     sidebar.classList.toggle('closed');
     mainContent.classList.toggle('expanded');
 }
@@ -18,6 +18,7 @@ function toggleSidebar() {
 function loadFavorites() {
     const articlesContainer = document.getElementById('articles-container');
     articlesContainer.innerHTML = ""; // Clear previous content
+
     let favorites = JSON.parse(localStorage.getItem('favorites')) || [];
 
     if (favorites.length === 0) {
@@ -30,16 +31,15 @@ function loadFavorites() {
         articleCard.classList.add('article-card');
         articleCard.innerHTML = `
             <div class="article-content">
-                <img class="article-image" src="${news.img}" alt="${news.title}">
+                <img class="article-image" src="${news.image}" alt="${news.title}">
                 <div class="article-details">
                     <div>
                         <div class="article-meta">${news.source}</div>
                         <h3 class="article-title">${news.title}</h3>
-                        <p class="article-excerpt">${news.desc}</p>
-
+                        <p class="article-excerpt">${news.description}</p>
                     </div>
                     <div class="article-actions">
-                        <button class="action-button remove-button">
+                        <button class="action-button remove-button" data-title="${news.title}">
                             <i data-lucide="trash-2"></i> Remove
                         </button>
                     </div>
@@ -47,15 +47,16 @@ function loadFavorites() {
             </div>
         `;
 
-        // Remove button functionality
-        articleCard.querySelector('.remove-button').addEventListener('click', () => {
-            removeFavorite(news.title);
+        // Attach remove button event listener
+        articleCard.querySelector('.remove-button').addEventListener('click', (event) => {
+            const title = event.currentTarget.getAttribute('data-title');
+            removeFavorite(title);
         });
 
         articlesContainer.appendChild(articleCard);
     });
 
-    // Reinitialize icons for dynamically added content
+    // Reinitialize Lucide icons for dynamically added content
     lucide.createIcons();
 }
 
@@ -70,34 +71,31 @@ function removeFavorite(title) {
 // Load favorites on page load
 document.addEventListener('DOMContentLoaded', loadFavorites);
 
+// Handle active navigation links
 document.addEventListener("DOMContentLoaded", () => {
-    // Get the current page URL
     const currentPage = window.location.pathname.split("/").pop();
-
-    // Select all nav links
     const navLinks = document.querySelectorAll(".nav-link");
 
     navLinks.forEach(link => {
-        // Get the href attribute of each link
         const linkPage = link.getAttribute("href");
 
-        // Check if the link matches the current page
         if (linkPage === currentPage) {
             link.classList.add("active");
         } else {
             link.classList.remove("active");
         }
-        
-        // Add click event listener to set active class when clicked
+
+        // Add click event listener for active class toggle
         link.addEventListener("click", function () {
-            navLinks.forEach(nav => nav.classList.remove("active")); // Remove active class from all
-            this.classList.add("active"); // Add active class to clicked one
+            navLinks.forEach(nav => nav.classList.remove("active"));
+            this.classList.add("active");
         });
     });
-    
+
     // Initialize UI elements
     createScrollToTopButton();
 
+    // Category & Country Selection Handling
     const categorySelect = document.getElementById("category-select");
     const countrySelect = document.getElementById("country-select");
 
@@ -105,7 +103,6 @@ document.addEventListener("DOMContentLoaded", () => {
         const category = categorySelect.value;
         const country = countrySelect.value;
         const query = `${category} ${country}`.trim();
-
         fetchNews(query, false);
     }
 

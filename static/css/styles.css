@@ -269,18 +269,21 @@ select {
     align-items: center;
     margin-top: 20px;
     gap: 10px; /* Space between input and button */
+    margin-bottom: 50px;
+    margin-top: 40px;
 }
 
 /* Style for the Input Field */
 .news-input {
     width: 250px;
     height: 20px;
-    padding: 15px;
+    padding: 20px;
     font-size: 16px;
     border: 2px solid #bbd0e2;
     border-radius: 6px;
     outline: none;
     transition: all 0.3s ease-in-out;
+    padding-left: 20px;
 }
 
 /* Input Focus Effect */
@@ -341,7 +344,9 @@ select {
 /* News Card */
 .news-card {
     width: 100%;
-    max-width: 1200px;
+    max-height: 350px;
+    margin-right: 50px;
+    margin-left: 60px;
     background: #ffffff;
     border-radius: 12px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -378,21 +383,22 @@ select {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+    
 }
 
 /* Title & Source */
 .news-title {
-    font-size: 2.3rem;
+    font-size: 1.8rem;
     font-weight: bold;
     color: #1f2937;
-    margin-top: 100px;
+    margin-top: 60px;
 }
 
 .news-source {
     font-size: 0.98rem;
     color: #2563eb;
     font-weight: 700;
-    margin-top: -25px;
+    margin-top: 10px;
     letter-spacing: 0.07rem;
 }
 
@@ -411,7 +417,7 @@ select {
     text-decoration: none;
     font-weight: bold;
     transition: color 0.3s ease;
-    margin-top: -10px;
+    margin-top: 25px;
     letter-spacing: 0.07rem;
 }
 
@@ -436,7 +442,7 @@ select {
     cursor: pointer;
     color: #6b7280;
     transition: all 0.2s ease;
-    margin-top: 15px;
+    margin-top: 1px;
 }
 
 .like-btn:hover {

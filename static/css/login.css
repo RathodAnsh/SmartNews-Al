@@ -46,12 +46,23 @@ body {
 }
 
 .logo {
-    background-color: rgba(255, 255, 255, 0.1);
-    backdrop-filter: blur(8px);
-    padding: 0.5rem;
-    border-radius: 9999px;
-    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 60px;
+    height: 60px;
+    background-color: rgba(255, 255, 255, 0.15);
+    border-radius: 50%;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 0 12px rgba(255, 255, 255, 0.2);
 }
+
+.logo svg {
+    width: 42px;
+    height: 42px;
+    stroke: white;
+}
+
 
 .title-typing {
     font-family: serif;

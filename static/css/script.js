@@ -275,6 +275,41 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     });
     
+    // Function to save news to localStorage
+    function addToFavorites(newsItem) {
+        let favorites = JSON.parse(localStorage.getItem("favorites")) || [];        
+        favorites.push(newsItem);
+        localStorage.setItem("favorites", JSON.stringify(favorites));
+        alert("News added to favorites!");
+    }
+
+    // Add event listener to like button inside your card creation function
+    function createNewsCard(article) {
+        const cardClone = document.querySelector("#template-card").content.cloneNode(true);
+        
+        cardClone.querySelector("#news-title").innerText = article.title;
+        cardClone.querySelector("#news-desc").innerText = article.description;
+        cardClone.querySelector("#news-img").src = article.urlToImage;
+        cardClone.querySelector("#news-source").innerText = article.source.name;
+        
+        // Handle Like Button Click
+        cardClone.querySelector(".like-button").addEventListener("click", function (event) {
+            event.stopPropagation();
+            addToFavorites({
+                title: article.title,
+                description: article.description,
+                image: article.urlToImage,
+                source: article.source.name,
+                url: article.url
+            });
+        });
+
+        cardClone.firstElementChild.addEventListener("click", () => {
+            window.open(article.url, "_blank");
+        });
+
+        document.querySelector("#news-container").appendChild(cardClone);
+    }
     // Initialize UI elements
     createScrollToTopButton();
     createChatbotButton();
