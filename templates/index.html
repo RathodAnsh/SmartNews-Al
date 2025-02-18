@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport"="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Smart News</title>
     <link rel="stylesheet" href="../static/css/styles.css">
     <link href="https://fonts.googleapis.com/css2?family=The+Seasons&display=swap" rel="stylesheet">
@@ -115,6 +115,13 @@
                             <button class="action-btn share-btn"><i class="fas fa-share"></i></button>
                             <button class="action-btn summarize-btn"><i class="fas fa-file-alt"></i></button>
                         </div>
+                        <div class="summary-content sliding-window" style="display: none;">
+                            <div class="summary-header">
+                                <h3 class="summary-heading">Summary</h3>
+                                <button class="close-summary-btn">&times;</button>
+                            </div>
+                            <p id="news-summary" class="news-summary"></p>
+                        </div>
                     </div>
                 </div>
             </template>
@@ -151,5 +158,96 @@
         }
     </script>
     <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>    
+    
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            document.addEventListener("click", async function (event) {
+                if (event.target.closest(".summarize-btn")) {
+                    const card = event.target.closest(".news-card");
+                    const summaryContainer = card.querySelector(".summary-content");
+                    const summaryText = card.querySelector(".news-summary");
+                    const newsUrl = card.querySelector("#news-url")?.href;
+
+                    if (!summaryContainer.classList.contains("show")) {
+                        // Show the sliding window instantly
+                        summaryContainer.style.display = "block";
+                        setTimeout(() => {
+                            summaryContainer.classList.add("show");
+                        }, 10);
+
+                        if (!summaryText.innerText.trim()) {
+                            // Show loading animation
+                            summaryText.innerHTML = '<div class="loading-dots"><div></div><div></div><div></div></div>';
+                            try {
+                                // Fetch full article and summarize it
+                                const fullArticle = await fetchFullArticle(newsUrl);
+                                const summary = await fetchSummary(fullArticle);
+                                animateSummary(summaryText, summary);
+                            } catch (error) {
+                                summaryText.innerText = "Error generating summary.";
+                            }
+                        }
+
+                        card.querySelector("#news-desc").style.display = "none";
+                    }
+                }
+
+                if (event.target.classList.contains("close-summary-btn")) {
+                    const card = event.target.closest(".news-card");
+                    const summaryContainer = card.querySelector(".summary-content");
+                    summaryContainer.classList.remove("show");
+                    setTimeout(() => {
+                        summaryContainer.style.display = "none";
+                        card.querySelector("#news-desc").style.display = "block";
+                    }, 300);
+                }
+            });
+        });
+
+        // Function to fetch full article content
+        async function fetchFullArticle(url) {
+            try {
+                const response = await fetch(`http://127.0.0.1:5000/fetch-article?url=${encodeURIComponent(url)}`);
+                const data = await response.json();
+                return data.article || "Article content not found.";
+            } catch (error) {
+                console.error("Error fetching article:", error);
+                return "Error fetching article.";
+            }
+        }
+
+        // Function to fetch summary from the backend
+        async function fetchSummary(text) {
+            try {
+                const response = await fetch("http://127.0.0.1:5000/summarize", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ text })
+                });
+                const data = await response.json();
+                if (data.error) {
+                    throw new Error(data.error);
+                }
+                return data.summary || "Summary not available.";
+            } catch (error) {
+                console.error("Error generating summary:", error);
+                return "Error generating summary.";
+            }
+        }
+
+        // Function to animate the display of the summary text
+        function animateSummary(element, text) {
+            element.innerHTML = "";
+            let index = 0;
+            const interval = setInterval(() => {
+                if (index < text.length) {
+                    element.innerHTML += text[index];
+                    index++;
+                } else {
+                    clearInterval(interval);
+                }
+            }, 50); // Adjust the speed of the animation here
+        }
+    </script>
 </body>
 </html>

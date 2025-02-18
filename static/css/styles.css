@@ -292,6 +292,104 @@ select {
     box-shadow: 0 0 8px rgba(0, 123, 255, 0.3);
 }
 
+/* Add these styles to your styles.css file */
+
+/* Sliding window styles */
+.sliding-window {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: calc(100% - 10px); /* Adjust width to exclude image */
+    height: 100%;
+    background-color: #3b3a3a; /* Black background */
+    color: white;
+    padding: 0;
+    box-shadow: -2px 0 5px rgba(0, 0, 0, 0.5);
+    transform: translateX(100%);
+    transition: transform 0.3s ease-in-out;
+    margin-top: 70px;
+    z-index: 5;
+    overflow-y: auto;
+}
+
+.sliding-window.show {
+    transform: translateX(0);
+}
+
+.summary-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 20px;
+    background-color: #000; /* Dark black color */
+}
+
+.sliding-window h3 {
+    margin: 0;
+    color: white; /* White color for heading */
+}
+
+.sliding-window p {
+    padding: 20px;
+    margin: 10px;
+    background-color: #4d4a4a; /* Grayish color for summary part */
+    color: #ffffff; /* Light gray color for text */
+}
+
+/* Loading animation styles */
+.loading-dots {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+}
+
+.loading-dots div {
+    width: 8px;
+    height: 8px;
+    margin: 0 4px;
+    background-color: #fff; /* White color for dots */
+    border-radius: 50%;
+    animation: loading 0.6s infinite alternate;
+}
+
+.loading-dots div:nth-child(2) {
+    animation-delay: 0.2s;
+}
+
+.loading-dots div:nth-child(3) {
+    animation-delay: 0.4s;
+}
+
+@keyframes loading {
+    from {
+        transform: translateY(0);
+    }
+    to {
+        transform: translateY(-10px);
+    }
+}
+
+/* Close button styles */
+.close-summary-btn {
+    background: none;
+    border: none;
+    font-size: 24px;
+    color: white; /* White color for close button */
+    cursor: pointer;
+}
+
+/* Close button styles */
+.close-summary-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: none;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+}
+
 /* Style for the Search Button */
 .search-button {
     background-color: lightblue;
