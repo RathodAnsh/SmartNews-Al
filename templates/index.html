@@ -110,16 +110,17 @@
                         <p id="news-desc" class="news-desc">Lorem ipsum dolor sit amet consectetur.</p>
                         <a id="news-url" class="read-more-btn" href="#" target="_blank">Read More</a>
                         <div class="news-actions">
-                            <button class="action-btn like-btn"><i class="fas fa-heart"></i></button>
-                            <button class="action-btn share-btn"><i class="fas fa-share"></i></button>
-                            <button class="action-btn summarize-btn"><i class="fas fa-file-alt"></i></button>
+                            <button class="action-btn like-btn" data-tooltip="Favourites"><i class="fas fa-heart"></i></button>
+                            <button class="action-btn share-btn" data-tooltip="Share"><i class="fas fa-share"></i></button>
+                            <button class="action-btn summarize-btn" data-tooltip="Summary"><i class="fas fa-file-alt"></i></button>
                         </div>
                         <div class="summary-content sliding-window" style="display: none;">
                             <div class="summary-header">
                                 <h3 class="summary-heading">Summary</h3>
-                                <button class="close-summary-btn">&times;</button>
+                                <button class="close-summary-btn" data-tooltip="Close">&times;</button>
                             </div>
                             <p class="news-summary"></p>
+                            <button class="voice-btn" data-tooltip="Voice"><i class="fas fa-volume-up"></i></button>
                         </div>
                     </div>
                 </div>
@@ -170,6 +171,13 @@
                     clearInterval(interval);
                 }
             }, 30);
+        }
+
+        // Function to speak the summary text
+        function speakSummary(text, lang = 'hi-IN') {
+            const utterance = new SpeechSynthesisUtterance(text);
+            utterance.lang = lang;
+            speechSynthesis.speak(utterance);
         }
 
         // Add event listener when the DOM is loaded
@@ -247,6 +255,16 @@
                         summaryContainer.style.display = 'none';
                         newsDesc.style.display = 'block';
                     }, 300);
+                }
+
+                // Handle voice button click
+                if (target.closest('.voice-btn')) {
+                    const card = target.closest('.news-card');
+                    if (!card) return;
+
+                    const summaryText = card.querySelector('.news-summary').innerText;
+                    const lang = document.documentElement.lang || 'en-IN';
+                    speakSummary(summaryText, lang);
                 }
             });
         });
