@@ -1,62 +1,202 @@
 from flask import Flask, request, jsonify
+from flask_cors import CORS
 import requests
 from bs4 import BeautifulSoup
-from transformers import pipeline
-from flask_cors import CORS
+from newspaper import Article
+from transformers import pipeline, AutoTokenizer
+import re
 import logging
 
 app = Flask(__name__)
-CORS(app, resources={r"/*": {"origins": "*"}})
-summarizer = pipeline("summarization", model="facebook/bart-large-cnn")
+CORS(app)  # Enable CORS
 
+# Load Summarization Model
+summarizer = pipeline("summarization", model="facebook/bart-large-cnn")
+tokenizer = AutoTokenizer.from_pretrained("facebook/bart-large-cnn")
+
+# Configure Logging
 logging.basicConfig(level=logging.INFO)
 
-def get_article_content(url):
+def clean_text(text):
+    """Removes ads, footers, navigation links, and unwanted text from extracted content."""
+    unwanted_patterns = [
+        r"Subscribe to continue reading",
+        r"Sign up for our newsletter.*",
+        r"Read more at .*",
+        r"Visit [\w\.\-/]+ for more.*",
+        r"Click here to .*",
+        r"Follow us on .*",
+        r"Advertisement.*",
+        r"© \d{4} .*",  # Copyright info
+        r"Published by .*",  # Publishing house info
+        r"Share this article.*",
+        r"Related articles.*",
+        r"Comments.*",
+        r"Tags:.*",
+        r"By [\w\s]+",  # Author name
+        r"Photo by .*",  # Photo credits
+        r"Image source: .*",  # Image source
+        r"Subscribe now.*",  # Subscription prompts
+        r"Get unlimited access.*",  # Subscription prompts
+        r"Twitter:.*",  # Twitter embeds
+        r"Tweet:.*",  # Twitter embeds
+        r"Facebook:.*",  # Facebook embeds
+        r"Instagram:.*",  # Instagram embeds
+        r"LinkedIn:.*",  # LinkedIn embeds
+        r"Recommended for you.*",  # Recommended content
+        r"Sponsored by .*",  # Sponsored content
+        r"Pop-up.*",  # Pop-ups
+        r"Close this pop-up.*",  # Pop-ups
+        r"Available to .* users only",  # Location restrictions
+        r"FOLLOW LIVE:.*",  # Live updates
+        r"CLICK HERE.*",  # Click prompts
+        r"Sign in to continue reading.*",  # Sign-in prompts
+    ]
+    
+    for pattern in unwanted_patterns:
+        text = re.sub(pattern, "", text, flags=re.IGNORECASE)
+
+    return re.sub(r'\s+', ' ', text).strip()  # Normalize spacing
+
+def get_main_content(url):
+    """Fetch and extract main news content from the article URL using newspaper3k and BeautifulSoup as fallback."""
     try:
-        response = requests.get(url, headers={"User-Agent": "Mozilla/5.0"})
-        soup = BeautifulSoup(response.text, "html.parser")
-        paragraphs = soup.find_all("p")
-        full_text = " ".join([p.get_text() for p in paragraphs])
-        return full_text if full_text else "Article content not found."
+        # Try extracting content using newspaper3k
+        article = Article(url)
+        article.download()
+        article.parse()
+        if article.text and len(article.text.split()) > 30:
+            logging.info(f"Extracted content using newspaper3k: {article.text[:500]}...")
+            return clean_text(article.text), None  # Return cleaned content
+
     except Exception as e:
-        return f"Error fetching article: {str(e)}"
+        logging.warning(f"newspaper3k extraction failed: {str(e)}. Falling back to BeautifulSoup.")
 
-# API Endpoint to fetch article
-@app.route("/fetch-article", methods=["GET"])
-def fetch_article():
-    url = request.args.get("url")
-    if not url:
-        return jsonify({"error": "No URL provided"}), 400
-    article_text = get_article_content(url)
-    return jsonify({"article": article_text})
+    # If newspaper3k fails, use BeautifulSoup as a backup
+    try:
+        headers = {
+            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36"
+        }
+        response = requests.get(url, headers=headers, timeout=15)
+        response.raise_for_status()
+        soup = BeautifulSoup(response.text, 'html.parser')
 
-# API Endpoint to summarize text
+        # Check for content not available messages
+        if "content is not available in your location" in soup.get_text().lower():
+            return None, "Content is not available in your location."
+
+        # Remove unwanted tags
+        for tag in soup(['script', 'style', 'header', 'footer', 'aside', 'nav', 'form', 'noscript', 'iframe', 'meta', 'link']):
+            tag.decompose()
+
+        # Extract title for context checking
+        title = soup.find('title')
+        title_text = title.get_text(strip=True) if title else "Untitled"
+
+        # Try different extraction methods
+        content = ""
+
+        # Method 1: Extract from <article> tag
+        article_tag = soup.find('article')
+        if article_tag:
+            paragraphs = article_tag.find_all('p')
+            content = ' '.join(p.get_text() for p in paragraphs)
+
+        # Method 2: Find divs containing news content
+        if not content:
+            content_divs = soup.find_all('div', class_=lambda x: x and any(term in x.lower() for term in ['article', 'story', 'content', 'post', 'text']))
+            if content_divs:
+                main_div = max(content_divs, key=lambda x: len(x.get_text()))
+                paragraphs = main_div.find_all('p')
+                content = ' '.join(p.get_text() for p in paragraphs)
+
+        # Method 3: Find the largest div with paragraphs
+        if not content:
+            all_divs = soup.find_all('div')
+            if all_divs:
+                main_div = max(all_divs, key=lambda x: len(x.find_all('p')))
+                paragraphs = main_div.find_all('p')
+                content = ' '.join(p.get_text() for p in paragraphs)
+
+        if not content:
+            return None, "Could not extract article content"
+
+        # Clean extracted content
+        cleaned_content = clean_text(content)
+
+        # Ensure content is relevant
+        if len(cleaned_content.split()) < 30:  # Minimum length check
+            return None, "Extracted content is too short for summarization"
+
+        logging.info(f"Extracted content using BeautifulSoup: {cleaned_content[:500]}...")  # Log first 500 characters
+
+        return cleaned_content, None
+
+    except requests.exceptions.RequestException as e:
+        logging.error(f"Request error: {str(e)}")
+        return None, f"Failed to fetch article: {str(e)}"
+    except Exception as e:
+        logging.error(f"Extraction error: {str(e)}")
+        return None, f"Error processing article: {str(e)}"
+
+def summarize_text(text):
+    """Summarize text while handling large inputs."""
+    max_token_length = 1024
+
+    # Split the text into chunks that fit within the model's max token length
+    sentences = text.split('. ')
+    chunks = []
+    current_chunk = []
+
+    for sentence in sentences:
+        if len(tokenizer(' '.join(current_chunk + [sentence]), return_tensors="pt")['input_ids'][0]) <= max_token_length:
+            current_chunk.append(sentence)
+        else:
+            chunks.append(' '.join(current_chunk))
+            current_chunk = [sentence]
+
+    if current_chunk:
+        chunks.append(' '.join(current_chunk))
+
+    # Summarize each chunk and combine the summaries
+    summaries = []
+    for chunk in chunks:
+        summary = summarizer(
+            chunk,
+            max_length=150,
+            min_length=75,
+            do_sample=False
+        )[0]["summary_text"]
+        summaries.append(summary)
+
+    # Combine the summaries into a final summary
+    final_summary = ' '.join(summaries)
+    logging.info(f"Generated summary: {final_summary}")  # Log the generated summary
+
+    return final_summary
+
 @app.route("/summarize", methods=["POST"])
 def summarize():
-    data = request.json
-    text = data.get("text", "")
-
-    if not text:
-        logging.error("No text provided")
-        return jsonify({"error": "No text provided"}), 400
-
+    """API endpoint to fetch and summarize a news article."""
     try:
-        # Ensure the input is not too long
-        max_input_length = 1024
-        text = text[:max_input_length]
+        data = request.get_json()
+        if not data or "url" not in data:
+            logging.error("URL is required")
+            return jsonify({"error": "URL is required"}), 400
 
-        # Adjust summarization parameters based on text length
-        length_ratio = len(text) / max_input_length
-        max_length = int(200 * length_ratio)  # Scale max_length based on text length
-        min_length = int(100 * length_ratio)  # Scale min_length based on text length
+        url = data["url"]
+        content, error = get_main_content(url)
 
-        # Generate summary
-        summary = summarizer(text, max_length=max_length, min_length=min_length, do_sample=False, num_beams=4, early_stopping=True)
-        logging.info("Summary generated successfully")
-        return jsonify({"summary": summary[0]["summary_text"]})
+        if error:
+            logging.error(f"Content extraction failed: {error}")
+            return jsonify({"error": error}), 400
+
+        summary = summarize_text(content)
+        return jsonify({"summary": summary})
+
     except Exception as e:
-        logging.error(f"Error generating summary: {str(e)}")
-        return jsonify({"error": str(e)}), 500
+        logging.error(f"Unexpected error: {str(e)}")
+        return jsonify({"error": "Internal server error"}), 500
 
 if __name__ == "__main__":
     app.run(debug=True)

@@ -80,11 +80,11 @@
                     <button class="menu-button" onclick="toggleSidebar()">
                         <i class="m" data-lucide="menu"></i>
                     </button>
-                    <!-- <h1 class="header-title">SMART NEWS</h1> -->
                     <div onclick="reload()" class="project-name">
                         <span class="large-letter">S</span>mart <span class="large-letter">N</span>ews
                     </div>
-                <div class="login-icon"><a href="login.html"><img src="../static/css/images/icons8-login-50.png"  alt="login icon"></a></div>
+                    <div class="login-icon"><a href="login.html"><img src="../static/css/images/icons8-login-50.png" alt="login icon"></a></div>
+                </div>
             </header>
     
             <!-- Search Bar -->
@@ -96,7 +96,6 @@
             <!-- News containers portion -->
             <main>
                 <div class="cards-container container flex" id="cards-container"></div>
-                <!-- Load More button container will be added dynamically -->
             </main>
 
             <!-- News Card Template -->
@@ -111,36 +110,36 @@
                         <p id="news-desc" class="news-desc">Lorem ipsum dolor sit amet consectetur.</p>
                         <a id="news-url" class="read-more-btn" href="#" target="_blank">Read More</a>
                         <div class="news-actions">
-                            <button class="action-btn like-btn"><i class="fas fa-heart"></i></button>
-                            <button class="action-btn share-btn"><i class="fas fa-share"></i></button>
-                            <button class="action-btn summarize-btn"><i class="fas fa-file-alt"></i></button>
+                            <button class="action-btn like-btn" data-tooltip="Favourites"><i class="fas fa-heart"></i></button>
+                            <button class="action-btn share-btn" data-tooltip="Share"><i class="fas fa-share"></i></button>
+                            <button class="action-btn summarize-btn" data-tooltip="Summary"><i class="fas fa-file-alt"></i></button>
                         </div>
                         <div class="summary-content sliding-window" style="display: none;">
                             <div class="summary-header">
                                 <h3 class="summary-heading">Summary</h3>
-                                <button class="close-summary-btn">&times;</button>
+                                <button class="close-summary-btn" data-tooltip="Close">&times;</button>
                             </div>
-                            <p id="news-summary" class="news-summary"></p>
+                            <p class="news-summary"></p>
+                            <button class="voice-btn" data-tooltip="Voice"><i class="fas fa-volume-up"></i></button>
                         </div>
                     </div>
                 </div>
             </template>
 
-            <!-- <Scroll to Top Button (added dynamically) -->
             <div class="scroll-to-top" id="scrollToTop">
                 <i class="fas fa-arrow-up"></i>
             </div>
 
-            <!-- Chatbot Button (added dynamically) -->
             <div class="chatbot-button">
                 <i class="fas fa-robot"></i>
             </div>
 
-            <!-- Chatbot Popup (added dynamically) -->
             <div class="chatbot-popup">
                 <span class="close-popup">&times;</span>
                 <p>Our chatbot is currently under development. We're working hard to bring you an amazing conversational experience soon! 🚀</p>
             </div>
+        </div>
+    </div>
 
     <footer>
         <p>&copy; 2025 Smart News. All rights reserved.</p>
@@ -160,84 +159,9 @@
     <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>    
     
     <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            document.addEventListener("click", async function (event) {
-                if (event.target.closest(".summarize-btn")) {
-                    const card = event.target.closest(".news-card");
-                    const summaryContainer = card.querySelector(".summary-content");
-                    const summaryText = card.querySelector(".news-summary");
-                    const newsUrl = card.querySelector("#news-url")?.href;
-
-                    if (!summaryContainer.classList.contains("show")) {
-                        // Show the sliding window instantly
-                        summaryContainer.style.display = "block";
-                        setTimeout(() => {
-                            summaryContainer.classList.add("show");
-                        }, 10);
-
-                        if (!summaryText.innerText.trim()) {
-                            // Show loading animation
-                            summaryText.innerHTML = '<div class="loading-dots"><div></div><div></div><div></div></div>';
-                            try {
-                                // Fetch full article and summarize it
-                                const fullArticle = await fetchFullArticle(newsUrl);
-                                const summary = await fetchSummary(fullArticle);
-                                animateSummary(summaryText, summary);
-                            } catch (error) {
-                                summaryText.innerText = "Error generating summary.";
-                            }
-                        }
-
-                        card.querySelector("#news-desc").style.display = "none";
-                    }
-                }
-
-                if (event.target.classList.contains("close-summary-btn")) {
-                    const card = event.target.closest(".news-card");
-                    const summaryContainer = card.querySelector(".summary-content");
-                    summaryContainer.classList.remove("show");
-                    setTimeout(() => {
-                        summaryContainer.style.display = "none";
-                        card.querySelector("#news-desc").style.display = "block";
-                    }, 300);
-                }
-            });
-        });
-
-        // Function to fetch full article content
-        async function fetchFullArticle(url) {
-            try {
-                const response = await fetch(`http://127.0.0.1:5000/fetch-article?url=${encodeURIComponent(url)}`);
-                const data = await response.json();
-                return data.article || "Article content not found.";
-            } catch (error) {
-                console.error("Error fetching article:", error);
-                return "Error fetching article.";
-            }
-        }
-
-        // Function to fetch summary from the backend
-        async function fetchSummary(text) {
-            try {
-                const response = await fetch("http://127.0.0.1:5000/summarize", {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({ text })
-                });
-                const data = await response.json();
-                if (data.error) {
-                    throw new Error(data.error);
-                }
-                return data.summary || "Summary not available.";
-            } catch (error) {
-                console.error("Error generating summary:", error);
-                return "Error generating summary.";
-            }
-        }
-
         // Function to animate the display of the summary text
         function animateSummary(element, text) {
-            element.innerHTML = "";
+            element.innerHTML = '';
             let index = 0;
             const interval = setInterval(() => {
                 if (index < text.length) {
@@ -246,8 +170,104 @@
                 } else {
                     clearInterval(interval);
                 }
-            }, 50); // Adjust the speed of the animation here
+            }, 30);
         }
+
+        // Function to speak the summary text
+        function speakSummary(text, lang = 'hi-IN') {
+            const utterance = new SpeechSynthesisUtterance(text);
+            utterance.lang = lang;
+            speechSynthesis.speak(utterance);
+        }
+
+        // Add event listener when the DOM is loaded
+        document.addEventListener('DOMContentLoaded', function() {
+            // Event delegation for handling clicks
+            document.addEventListener('click', async function(event) {
+                const target = event.target;
+
+                // Handle summarize button click
+                if (target.closest('.summarize-btn')) {
+                    const card = target.closest('.news-card');
+                    if (!card) return;
+
+                    const summaryContainer = card.querySelector('.summary-content');
+                    const summaryText = card.querySelector('.news-summary');
+                    const newsUrl = card.querySelector('#news-url').href;
+                    const newsDesc = card.querySelector('#news-desc');
+
+                    if (!summaryContainer || !summaryText || !newsDesc) return;
+
+                    if (!summaryContainer.classList.contains('show')) {
+                        // Show the sliding window instantly
+                        summaryContainer.style.display = 'block';
+                        setTimeout(() => {
+                            summaryContainer.classList.add('show');
+                        }, 10);
+
+                        if (!summaryText.innerText.trim()) {
+                            // Show loading animation
+                            summaryText.innerHTML = '<div class="loading-dots"><div></div><div></div><div></div></div>';
+                            
+                            try {
+                                // Send the URL directly to the summarize endpoint
+                                const response = await fetch('http://127.0.0.1:5000/summarize', {
+                                    method: 'POST',
+                                    headers: {
+                                        'Content-Type': 'application/json'
+                                    },
+                                    body: JSON.stringify({ url: newsUrl })
+                                });
+
+                                if (!response.ok) {
+                                    throw new Error(`HTTP error! Status: ${response.status}`);
+                                }
+
+                                const data = await response.json();
+                                
+                                if (data.error) {
+                                    throw new Error(data.error);
+                                }
+
+                                animateSummary(summaryText, data.summary);
+                            } catch (error) {
+                                console.error('Error:', error);
+                                summaryText.innerText = 'Sorry, we couldn\'t generate a summary at this time. Please try again later.';
+                            }
+                        }
+
+                        newsDesc.style.display = 'none';
+                    }
+                }
+
+                // Handle close summary button click
+                if (target.classList.contains('close-summary-btn')) {
+                    const card = target.closest('.news-card');
+                    if (!card) return;
+
+                    const summaryContainer = card.querySelector('.summary-content');
+                    const newsDesc = card.querySelector('#news-desc');
+
+                    if (!summaryContainer || !newsDesc) return;
+
+                    summaryContainer.classList.remove('show');
+                    setTimeout(() => {
+                        summaryContainer.style.display = 'none';
+                        newsDesc.style.display = 'block';
+                    }, 300);
+                }
+
+                // Handle voice button click
+                if (target.closest('.voice-btn')) {
+                    const card = target.closest('.news-card');
+                    if (!card) return;
+
+                    const summaryText = card.querySelector('.news-summary').innerText;
+                    const lang = document.documentElement.lang || 'en-IN';
+                    speakSummary(summaryText, lang);
+                }
+            });
+        });
     </script>
 </body>
 </html>

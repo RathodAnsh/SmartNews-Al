@@ -327,6 +327,7 @@ select {
 .sliding-window h3 {
     margin: 0;
     color: white; /* White color for heading */
+    margin-left: 280px;
 }
 
 .sliding-window p {
@@ -334,6 +335,22 @@ select {
     margin: 10px;
     background-color: #4d4a4a; /* Grayish color for summary part */
     color: #ffffff; /* Light gray color for text */
+}
+
+.voice-btn {
+    position: fixed;
+    left: 20px;
+    top: -180px;
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+    color: white;
+    transition: color 0.3s ease;
+}
+
+.voice-btn:hover {
+    color: gray;
 }
 
 /* Loading animation styles */
@@ -382,11 +399,11 @@ select {
 /* Close button styles */
 .close-summary-btn {
     position: absolute;
-    top: 10px;
+    top: 3px;
     right: 10px;
     background: none;
     border: none;
-    font-size: 24px;
+    font-size: 28px;
     cursor: pointer;
 }
 
@@ -544,6 +561,59 @@ select {
     color: #6b7280;
     transition: all 0.2s ease;
     margin-top: 1px;
+    position: relative;
+}
+
+.action-btn::after {
+    content: attr(data-tooltip);
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #333;
+    color: #fff;
+    padding: 5px;
+    border-radius: 3px;
+    font-size: 12px;
+    white-space: nowrap;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.action-btn:hover::after {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* Hover effect for Close Icon and Voice Icon */
+.close-summary-btn,
+.voice-btn {
+    position: relative;
+}
+
+.close-summary-btn::after,
+.voice-btn::after {
+    content: attr(data-tooltip);
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #333;
+    color: #fff;
+    padding: 5px;
+    border-radius: 3px;
+    font-size: 12px;
+    white-space: nowrap;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.close-summary-btn:hover::after,
+.voice-btn:hover::after {
+    opacity: 1;
+    visibility: visible;
 }
 
 .like-btn:hover {
