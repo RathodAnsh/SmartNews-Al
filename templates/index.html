@@ -116,11 +116,14 @@
                         </div>
                         <div class="summary-content sliding-window" style="display: none;">
                             <div class="summary-header">
+                                <button class="voice-btn" data-tooltip="Voice"><i class="fas fa-volume-up"></i></button>
                                 <h3 class="summary-heading">Summary</h3>
                                 <button class="close-summary-btn" data-tooltip="Close">&times;</button>
                             </div>
                             <p class="news-summary"></p>
-                            <button class="voice-btn" data-tooltip="Voice"><i class="fas fa-volume-up"></i></button>
+                            <button class="help-btn" data-tooltip="Need Help" onclick="window.open('bot.html', '_blank')">
+                                <i class="fas fa-question-circle"></i> Need Help
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -140,10 +143,6 @@
             </div>
         </div>
     </div>
-
-    <footer>
-        <p>&copy; 2025 Smart News. All rights reserved.</p>
-    </footer>
 
     <script src="../static/css/script.js"></script>
     
@@ -172,39 +171,52 @@
                 }
             }, 30);
         }
-
-        // Function to speak the summary text
+    
+        // Function to speak the summary text with an Indian accent
         function speakSummary(text, lang = 'hi-IN') {
             const utterance = new SpeechSynthesisUtterance(text);
             utterance.lang = lang;
-            speechSynthesis.speak(utterance);
+    
+            // Find an Indian voice
+            const voices = speechSynthesis.getVoices();
+            const indianVoice = voices.find(voice => voice.lang === 'hi-IN' || voice.lang === 'en-IN');
+    
+            if (indianVoice) {
+                utterance.voice = indianVoice; // Set the Indian voice
+            } else {
+                console.warn('Indian voice not found. Using default voice.');
+            }
+    
+            return utterance;
         }
-
+    
         // Add event listener when the DOM is loaded
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function () {
+            let currentUtterance = null;
+    
             // Event delegation for handling clicks
-            document.addEventListener('click', async function(event) {
+            document.addEventListener('click', async function (event) {
                 const target = event.target;
-
+    
                 // Handle summarize button click
                 if (target.closest('.summarize-btn')) {
                     const card = target.closest('.news-card');
                     if (!card) return;
-
+    
                     const summaryContainer = card.querySelector('.summary-content');
                     const summaryText = card.querySelector('.news-summary');
                     const newsUrl = card.querySelector('#news-url').href;
                     const newsDesc = card.querySelector('#news-desc');
-
+    
                     if (!summaryContainer || !summaryText || !newsDesc) return;
-
+    
                     if (!summaryContainer.classList.contains('show')) {
                         // Show the sliding window instantly
                         summaryContainer.style.display = 'block';
                         setTimeout(() => {
                             summaryContainer.classList.add('show');
                         }, 10);
-
+    
                         if (!summaryText.innerText.trim()) {
                             // Show loading animation
                             summaryText.innerHTML = '<div class="loading-dots"><div></div><div></div><div></div></div>';
@@ -218,56 +230,92 @@
                                     },
                                     body: JSON.stringify({ url: newsUrl })
                                 });
-
+    
                                 if (!response.ok) {
                                     throw new Error(`HTTP error! Status: ${response.status}`);
                                 }
-
+    
                                 const data = await response.json();
                                 
                                 if (data.error) {
                                     throw new Error(data.error);
                                 }
-
+    
                                 animateSummary(summaryText, data.summary);
                             } catch (error) {
                                 console.error('Error:', error);
                                 summaryText.innerText = 'Sorry, we couldn\'t generate a summary at this time. Please try again later.';
                             }
                         }
-
+    
                         newsDesc.style.display = 'none';
                     }
                 }
-
+    
                 // Handle close summary button click
                 if (target.classList.contains('close-summary-btn')) {
                     const card = target.closest('.news-card');
                     if (!card) return;
-
+    
                     const summaryContainer = card.querySelector('.summary-content');
                     const newsDesc = card.querySelector('#news-desc');
-
+    
                     if (!summaryContainer || !newsDesc) return;
-
+    
+                    // Stop any ongoing speech
+                    if (speechSynthesis.speaking) {
+                        speechSynthesis.cancel();
+                    }
+    
+                    // Close the summary window
                     summaryContainer.classList.remove('show');
                     setTimeout(() => {
                         summaryContainer.style.display = 'none';
                         newsDesc.style.display = 'block';
                     }, 300);
                 }
-
+    
                 // Handle voice button click
                 if (target.closest('.voice-btn')) {
                     const card = target.closest('.news-card');
                     if (!card) return;
-
+    
                     const summaryText = card.querySelector('.news-summary').innerText;
-                    const lang = document.documentElement.lang || 'hi-IN';
-                    speakSummary(summaryText, lang);
+                    const lang = document.documentElement.lang || 'hi-IN'; // Use Indian English or Hindi
+                    const voiceBtn = card.querySelector('.voice-btn');
+    
+                    // Stop any ongoing speech
+                    if (speechSynthesis.speaking) {
+                        speechSynthesis.cancel();
+                    }
+    
+                    // Start reading the summary with an Indian accent
+                    currentUtterance = speakSummary(summaryText, lang);
+                    speechSynthesis.speak(currentUtterance);
+    
+                    // Change icon to indicate active reading
+                    voiceBtn.innerHTML = '<i class="fas fa-volume-up"></i>';
                 }
             });
+    
+            // Handle when speech ends
+            speechSynthesis.onend = () => {
+                const voiceBtn = document.querySelector('.voice-btn');
+                if (voiceBtn) {
+                    voiceBtn.innerHTML = '<i class="fas fa-volume-up"></i>';
+                }
+            };
+    
+            // Ensure voices are loaded before using them
+            speechSynthesis.onvoiceschanged = () => {
+                console.log('Voices loaded:', speechSynthesis.getVoices());
+            };
         });
     </script>
+
+<footer>
+    <p>&copy; 2025 Smart News. All rights reserved.</p>
+</footer>
+
 </body>
 </html>
