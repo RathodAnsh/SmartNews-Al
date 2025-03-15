@@ -121,7 +121,8 @@
                                 <button class="close-summary-btn" data-tooltip="Close">&times;</button>
                             </div>
                             <p class="news-summary"></p>
-                            <button class="help-btn" data-tooltip="Need Help" onclick="window.open('bot.html', '_blank')">
+                            <!-- Updated Need Help Button -->
+                            <button class="help-btn round-help-btn" data-tooltip="Need Help" onclick="window.open('bot.html', '_blank')" style="display: none;">
                                 <i class="fas fa-question-circle"></i> Need Help
                             </button>
                         </div>
@@ -168,6 +169,8 @@
                     index++;
                 } else {
                     clearInterval(interval);
+                    const helpButton = element.closest('.summary-content').querySelector('.help-btn');
+                    helpButton.style.display = 'flex'; // Make the button visible
                 }
             }, 30);
         }
