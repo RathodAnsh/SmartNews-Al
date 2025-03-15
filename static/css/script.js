@@ -430,31 +430,26 @@ function createScrollToTopButton() {
 }
 
 // Chatbot functionality
-function createChatbotButton() {
-  const button = document.createElement("div")
-  button.className = "chatbot-button"
-  button.innerHTML = '<i class="fas fa-robot"></i>'
+// function createChatbotButton() {
+//   const button = document.createElement("div")
+//   button.className = "chatbot-button"
+//   button.innerHTML = '<i class="fas fa-robot"></i>'
 
-  const popup = document.createElement("div")
-  popup.className = "chatbot-popup"
-  popup.innerHTML = `    `
+//   document.body.appendChild(button)
+//   document.body.appendChild(popup)
 
-  document.body.appendChild(button)
-  document.body.appendChild(popup)
+//   button.addEventListener("click", () => {
+//     popup.classList.toggle("show")
+//   })
 
-  button.addEventListener("click", () => {
-    popup.classList.toggle("show")
-  })
-
-  popup.querySelector(".close-popup").addEventListener("click", () => {
-    popup.classList.remove("show")
-  })
-}
+//   popup.querySelector(".close-popup").addEventListener("click", () => {
+//     popup.classList.remove("show")
+//   })
+// }
 
 document.addEventListener("DOMContentLoaded", () => {
   // Initialize UI elements
   createScrollToTopButton()
-  createChatbotButton()
 
   function addToFavorites(newsCard) {
     let favorites = JSON.parse(localStorage.getItem("favorites")) || [];
