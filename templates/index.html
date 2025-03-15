@@ -6,8 +6,8 @@
     <title>Smart News</title>
     <link rel="stylesheet" href="../static/css/styles.css">
     <link href="https://fonts.googleapis.com/css2?family=The+Seasons&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <script src="https://unpkg.com/lucide@latest"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"> 
+    <script src="https://cdn.jsdelivr.net/npm/lucide@latest/dist/umd/lucide.min.js"></script>
 </head>
 <body>  
     <div class="flex min-h-screen">
@@ -20,28 +20,28 @@
             <nav class="sidebar-nav">
                 <div class="nav-links">
                     <a href="index.html" class="nav-link">
-                        <i class="a" data-lucide="home"></i>
+                        <i data-lucide="home"></i>
                         Home
                     </a>
                     <a href="aboutus.html" class="nav-link">
-                        <i class="a" data-lucide="info"></i>
+                        <i data-lucide="info"></i>
                         About Us
                     </a>
                     <div class="nav-link">
-                        <i class="a" data-lucide="menu"></i>
+                        <i data-lucide="menu"></i>
                         Categories
                         <div class="dropdown-content">
                             <div class="domain-section">
                                 <h3>Domain</h3>
                                 <select id="domainSelect">
                                     <option value="business">Business</option>
-                                    <option value="technology">Politics</option>
+                                    <option value="politics">Politics</option>
                                     <option value="sports">Sports</option>
-                                    <option value="entertainment">Technology</option>
-                                    <option value="entertainment">Startups</option>
-                                    <option value="entertainment">Science</option>
-                                    <option value="entertainment">Travel</option>
-                                    <option value="entertainment">Fashion</option>
+                                    <option value="technology">Technology</option>
+                                    <option value="startups">Startups</option>
+                                    <option value="science">Science</option>
+                                    <option value="travel">Travel</option>
+                                    <option value="fashion">Fashion</option>
                                     <option value="entertainment">Entertainment</option>
                                 </select>
                             </div>
@@ -55,19 +55,19 @@
                         </div>
                     </div>
                     <a href="weather.html" class="nav-link">
-                        <i class="a" data-lucide="cloud"></i>
+                        <i data-lucide="cloud"></i>
                         Weather
                     </a>
                     <a href="#" class="nav-link">
-                        <i class="a" data-lucide="history"></i>
+                        <i data-lucide="history"></i>
                         Historical News
                     </a>
                     <a href="favourites.html" class="nav-link">
-                        <i class="a" data-lucide="heart"></i>
+                        <i data-lucide="heart"></i>
                         Favourites
                     </a>
                     <div href="#" class="nav-link" id="google_translate_element">
-                        <i class="a" data-lucide="languages"></i>
+                        <i data-lucide="languages"></i>
                         Language
                     </div>
                 </div>
@@ -78,7 +78,7 @@
             <header class="header">
                 <div class="header-container">
                     <button class="menu-button" onclick="toggleSidebar()">
-                        <i class="m" data-lucide="menu"></i>
+                        <i data-lucide="menu"></i>
                     </button>
                     <div onclick="reload()" class="project-name">
                         <span class="large-letter">S</span>mart <span class="large-letter">N</span>ews
@@ -133,16 +133,16 @@
                 <i class="fas fa-arrow-up"></i>
             </div>
 
-            <div class="chatbot-button">
+            <div class="chatbot-button" id="chatbotButton">
                 <i class="fas fa-robot"></i>
             </div>
 
-            <div class="chatbot-popup">
-                <span class="close-popup">&times;</span>
-                <p>Our chatbot is currently under development. We're working hard to bring you an amazing conversational experience soon! 🚀</p>
-            </div>
-        </div>
-    </div>
+    <!-- Initialize Lucide icons -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            lucide.createIcons();
+        });
+    </script>
 
     <script src="../static/css/script.js"></script>
     
@@ -310,6 +310,11 @@
             speechSynthesis.onvoiceschanged = () => {
                 console.log('Voices loaded:', speechSynthesis.getVoices());
             };
+        });
+
+        // Chatbot button click functionality
+        document.getElementById('chatbotButton').addEventListener('click', function() {
+            window.open('bot.html', '_blank'); // Open bot.html in a new tab
         });
     </script>
 

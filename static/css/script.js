@@ -437,10 +437,7 @@ function createChatbotButton() {
 
   const popup = document.createElement("div")
   popup.className = "chatbot-popup"
-  popup.innerHTML = `
-        <span class="close-popup">&times;</span>
-        <p>Our chatbot is currently under development. We're working hard to bring you an amazing conversational experience soon! 🚀</p>
-    `
+  popup.innerHTML = `    `
 
   document.body.appendChild(button)
   document.body.appendChild(popup)
