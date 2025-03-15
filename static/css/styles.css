@@ -327,7 +327,7 @@ select {
 .sliding-window h3 {
     margin: 0;
     color: white; /* White color for heading */
-    margin-left: 280px;
+    margin-left: -20px;
 }
 
 .sliding-window p {
@@ -338,9 +338,9 @@ select {
 }
 
 .voice-btn {
-    position: fixed;
-    left: 20px;
-    top: -180px;
+    position: absolute;
+    left: auto;
+    top: 4px;
     background: none;
     border: none;
     font-size: 1.5rem;
@@ -405,6 +405,10 @@ select {
     border: none;
     font-size: 28px;
     cursor: pointer;
+}
+
+.close-summary-btn:hover {
+    color: gray;
 }
 
 /* Style for the Search Button */
@@ -810,7 +814,7 @@ select {
 .chatbot-button {
     position: fixed;
     bottom: 20px;
-    right: 20px;
+    right: 14px;
     width: 60px;
     height: 60px;
     background: linear-gradient(to left, #a29999, #030303);
@@ -830,56 +834,25 @@ select {
     transition: transform 0.3s ease;
 }
 
-.chatbot-button:hover {
-    transform: scale(1.1);
-    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
-}
-
 .chatbot-button:hover i {
     transform: rotate(15deg);
-}
+} */
 
-.chatbot-popup {
-    position: fixed;
-    bottom: 90px;
-    right: 20px;
-    background: white;
-    padding: 20px;
-    border-radius: 15px;
-    box-shadow: 0 5px 25px rgba(0, 0, 0, 0.1);
-    z-index: 1000;
-    max-width: 300px;
-    opacity: 0;
-    visibility: hidden;
-    transform: translateY(20px);
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.chatbot-popup.show {
-    opacity: 1;
-    visibility: visible;
-    transform: translateY(0);
-}
-
-.chatbot-popup p {
-    color: #333;
-    margin: 0;
-    font-size: 16px;
-    line-height: 1.5;
-}
-
-.chatbot-popup .close-popup {
+.help-btn {
     position: absolute;
-    top: 10px;
-    right: 10px;
-    color: #666;
-    cursor: pointer;
+    bottom: auto;
+    right: 570px; /* Adjust position as needed */
+    background: none;
+    border: none;
     font-size: 18px;
-    transition: color 0.3s ease;
+    cursor: pointer;
+    color: white;
+    z-index: 10; /* Ensure the button stays on top */
 }
 
-.chatbot-popup .close-popup:hover {
-    color: #333;
+.help-btn:hover {
+    color: #007bff; /* Change color on hover */
+    transition: color 0.6s ease;
 }
 
   footer {
