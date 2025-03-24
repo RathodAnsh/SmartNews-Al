@@ -15,12 +15,11 @@
                     <div class="logo">
                         <svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                             <circle cx="12" cy="12" r="10"></circle>
-                            <path d="M2 12h20"></path> <!-- Horizontal Line -->
-                            <path d="M12 2v20"></path> <!-- Vertical Line -->
-                            <path d="M4 6c4 2 12 2 16 0"></path> <!-- Top Curve -->
-                            <path d="M4 18c4-2 12-2 16 0"></path> <!-- Bottom Curve -->
+                            <path d="M2 12h20"></path>
+                            <path d="M12 2v20"></path>
+                            <path d="M4 6c4 2 12 2 16 0"></path>
+                            <path d="M4 18c4-2 12-2 16 0"></path>
                         </svg>
-                        
                     </div>
                     <h1 class="title">
                         <div class="title-typing">
@@ -38,19 +37,20 @@
             <!-- Login Form -->
             <div class="login-container">
                 <div class="welcome-text">
-                    <h2>Welcome Back</h2>
+                    <h2 id="welcome-title">Welcome</h2>
                     <p>Your daily news awaits.</p>
                 </div>
                 
+                <!-- Login Form -->
                 <form id="loginForm" class="login-form">
                     <div class="form-group">
-                        <label for="email">Email Address</label>
+                        <label for="username">Username</label>
                         <div class="input-container">
                             <svg class="icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                <rect width="20" height="16" x="2" y="4" rx="2"></rect>
-                                <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path>
+                                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                                <circle cx="12" cy="7" r="4"></circle>
                             </svg>
-                            <input type="email" id="email" placeholder="your@email.com" required>
+                            <input type="text" id="username" placeholder="yourusername" required>
                         </div>
                     </div>
 
@@ -62,6 +62,12 @@
                                 <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
                             </svg>
                             <input type="password" id="password" placeholder="••••••••" required>
+                            <span class="toggle-password">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                                    <circle cx="12" cy="12" r="3"></circle>
+                                </svg>
+                            </span>
                         </div>
                     </div>
 
@@ -82,52 +88,75 @@
                     </button>
 
                     <div class="social-login">
-                        <p>Or sign in with</p>
                         <div class="social-buttons">
-                            <!-- Google Sign In Button -->
-                            <button id="google-signin-button" class="google-btn">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 48 48">
-                                    <path fill="#4285F4" d="M46.6 24.5c0-1.7-.2-3.4-.5-5H24v9.5h13.1c-.6 3.1-2.5 5.8-5.1 7.5v6.2h8.2c4.8-4.4 6.4-10.9 6.4-18z"/>
-                                    <path fill="#34A853" d="M24 47c5.8 0 10.6-1.9 14.2-5.2l-8.2-6.2c-2.3 1.5-5.1 2.4-8.2 2.4-6.3 0-11.6-4.2-13.5-9.8H.8v6.3C4.5 42 13 47 24 47z"/>
-                                    <path fill="#FBBC05" d="M10.5 28c-.5-1.5-.8-3-.8-4.5s.3-3.1.8-4.5V12H.8C-1 15-2 19-2 24s1 9 2.8 12h9.7v-8z"/>
-                                    <path fill="#EA4335" d="M24 9.5c3.5 0 6.6 1.2 9.1 3.6l6.8-6.8C35.5 2.5 30.5 0 24 0 13 0 4.5 5 0.8 12h9.7c1.9-5.6 7.2-9.8 13.5-9.8z"/>
+                            <button id="signup-button" class="google-btn">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path>
+                                    <circle cx="9" cy="7" r="4"></circle>
+                                    <path d="M22 21v-2a4 4 0 0 0-3-3.87"></path>
+                                    <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
                                 </svg>
-                                Sign in with Google
+                                Sign Up
                             </button>
-
-                            <!-- Guest Sign In Button -->
-                            <!-- <button class="guest-btn">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                    <circle cx="12" cy="8" r="4"></circle>
-                                    <path d="M16 14H8c-2 0-4 1-4 3v2h16v-2c0-2-2-3-4-3z"></path>
-                                </svg>
-                                Sign in as Guest
-                            </button> -->
-
-                    
-                            <!-- <button class="x-btn">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                    <path d="M18 2L2 22"></path>
-                                    <path d="M2 2l16 20"></path>
-                                </svg>
-                                Sign in with X
-                            </button> -->
                         </div>
                     </div>
-                    
                 </form>
 
-                <!-- <div class="signup-prompt">
-                    <p>Don't have an account? <a href="index.html">Subscribe Now</a></p>
-                </div> -->
-            </div>
+                <!-- Sign Up Section -->
+                <div id="signup-section" class="signup-section" style="display: none;">
+                    <div class="welcome-text">
+                        <h2>Create Your Account</h2>
+                    </div>
+                    <form id="signupForm" class="login-form">
+                        <div class="form-group">
+                            <label for="name">Full Name</label>
+                            <div class="input-container">
+                                <input type="text" id="name" placeholder="Enter your full name" required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Email Address</label>
+                            <div class="input-container">
+                                <input type="email" id="email" placeholder="your@email.com" required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="new-username">Username</label>
+                            <div class="input-container">
+                                <input type="text" id="new-username" placeholder="Choose a username" required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="new-password">Password</label>
+                            <div class="input-container">
+                                <input type="password" id="new-password" placeholder="Create a password" required>
+                                <span class="toggle-password">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                                        <circle cx="12" cy="12" r="3"></circle>
+                                    </svg>
+                                </span>
+                            </div>
+                        </div>
+                        <button type="button" id="create-account" class="submit-btn">
+                            Register
+                        </button>
+                    </form>
+                </div>
 
-            <!-- Footer -->
-            <div class="footer">
-                <p>Breaking news, delivered daily</p>
+                <!-- Footer -->
+                <div class="footer">
+                    <p>Breaking news, delivered daily</p>
+                </div>
             </div>
         </div>
     </div>
-    <script src="../static/css/login.js" defer type="module"></script>
+
+    <!-- Message Box -->
+    <div id="message-box" class="message-box" style="display: none;">
+        <p id="message-text"></p>
+    </div>
+
+    <script src="../static/css/login.js"></script>
 </body>
 </html>
