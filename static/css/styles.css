@@ -836,26 +836,42 @@ select {
 
 .chatbot-button:hover i {
     transform: rotate(15deg);
-} */
+}
 
-.help-btn {
+/* Round "Need Help" Button */
+.round-help-btn {
     position: absolute;
-    bottom: auto;
-    right: 570px; /* Adjust position as needed */
-    background: none;
+    bottom: 20px; /* Adjust the vertical position */
+    right: 20px; /* Adjust the horizontal position */
+    width: auto; /* Adjust width to fit text and icon */
+    height: 50px;
+    padding: 0 20px; /* Add padding for text and icon */
+    background: linear-gradient(to left, #a29999, #030303); /* Gradient background */
     border: none;
-    font-size: 18px;
-    cursor: pointer;
+    border-radius: 25px; /* Rounded edges */
+    display: flex;
+    align-items: center;
+    justify-content: center;
     color: white;
-    z-index: 10; /* Ensure the button stays on top */
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Adds a shadow for better visibility */
+    transition: transform 0.3s ease, background-color 0.3s ease;
+    z-index: 10; /* Ensure it stays on top of other elements */
 }
 
-.help-btn:hover {
-    color: #007bff; /* Change color on hover */
-    transition: color 0.6s ease;
+.round-help-btn i {
+    margin-right: 8px; /* Add spacing between the icon and text */
+    font-size: 20px; /* Adjust icon size */
 }
 
-  footer {
+.round-help-btn:hover {
+    transform: scale(1.1); /* Slightly enlarge the button on hover */
+    background: linear-gradient(to left, #007bff, #0056b3); /* Change gradient on hover */
+}
+
+footer {
     text-align: center;
     padding: 10px;
     background: #222;
