@@ -50,6 +50,25 @@ body {
     stroke-width: 1.5;
 }
 
+.new-chat-btn {
+    margin: 1rem;
+    padding: 0.75rem;
+    background: linear-gradient(135deg, #404040, #505050);
+    border: none;
+    border-radius: 0.5rem;
+    color: #ffffff;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.new-chat-btn:hover {
+    background: linear-gradient(135deg, #505050, #606060);
+    transform: translateY(-1px);
+}
+
 .history-list {
     flex: 1;
     overflow-y: auto;
@@ -230,6 +249,10 @@ body {
     max-width: 64rem;
     margin: 0 auto;
     position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 3.5rem;
 }
 
 #messageInput {
@@ -257,100 +280,51 @@ body {
 }
 
 .button-group {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+    justify-content: center;
+}
+
+.button-group.text-mode {
     position: absolute;
     right: 0.75rem;
     top: 50%;
     transform: translateY(-50%);
-    display: flex;
-    gap: 0.75rem;
 }
 
-.voice-btn, .send-btn {
+.send-btn {
     border: none;
     padding: 0.625rem;
+    margin-left: 9px;
     border-radius: 0.75rem;
     cursor: pointer;
     transition: all 0.2s ease;
     display: flex;
     align-items: center;
     justify-content: center;
+    width: 3rem;
+    height: 3rem;
 }
 
-.voice-btn {
-    position: relative;
+/* .voice-btn {
     background: rgba(40, 40, 40, 0.8);
     color: #ffffff;
     border: 1px solid rgba(255, 255, 255, 0.1);
-    padding: 0.625rem;
-    border-radius: 0.75rem;
-    cursor: pointer;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    overflow: hidden;
-}
-
-.voice-btn::before {
-    content: '';
-    position: absolute;
-    inset: -1px;
-    background: linear-gradient(45deg, 
-        rgba(255,255,255,0.1),
-        rgba(255,255,255,0.2),
-        rgba(255,255,255,0.1)
-    );
-    z-index: -1;
-    animation: border-light 2s linear infinite;
-}
-
-.voice-btn::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: rgba(40, 40, 40, 0.95);
-    border-radius: 0.75rem;
-    z-index: -1;
-}
-
-.voice-btn.recording {
-    background: rgba(220, 38, 38, 0.2);
-    animation: pulse 1.5s ease-in-out infinite;
-}
-
-.voice-btn.recording::before {
-    background: linear-gradient(45deg, 
-        rgba(220,38,38,0.2),
-        rgba(220,38,38,0.3),
-        rgba(220,38,38,0.2)
-    );
+    display: none; 
 }
 
 .voice-btn:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    background: rgba(50, 50, 50, 0.8);
+    transform: scale(1.05);
 }
 
-.voice-btn svg {
-    transition: all 0.3s ease;
-}
-
-.voice-btn.recording svg {
-    animation: recording-pulse 1.5s ease-in-out infinite;
-}
-
-@keyframes border-light {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
-}
+.voice-btn.recording {
+    background: rgba(220, 38, 38, 0.8);
+    animation: pulse 1.5s infinite;
+} */
 
 @keyframes pulse {
-    0% { box-shadow: 0 0 0 0 rgba(220, 38, 38, 0.4); }
-    70% { box-shadow: 0 0 0 10px rgba(220, 38, 38, 0); }
-    100% { box-shadow: 0 0 0 0 rgba(220, 38, 38, 0); }
-}
-
-@keyframes recording-pulse {
     0% { transform: scale(1); }
     50% { transform: scale(1.1); }
     100% { transform: scale(1); }
@@ -359,11 +333,110 @@ body {
 .send-btn {
     background: linear-gradient(135deg, #404040, #505050);
     color: #ffffff;
+    display: none; /* Initially hidden */
 }
 
 .send-btn:hover {
+    background: linear-gradient(135deg, #505050, #606060);
     transform: scale(1.05);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+/* .close-btn {
+    background: rgba(220, 38, 38, 0.8);
+    color: #ffffff;
+    display: none; 
+}
+
+.close-btn:hover {
+    background: rgba(220, 38, 38, 1);
+    transform: scale(1.05);
+} */
+
+/* Modal Styles */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.modal-content {
+    background-color: rgba(30, 30, 30, 0.95);
+    padding: 2rem;
+    border-radius: 1rem;
+    text-align: center;
+    color: #ffffff;
+    max-width: 90%;
+    width: 400px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.modal-content h2 {
+    margin-bottom: 1.5rem;
+    font-size: 1.5rem;
+}
+
+.modal-options {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.option-btn {
+    padding: 1rem 2rem;
+    border: none;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    background: rgba(40, 40, 40, 0.8);
+    color: #ffffff;
+    transition: all 0.2s ease;
+    min-width: 120px;
+}
+
+.option-btn:hover {
+    background: rgba(50, 50, 50, 0.8);
+    transform: translateY(-2px);
+}
+
+.btn-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.btn-content svg {
+    margin-bottom: 0.5rem;
+}
+
+/* Important Note Modal Styles */
+#importantNoteModal .modal-content {
+    background-color: rgba(30, 30, 30, 0.95);
+    padding: 2rem;
+    border-radius: 1rem;
+    text-align: center;
+    color: #ffffff;
+    max-width: 90%;
+    width: 400px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+#importantNoteModal .modal-content h2 {
+    margin-bottom: 1.5rem;
+    font-size: 1.5rem;
+}
+
+#importantNoteModal .modal-content p {
+    margin-bottom: 1rem;
+    font-size: 1rem;
+    color: #a0a0a0;
 }
 
 /* Scrollbar Styling */
@@ -382,4 +455,274 @@ body {
 
 ::-webkit-scrollbar-thumb:hover {
     background: rgba(128, 128, 128, 0.8);
+}
+
+/* Voice Interaction Overlay */
+.voice-mode-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.8);
+    z-index: 1000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction:column;
+}
+
+.voice-mode-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5rem;
+}
+
+/* Animated Bot */
+.chatbot-circle {
+    width: 150px;
+    height: 150px;
+    background: linear-gradient(135deg, #4a90e2, #357ae8);
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    position: relative;
+    animation: pulse 1.5s infinite;
+}
+
+.bot-animation {
+    position: relative;
+    width: 80px;
+    height: 80px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.bot-face {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.bot-eye {
+    width: 12px;
+    height: 12px;
+    background: #ffffff;
+    border-radius: 50%;
+    position: absolute;
+    animation: blink 3s infinite;
+}
+
+.left-eye {
+    left: 25px;
+    top: 30px;
+}
+
+.right-eye {
+    right: 25px;
+    top: 30px;
+}
+
+.bot-mouth {
+    width: 30px;
+    height: 8px;
+    background: #ffffff;
+    border-radius: 10px;
+    position: absolute;
+    bottom: 20px;
+    animation: talk 1.5s infinite;
+}
+
+/* Animations */
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+        box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+    }
+    50% {
+        transform: scale(1.1);
+        box-shadow: 0 0 20px rgba(255, 255, 255, 0.7);
+    }
+    100% {
+        transform: scale(1);
+        box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+    }
+}
+
+@keyframes blink {
+    0%, 90% {
+        transform: scaleY(1);
+    }
+    95%, 100% {
+        transform: scaleY(0.1);
+    }
+}
+
+@keyframes talk {
+    0%, 100% {
+        transform: scaleY(1);
+    }
+    50% {
+        transform: scaleY(0.5);
+    }
+}
+
+/* Voice Bot Avatar */
+.voice-bot-avatar {
+    width: 110px;
+    height:100px;
+    background: linear-gradient(135deg, #e8eef4, #03265f);
+    border-radius: 10px; /* Rounded corners */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    position: relative;
+    animation: glow 2s infinite;
+    margin-bottom: 1rem; /* Space below the avatar */
+}
+
+.bot-avatar-content {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    animation: bounce 1.5s infinite;
+}
+
+.bot-avatar-content svg {
+    stroke: #ffffff; /* White icon color */
+}
+
+/* Animations */
+@keyframes glow {
+    0%, 100% {
+        box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+    }
+    50% {
+        box-shadow: 0 0 20px rgba(255, 255, 255, 0.8);
+    }
+}
+
+@keyframes bounce {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-10px);
+    }
+}
+
+
+
+/* Voice Controls */
+.voice-buttons {
+    display: flex;
+    gap: 1rem; /* Space between buttons */
+    flex-direction: row;
+    justify-content: center; /* Center the buttons horizontally */
+    align-items: center; /* Align the buttons vertically */
+    margin-top: 0.5rem; /* Add some spacing above the buttons */
+}
+
+.voice-btn, .close-btn {
+    border: none;
+    padding: 0.95rem;
+    border-radius: 50%; /* Make the buttons circular */
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 3.5rem;
+    height: 3.5rem;
+}
+
+.voice-btn {
+    background: rgba(40, 40, 40, 0.8);
+    color: #ffffff;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.voice-btn.muted {
+    background: #ff4d4d; /* Red background for mute */
+    color: #ffffff;
+}
+
+.voice-btn:hover {
+    transform: scale(1.05);
+}
+
+.close-btn {
+    background: rgba(220, 38, 38, 0.8);
+    color: #ffffff;
+    margin-left: 5px;
+}
+
+.close-btn:hover {
+    background: rgba(220, 38, 38, 1);
+    transform: scale(1.05);
+}
+
+/* Dropdown Styles */
+.dropdown {
+    position: relative;
+    display: inline-block;
+    margin-left: auto;
+}
+
+.dropdown-btn {
+    background: rgba(40, 40, 40, 0.8);
+    color: #ffffff;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: all 0.2s ease;
+}
+
+.dropdown-btn:hover {
+    background: rgba(50, 50, 50, 0.8);
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    right: 0;
+    background-color: #ffffff;
+    min-width: 200px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    z-index: 1000;
+    padding: 1rem;
+    border-radius: 5px;
+}
+
+.dropdown-content label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-size: 0.85rem;
+    color: #333333;
+}
+
+.dropdown-content select {
+    width: 100%;
+    padding: 0.5rem;
+    margin-bottom: 1rem;
+    border: 1px solid #cccccc;
+    border-radius: 5px;
+    font-size: 0.9rem;
+}
+
+.dropdown:hover .dropdown-content {
+    display: block;
 }

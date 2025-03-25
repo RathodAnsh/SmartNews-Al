@@ -1,21 +1,34 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Smart News Chatbot</title>
+    <title>Smart News Assistant</title>
     <link rel="stylesheet" href="../static/css/bot.css">
 </head>
+
 <body>
     <div class="app">
         <!-- History Sidebar -->
         <div class="sidebar" id="sidebar">
             <div class="sidebar-header">
                 <div class="sidebar-title">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="m19 9-5 5-4-4-3 3"/></svg>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M3 3v18h18" />
+                        <path d="m19 9-5 5-4-4-3 3" />
+                    </svg>
                     <h2>Chat History</h2>
                 </div>
             </div>
+            <button id="newChatBtn" class="new-chat-btn">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M12 5v14M5 12h14" />
+                </svg>
+                New Chat
+            </button>
             <div class="history-list" id="historyList">
                 <!-- History items will be added here by JavaScript -->
             </div>
@@ -27,14 +40,45 @@
             <div class="chat-header">
                 <div class="header-content">
                     <button id="toggleSidebar" class="toggle-btn">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
+                            fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                            stroke-linejoin="round">
+                            <path d="m15 18-6-6 6-6" />
+                        </svg>
                     </button>
                     <div class="bot-avatar">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 8V4H8"/><path d="M12 4h4"/><rect x="4" y="8" width="16" height="12" rx="2"/><path d="M2 14h2"/><path d="M20 14h2"/><path d="M15 13v2"/><path d="M9 13v2"/></svg>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M12 8V4H8" />
+                            <path d="M12 4h4" />
+                            <rect x="4" y="8" width="16" height="12" rx="2" />
+                            <path d="M2 14h2" />
+                            <path d="M20 14h2" />
+                            <path d="M15 13v2" />
+                            <path d="M9 13v2" />
+                        </svg>
                     </div>
                     <div class="header-info">
                         <h3>Smart News Assistant</h3>
                         <p>Online • Ready to help</p>
+                    </div>
+
+                    <!-- Dropdown for Input and Language Selection -->
+                    <div class="dropdown">
+                        <button class="dropdown-btn">Settings</button>
+                        <div class="dropdown-content">
+                            <label for="inputMethod">Select Input Method:</label>
+                            <select id="inputMethod">
+                                <option value="text">Text Input</option>
+                                <option value="voice">Voice Input</option>
+                            </select>
+                            <label for="languageSelection" id="languageLabel" style="display: none;">Select Language:</label>
+                            <select id="languageSelection" style="display: none;">
+                                <option value="english">English</option>
+                                <option value="hindi">Hindi</option>
+                                <option value="marathi">Marathi</option>
+                            </select>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -48,13 +92,15 @@
             <div class="chat-input">
                 <form id="chatForm">
                     <div class="input-wrapper">
-                        <input type="text" id="messageInput" placeholder="Type your message...">
+                        <input type="text" id="messageInput" placeholder="Type your message..." disabled>
                         <div class="button-group">
-                            <button type="button" id="voiceButton" class="voice-btn">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="22"/></svg>
-                            </button>
-                            <button type="submit" class="send-btn">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m22 2-7 20-4-9-9-4Z"/><path d="M22 2 11 13"/></svg>
+                            <button type="submit" class="send-btn" disabled>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
+                                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round">
+                                    <path d="m22 2-7 20-4-9-9-4Z" />
+                                    <path d="M22 2 11 13" />
+                                </svg>
                             </button>
                         </div>
                     </div>
@@ -62,6 +108,107 @@
             </div>
         </div>
     </div>
+
+    <!-- Setup Modal -->
+    <div id="setupModal" class="modal">
+        <div class="modal-content">
+            <h2 id="modalTitle">Choose Input Method</h2>
+            <div id="modalOptions" class="modal-options">
+                <button class="option-btn" data-value="text">
+                    <div class="btn-content">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+                        </svg>
+                        <span>Text Input</span>
+                    </div>
+                </button>
+                <button class="option-btn" data-value="voice">
+                    <div class="btn-content">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"></path>
+                            <path d="M19 10v2a7 7 0 0 1-14 0v-2"></path>
+                            <line x1="12" y1="19" x2="12" y2="23"></line>
+                            <line x1="8" y1="23" x2="16" y2="23"></line>
+                        </svg>
+                        <span>Voice Input</span>
+                    </div>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Language Modal -->
+    <div id="languageModal" class="modal">
+        <div class="modal-content">
+            <h2>Choose Preferred Language</h2>
+            <div class="modal-options">
+                <button class="option-btn" data-value="english">English</button>
+                <button class="option-btn" data-value="hindi">Hindi</button>
+                <button class="option-btn" data-value="marathi">Marathi</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Important Note Modal -->
+    <div id="importantNoteModal" class="modal">
+        <div class="modal-content">
+            <h2>Important Note*</h2>
+            <p>For text input, the default language is English.
+                For voice input, you can talk in your preferred language.
+            </p>
+        </div>
+    </div>
+
+    <!-- Voice Mode Overlay -->
+    <div class="voice-mode-overlay" id="voiceModeOverlay" style="display: none;">
+        <div class="voice-mode-content">
+            <!-- Animated Bot -->
+            <!-- <div class="chatbot-circle">
+                <div class="bot-animation">
+                    <div class="bot-face">
+                        <div class="bot-eye left-eye"></div>
+                        <div class="bot-eye right-eye"></div>
+                        <div class="bot-mouth"></div>
+                    </div> -->
+            <!-- Enhanced Animated Bot -->
+            <div class="voice-bot-avatar">
+                <div class="bot-avatar-content">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="70" height="70" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M12 8V4H8" />
+                        <path d="M12 4h4" />
+                        <rect x="4" y="8" width="16" height="12" rx="2" />
+                        <path d="M2 14h2" />
+                        <path d="M20 14h2" />
+                        <path d="M15 13v2" />
+                        <path d="M9 13v2" />
+                    </svg>
+                </div>
+            </div>
+
+            <!-- Voice Controls Below Bot Circle -->
+            <div class="voice-buttons">
+                <button id="voiceButton" class="voice-btn">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z" />
+                        <path d="M19 10v2a7 7 0 0 1-14 0v-2" />
+                        <line x1="12" y1="19" x2="12" y2="22" />
+                    </svg>
+                </button>
+                <button id="closeButton" class="close-btn">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M18 6L6 18M6 6l12 12" />
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </div>
+
     <script src="../static/css/bot.js"></script>
 </body>
+
 </html>

@@ -367,16 +367,16 @@ function updateLoadMoreButton() {
   }
 }
 
-function showPopup() {
-  const popup = document.createElement("div")
-  popup.classList.add("popup")
+function showPopup(message) {
+  const popup = document.createElement("div");
+  popup.classList.add("popup");
   popup.innerHTML = `
         <div class="popup-content">
             <span class="close-btn" onclick="this.parentElement.parentElement.remove()">&times;</span>
-            <p>No News Regarding Your Title.</p>
+            <p>${message}</p>
         </div>
-    `
-  document.body.appendChild(popup)
+    `;
+  document.body.appendChild(popup);
 }
 
 // Search Bar Handling (Task 3: Fetching last 7 days news based on title match)
@@ -518,6 +518,27 @@ document.addEventListener("click", function (event) {
   }
 })
 
+document.addEventListener("DOMContentLoaded", () => {
+    const domainSelect = document.getElementById("domainSelect");
+    const countrySelect = document.getElementById("countrySelect");
+
+    function handleDomainCountryFilter() {
+        const domain = domainSelect.value;
+        const country = countrySelect.value;
+
+        // Fetch and display news based on domain and country
+        fetchNewsByDomainAndCountry(domain, country);
+    }
+
+    // Add event listeners to the dropdowns
+    if (domainSelect && countrySelect) {
+        domainSelect.addEventListener("change", handleDomainCountryFilter);
+        countrySelect.addEventListener("change", handleDomainCountryFilter);
+    } else {
+        console.error("Domain or Country select elements not found.");
+    }
+});
+
 // Add this function to handle share functionality
 function initializeShareButtons() {
     document.querySelectorAll('.share-btn').forEach(button => {
@@ -645,3 +666,66 @@ document.addEventListener('DOMContentLoaded', initializeShareButtons);
 
 // Add this line where you create new news cards (if dynamic loading is implemented)
 // initializeShareButtons();
+
+async function fetchNewsByDomainAndCountry(domain, country) {
+    try {
+        console.log(`Fetching news for Domain: ${domain}, Country: ${country}`);
+
+        const today = new Date();
+        const currentDate = today.toISOString().split("T")[0];
+        const lastWeek = new Date(today);
+        lastWeek.setDate(today.getDate() - 7);
+        const pastDate = lastWeek.toISOString().split("T")[0];
+
+        // Construct the query based on domain and country
+        let query = domain;
+        if (country === "in") {
+            query += " India";
+        } else if (country === "ir") {
+            query += " International";
+        }
+
+        // Fetch news from the API
+        const response = await fetch(
+            `${url}?q=${encodeURIComponent(query)}&from=${pastDate}&to=${currentDate}&sortBy=publishedAt&language=en&apiKey=${API_KEY}`
+        );
+
+        const data = await response.json();
+
+        if (data.articles && data.articles.length > 0) {
+            // Filter articles with valid titles and images
+            const validArticles = data.articles.filter(
+                (article) => article.title && article.urlToImage
+            );
+
+            // Display the filtered news
+            displayFilteredNews(validArticles);
+        } else {
+            console.warn("No news found for the selected domain and country.");
+            showPopup("No news found for the selected domain and country.");
+        }
+    } catch (error) {
+        console.error("Error fetching news:", error);
+        showPopup("Error fetching news. Please try again later.");
+    }
+}
+
+
+
+function displayFilteredNews(articles) {
+    const cardsContainer = document.querySelector("#cards-container");
+    const newsCardTemplate = document.querySelector("#template-news-card");
+
+    // Clear existing news
+    cardsContainer.innerHTML = "";
+
+    // Add new articles
+    articles.forEach((article) => {
+        const cardClone = newsCardTemplate.content.cloneNode(true);
+        fillDataInCard(cardClone, article);
+        cardsContainer.appendChild(cardClone);
+    });
+
+    console.log("Filtered news displayed successfully.");
+
+}
