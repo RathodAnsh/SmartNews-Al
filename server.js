@@ -15,7 +15,7 @@ app.use(express.static('public')); // Serve frontend files
 const pool = mysql.createPool({
   host: 'localhost',
   user: 'root', // Replace with yours
-  password: 'Ansh@010304',
+  password: '123456',
   database: 'register',
 });
 
@@ -70,7 +70,7 @@ app.post('/login', async (req, res) => {
       return res.status(401).json({ error: "Invalid credentials!" });
     }
 
-    res.json({ success: true, message: "Login successful!", username: user.username });
+    res.json({ success: true, message: "Login successful!", username: user.username, name: user.name});
   } catch (error) {
     res.status(500).json({ error: "Login failed." });
   }

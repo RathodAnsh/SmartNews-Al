@@ -102,6 +102,7 @@ loginForm.addEventListener("submit", async (e) => {
             showMessage(result.message || "Login Successful!");
             // Store username in localStorage
             localStorage.setItem('username', username);
+            localStorage.setItem('name', result.name);
             // Redirect to dashboard or home page
             window.location.href = "index.html";
         } else {

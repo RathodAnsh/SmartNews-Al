@@ -729,3 +729,77 @@ function displayFilteredNews(articles) {
     console.log("Filtered news displayed successfully.");
 
 }
+
+document.addEventListener("DOMContentLoaded", function () {
+  const profileName = document.getElementById("profile-name");
+  const profileSection = document.getElementById("profile-section");
+  const profileIcon = document.getElementById("profile-icon");
+  const dropdown = document.getElementById("dropdown");
+  const logoutBtn = document.getElementById("logout");
+  const loginIcon = document.getElementById("login-icon");
+
+  // Generate a consistent color based on user's name
+  function getFixedColor(name) {
+    if (!name) return "#3498db"; // Default fallback color
+    const colors = [
+        "#FF5733", "#33B5E5", "#33FF57", "#FFC300", "#FF33E5",
+        "#8E44AD", "#E74C3C", "#3498db", "#F39C12", "#1ABC9C",
+        "#2ECC71", "#9B59B6", "#D35400", "#C0392B", "#16A085"
+    ];
+
+    // Simple hash function to map name to a number
+    let hash = 0;
+    for (let i = 0; i < name.length; i++) {
+        hash = name.charCodeAt(i) + ((hash << 5) - hash);
+    }
+
+    // Map hash value to a valid index in the colors array
+    const index = Math.abs(hash % colors.length);
+    return colors[index];
+  }
+
+
+  // Generate avatar with initials from name
+  function generateAvatar(name) {
+      if (!name) return "U"; // Default if no name
+      return name.charAt(0).toUpperCase();
+  }
+
+  // Get username and name from localStorage after login
+  const username = localStorage.getItem("username");
+  const name = localStorage.getItem("name");
+
+  if (username && name) {
+      loginIcon.style.display = "none"; // Hide the login icon
+      profileIcon.style.display = "flex"; // Show the profile info
+      profileName.textContent = username; // Display username beside the icon
+      const initials = generateAvatar(name); // Use name for avatar initials
+      profileIcon.textContent = initials; // Set initials as profile icon
+      profileIcon.style.backgroundColor = getFixedColor();
+
+  }else {
+    // User is not logged in
+    loginIcon.style.display = "block"; // Show the login icon
+    profileIcon.style.display = "none"; // Hide the profile info
+  }
+
+  // Show/Hide dropdown when clicking on profile section (icon or name)
+  profileSection.addEventListener("click", function (event) {
+      event.stopPropagation();
+      dropdown.style.display = dropdown.style.display === "block" ? "none" : "block";
+  });
+
+  // Logout functionality
+  logoutBtn.addEventListener("click", function () {
+      localStorage.removeItem("username");
+      localStorage.removeItem("name");
+      window.location.href = "login.html"; // Redirect to login
+  });
+
+  // Close dropdown when clicking outside
+  document.addEventListener("click", function (event) {
+      if (!profileSection.contains(event.target)) {
+          dropdown.style.display = "none";
+      }
+  });
+});
