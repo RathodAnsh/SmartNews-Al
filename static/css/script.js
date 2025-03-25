@@ -738,25 +738,28 @@ document.addEventListener("DOMContentLoaded", function () {
   const logoutBtn = document.getElementById("logout");
   const loginIcon = document.getElementById("login-icon");
 
-  // Generate a consistent color based on user's name
-  function getFixedColor(name) {
-    if (!name) return "#3498db"; // Default fallback color
-    const colors = [
-        "#FF5733", "#33B5E5", "#33FF57", "#FFC300", "#FF33E5",
-        "#8E44AD", "#E74C3C", "#3498db", "#F39C12", "#1ABC9C",
-        "#2ECC71", "#9B59B6", "#D35400", "#C0392B", "#16A085"
-    ];
+  // Generate a consistent and unique color based on user's name
+function getFixedColor(name) {
+  if (!name) return "#3498db"; // Default fallback color
 
-    // Simple hash function to map name to a number
-    let hash = 0;
-    for (let i = 0; i < name.length; i++) {
-        hash = name.charCodeAt(i) + ((hash << 5) - hash);
-    }
+  // List of distinct colors for different users
+  const colors = [
+      "#FF5733", "#33B5E5", "#33FF57", "#FFC300", "#FF33E5",
+      "#8E44AD", "#E74C3C", "#3498db", "#F39C12", "#1ABC9C",
+      "#2ECC71", "#9B59B6", "#D35400", "#C0392B", "#16A085",
+      "#7D3C98", "#28B463", "#1F618D", "#F4D03F", "#C0392B"
+  ];
 
-    // Map hash value to a valid index in the colors array
-    const index = Math.abs(hash % colors.length);
-    return colors[index];
+  // Improved hash function using a larger prime multiplier
+  let hash = 0;
+  for (let i = 0; i < name.length; i++) {
+      hash = name.charCodeAt(i) + ((hash << 6) - hash);
   }
+
+  // Ensure positive hash and map it to the color list
+  const index = Math.abs(hash % colors.length);
+  return colors[index];
+}
 
 
   // Generate avatar with initials from name
@@ -775,7 +778,7 @@ document.addEventListener("DOMContentLoaded", function () {
       profileName.textContent = username; // Display username beside the icon
       const initials = generateAvatar(name); // Use name for avatar initials
       profileIcon.textContent = initials; // Set initials as profile icon
-      profileIcon.style.backgroundColor = getFixedColor();
+      profileIcon.style.backgroundColor = getFixedColor(username);
 
   }else {
     // User is not logged in
