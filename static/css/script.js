@@ -539,6 +539,26 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 });
 
+document.addEventListener("DOMContentLoaded", () => {
+    const categorySelect = document.getElementById("domainSelect");
+    const countrySelect = document.getElementById("countrySelect");
+
+    function handleCategoryChange() {
+        const category = categorySelect.value;
+        const country = countrySelect.value;
+
+        // Fetch news based on the selected category and country
+        fetchNewsByCategoryAndCountry(category, country);
+    }
+
+    if (categorySelect && countrySelect) {
+        categorySelect.addEventListener("change", handleCategoryChange);
+        countrySelect.addEventListener("change", handleCategoryChange);
+    } else {
+        console.error("Category or Country select elements not found.");
+    }
+});
+
 // Add this function to handle share functionality
 function initializeShareButtons() {
     document.querySelectorAll('.share-btn').forEach(button => {
@@ -702,7 +722,9 @@ async function fetchNewsByDomainAndCountry(domain, country) {
             displayFilteredNews(validArticles);
         } else {
             console.warn("No news found for the selected domain and country.");
-            showPopup("No news found for the selected domain and country.");
+            // Do not show the popup here
+            console.log("No news found for the selected domain and country. Fallback to general news.");
+            fetchGeneralNews(country); // Fallback to general news silently
         }
     } catch (error) {
         console.error("Error fetching news:", error);
@@ -710,7 +732,58 @@ async function fetchNewsByDomainAndCountry(domain, country) {
     }
 }
 
+async function fetchNewsByCategoryAndCountry(category, country) {
+    try {
+        console.log(`Fetching news for Category: ${category}, Country: ${country}`);
 
+        // Map categories and countries to API-compatible values
+        const categoryMapping = {
+            business: "business",
+            politics: "general",
+            sports: "sports",
+            technology: "technology",
+            startups: "technology",
+            science: "science",
+            travel: "travel",
+            fashion: "entertainment",
+            entertainment: "entertainment",
+        };
+
+        const countryMapping = {
+            in: "in", // India
+            ir: "us", // International (default to US)
+        };
+
+        // Get the mapped values
+        const apiCategory = categoryMapping[category.toLowerCase()] || "general";
+        const apiCountry = countryMapping[country.toLowerCase()] || "us";
+
+        // Construct the API URL
+        const response = await fetch(
+            `${url}?category=${apiCategory}&country=${apiCountry}&apiKey=${API_KEY}`
+        );
+
+        const data = await response.json();
+
+        if (data.articles && data.articles.length > 0) {
+            // Filter articles with valid titles and images
+            const validArticles = data.articles.filter(
+                (article) => article.title && article.urlToImage
+            );
+
+            // Display the filtered news
+            displayFilteredNews(validArticles);
+        } else {
+            console.warn("No specific news found for the selected category and country.");
+            // Do not show the popup here
+            console.log("No specific news found. Fallback to general news.");
+            fetchGeneralNews(country); // Fallback to general news silently
+        }
+    } catch (error) {
+        console.error("Error fetching news:", error);
+        showPopup("Error fetching news. Please try again later.");
+    }
+}
 
 function displayFilteredNews(articles) {
     const cardsContainer = document.querySelector("#cards-container");
@@ -718,6 +791,11 @@ function displayFilteredNews(articles) {
 
     // Clear existing news
     cardsContainer.innerHTML = "";
+
+    if (articles.length === 0) {
+        showPopup("No news articles available.");
+        return;
+    }
 
     // Add new articles
     articles.forEach((article) => {
@@ -728,6 +806,41 @@ function displayFilteredNews(articles) {
 
     console.log("Filtered news displayed successfully.");
 
+}
+
+async function fetchGeneralNews(country) {
+    try {
+        console.log(`Fetching general news for Country: ${country}`);
+
+        const countryMapping = {
+            in: "in", // India
+            ir: "us", // International (default to US)
+        };
+
+        const apiCountry = countryMapping[country.toLowerCase()] || "us";
+
+        const response = await fetch(
+            `${url}?country=${apiCountry}&apiKey=${API_KEY}`
+        );
+
+        const data = await response.json();
+
+        if (data.articles && data.articles.length > 0) {
+            // Filter articles with valid titles and images
+            const validArticles = data.articles.filter(
+                (article) => article.title && article.urlToImage
+            );
+
+            // Display the filtered news
+            displayFilteredNews(validArticles);
+        } else {
+            console.warn("No general news found for the selected country.");
+            showPopup("No general news found for the selected country.");
+        }
+    } catch (error) {
+        console.error("Error fetching general news:", error);
+        showPopup("Error fetching general news. Please try again later.");
+    }
 }
 
 document.addEventListener("DOMContentLoaded", function () {
@@ -806,3 +919,236 @@ function getFixedColor(name) {
       }
   });
 });
+
+document.addEventListener("DOMContentLoaded", () => {
+    const categorySelect = document.getElementById("domainSelect");
+    const countrySelect = document.getElementById("countrySelect");
+
+    function handleCategoryChange() {
+        const category = categorySelect.value;
+        const country = countrySelect.value;
+
+        // Fetch news based on the selected category and country
+        fetchNewsByCategoryAndCountry(category, country);
+    }
+
+    if (categorySelect && countrySelect) {
+        categorySelect.addEventListener("change", handleCategoryChange);
+        countrySelect.addEventListener("change", handleCategoryChange);
+    } else {
+        console.error("Category or Country select elements not found.");
+    }
+});
+
+document.addEventListener('DOMContentLoaded', () => {
+    const countries = JSON.parse(localStorage.getItem('countries'));
+    const domains = JSON.parse(localStorage.getItem('domains'));
+
+    console.log("User Preferences:", { countries, domains });
+});
+
+document.addEventListener('DOMContentLoaded', async () => {
+    const username = localStorage.getItem('username');
+    const countries = JSON.parse(localStorage.getItem('countries')) || [];
+    const domains = JSON.parse(localStorage.getItem('domains')) || [];
+
+    console.log("User Preferences:", { username, countries, domains });
+
+    if (username && (countries.length > 0 || domains.length > 0)) {
+        // User is logged in and has preferences
+        console.log("Fetching news based on user preferences...");
+        await fetchNewsByPreferences(countries, domains);
+    } else {
+        // User is not logged in or has no preferences
+        console.log("Fetching general news...");
+        await fetchGeneralNews();
+    }
+
+    // Initialize "Load More" button
+    updateLoadMoreButton();
+});
+
+// Map user-selected domains and countries to API-compatible values
+const domainMapping = {
+    sports: "sports",
+    politics: "general",
+    technology: "technology",
+    startups: "technology",
+    science: "science",
+    travel: "travel",
+    fashion: "entertainment",
+    entertainment: "entertainment",
+};
+
+const countryMapping = {
+    in: "in", // India
+    ir: "us", // International (default to US)
+};
+
+// Fetch news based on user preferences and include all general news
+async function fetchNewsByPreferences(countries, domains) {
+    try {
+        const preferredNews = [];
+        const generalNews = [];
+
+        // Fetch news for each domain and country using the mapped values
+        for (const domain of domains) {
+            const apiDomain = domainMapping[domain.toLowerCase()] || "general";
+            for (const country of countries) {
+                const apiCountry = countryMapping[country.toLowerCase()] || "us";
+                const news = await fetchNewsByDomainAndCountry(apiDomain, apiCountry);
+                preferredNews.push(...news);
+            }
+        }
+
+        // Fetch general news
+        const allGeneralNews = await fetchGeneralNews();
+        generalNews.push(...allGeneralNews);
+
+        // Combine preferred and general news
+        const combinedNews = prioritizePreferredNews(preferredNews, generalNews);
+
+        // Remove duplicates
+        const uniqueNews = removeDuplicates(combinedNews);
+
+        // Display all news
+        allNews = uniqueNews; // Populate the global `allNews` array
+        displayedCount = 0; // Reset displayed count
+        displayNews(allNews.slice(0, initialNewsCount));
+        updateLoadMoreButton();
+    } catch (error) {
+        console.error("Error fetching news by preferences:", error);
+    }
+}
+
+// Fetch general news (for non-logged-in users or fallback)
+async function fetchGeneralNews() {
+    try {
+        console.log("Fetching general news...");
+
+        const apiKey = 'ea641ccea1a542c4b4804508afec633e'; // Replace with your NewsAPI key
+        const response = await fetch(`https://newsapi.org/v2/top-headlines?language=en&apiKey=${apiKey}`);
+        const data = await response.json();
+
+        if (data.articles && data.articles.length > 0) {
+            return data.articles.filter(article => article.title && article.urlToImage);
+        } else {
+            console.warn("No general news found.");
+            return [];
+        }
+    } catch (error) {
+        console.error("Error fetching general news:", error);
+        return [];
+    }
+}
+
+// Prioritize preferred news over general news
+function prioritizePreferredNews(preferredNews, generalNews) {
+    const preferredSet = new Set(preferredNews.map(article => article.title));
+    const prioritizedNews = [...preferredNews];
+
+    // Add general news that is not already in preferred news
+    generalNews.forEach(article => {
+        if (!preferredSet.has(article.title)) {
+            prioritizedNews.push(article);
+        }
+    });
+
+    return prioritizedNews;
+}
+
+// Fetch news for a specific domain and country
+async function fetchNewsByDomainAndCountry(domain, country) {
+    try {
+        console.log(`Fetching news for Domain: ${domain}, Country: ${country}`);
+
+        const apiKey = 'ea641ccea1a542c4b4804508afec633e'; // Replace with your NewsAPI key
+        const response = await fetch(`https://newsapi.org/v2/top-headlines?category=${domain}&country=${country}&apiKey=${apiKey}`);
+        const data = await response.json();
+
+        if (data.articles && data.articles.length > 0) {
+            return data.articles.filter(article => article.title && article.urlToImage);
+        } else {
+            console.warn(`No news found for domain: ${domain} and country: ${country}`);
+            return [];
+        }
+    } catch (error) {
+        console.error("Error fetching news by domain and country:", error);
+        return [];
+    }
+}
+
+// Display news articles
+function displayNews(articles) {
+    const cardsContainer = document.querySelector("#cards-container");
+    const newsCardTemplate = document.querySelector("#template-news-card");
+
+    // Clear existing news if starting fresh
+    if (displayedCount === 0) {
+        cardsContainer.innerHTML = "";
+    }
+
+    articles.forEach(article => {
+        const cardClone = newsCardTemplate.content.cloneNode(true);
+        fillDataInCard(cardClone, article);
+        cardsContainer.appendChild(cardClone);
+    });
+
+    displayedCount += articles.length;
+}
+
+// Fill data into a news card
+function fillDataInCard(cardClone, article) {
+    const newsImg = cardClone.querySelector("#news-img");
+    const newsTitle = cardClone.querySelector("#news-title");
+    const newsDesc = cardClone.querySelector("#news-desc");
+    const newsSource = cardClone.querySelector("#news-source");
+    const readMoreBtn = cardClone.querySelector("#news-url");
+
+    newsImg.src = article.urlToImage || "https://via.placeholder.com/400x200";
+    newsTitle.textContent = article.title;
+    newsDesc.textContent = article.description || "No description available.";
+    newsSource.textContent = `${article.source.name} • ${new Date(article.publishedAt).toLocaleString()}`;
+    readMoreBtn.href = article.url;
+}
+
+// Remove duplicate articles
+function removeDuplicates(articles) {
+    const seenTitles = new Set();
+    return articles.filter(article => {
+        if (seenTitles.has(article.title)) {
+            return false;
+        }
+        seenTitles.add(article.title);
+        return true;
+    });
+}
+
+// Update the "Load More" button
+function updateLoadMoreButton() {
+    const loadMoreContainer = document.querySelector(".load-more-container");
+    if (!loadMoreContainer) {
+        const container = document.createElement("div");
+        container.className = "load-more-container";
+        const button = document.createElement("button");
+        button.className = "load-more-btn";
+        button.textContent = "Load More";
+        button.onclick = loadMore;
+        container.appendChild(button);
+        document.querySelector("main").appendChild(container);
+    }
+
+    const button = document.querySelector(".load-more-btn");
+    if (button) {
+        button.style.display = displayedCount >= allNews.length ? "none" : "block";
+    }
+}
+
+// Load more news
+function loadMore() {
+    const remainingNews = allNews.slice(displayedCount, displayedCount + loadMoreCount);
+    if (remainingNews.length > 0) {
+        displayNews(remainingNews);
+        updateLoadMoreButton();
+    }
+}

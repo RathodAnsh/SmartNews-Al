@@ -63,11 +63,17 @@ createAccountButton.addEventListener("click", async () => {
         const result = await response.json(); // Parse JSON response
 
         if (response.ok) {
-            showMessage(result.message || "Registration successful! You can now login.");
-            // Reset form and show login
-            document.getElementById("signupForm").reset();
-            signupSection.style.display = "none";
-            loginForm.style.display = "block";
+            showMessage(result.message || "Registration successful! Redirecting to preferences...");
+            
+            // Store user details in localStorage
+            localStorage.setItem('username', username);
+            localStorage.setItem('name', name);
+            localStorage.setItem('email', email);
+
+            // Redirect to the preferences page
+            setTimeout(() => {
+                window.location.href = "select_preference.html";
+            }, 2000); // Wait 2 seconds before redirecting
         } else {
             showMessage(result.error || "Registration failed. Please try again.");
         }
@@ -76,6 +82,7 @@ createAccountButton.addEventListener("click", async () => {
         showMessage("An error occurred. Please try again later.");
     }
 });
+
 
 // Regular Login
 loginForm.addEventListener("submit", async (e) => {
@@ -100,9 +107,35 @@ loginForm.addEventListener("submit", async (e) => {
 
         if (response.ok) {
             showMessage(result.message || "Login Successful!");
+
+            // Generate a random background color for the icon if it doesn't already exist
+            let iconBackgroundColor = localStorage.getItem('iconBackgroundColor');
+            if (!iconBackgroundColor) {
+                iconBackgroundColor = generateRandomColor();
+                localStorage.setItem('iconBackgroundColor', iconBackgroundColor);
+            }
+
             // Store username in localStorage
             localStorage.setItem('username', username);
             localStorage.setItem('name', result.name);
+            localStorage.setItem('email', result.email);
+            
+            // Fetch and store preferences
+            const preferencesResponse = await fetch(`http://localhost:5000/getPreferences?username=${username}`);
+            const preferences = await preferencesResponse.json();
+
+            if (preferencesResponse.ok) {
+                localStorage.setItem('countries', JSON.stringify(preferences.countries));
+                localStorage.setItem('domains', JSON.stringify(preferences.domains));
+                console.log("Preferences saved to localStorage:", preferences);
+            } else {
+                console.error("Failed to fetch preferences:", preferences.error);
+            }
+            
+            console.log("Fetched preferences:", preferences);
+            console.log("Stored countries:", localStorage.getItem('countries'));
+            console.log("Stored domains:", localStorage.getItem('domains'));
+
             // Redirect to dashboard or home page
             window.location.href = "index.html";
         } else {
@@ -113,6 +146,16 @@ loginForm.addEventListener("submit", async (e) => {
         showMessage("An error occurred. Please try again later.");
     }
 });
+
+function generateRandomColor() {
+    const colors = [
+        "#FF5733", "#33B5E5", "#33FF57", "#FFC300", "#FF33E5",
+        "#8E44AD", "#E74C3C", "#3498db", "#F39C12", "#1ABC9C",
+        "#2ECC71", "#9B59B6", "#D35400", "#C0392B", "#16A085",
+        "#7D3C98", "#28B463", "#1F618D", "#F4D03F", "#C0392B"
+    ];
+    return colors[Math.floor(Math.random() * colors.length)];
+}
 
 // Helper function to validate email
 function validateEmail(email) {
@@ -128,3 +171,12 @@ function showMessage(message) {
         messageBox.style.display = "none";
     }, 3000);
 }
+
+document.addEventListener('DOMContentLoaded', () => {
+    const preferencesSaved = localStorage.getItem('preferencesSaved');
+
+    if (preferencesSaved === 'true') {
+        showMessage("Your preferences have been saved. Please log in to continue.");
+        localStorage.removeItem('preferencesSaved'); // Clear the flag
+    }
+});
