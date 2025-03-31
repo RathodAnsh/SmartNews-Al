@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart News</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../static/css/select_preference.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <h1 class="title">Smart News</h1>
+            <p class="subtitle">Your personalized news experience. Select your preferences below to get started.</p>
+        </div>
+
+        <div class="torn-paper">
+            <!-- Country Selection -->
+            <div class="section">
+                <h2 class="section-title">Select Country</h2>
+                <div class="country-grid">
+                    <label class="checkbox-container">
+                        <input type="checkbox" name="country" value="India">
+                        <div class="checkbox-custom">
+                            <svg viewBox="0 0 20 20" class="checkmark">
+                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"></path>
+                            </svg>
+                        </div>
+                        <span>India</span>
+                        <div class="highlight"></div>
+                    </label>
+                    <label class="checkbox-container">
+                        <input type="checkbox" name="country" value="International">
+                        <div class="checkbox-custom">
+                            <svg viewBox="0 0 20 20" class="checkmark">
+                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"></path>
+                            </svg>
+                        </div>
+                        <span>International</span>
+                        <div class="highlight"></div>
+                    </label>
+                </div>
+            </div>
+
+            <!-- Domain Selection -->
+            <div class="section">
+                <h2 class="section-title">Select Domains</h2>
+                <div class="domain-grid">
+                    <label class="checkbox-container">
+                        <input type="checkbox" name="domain" value="Business">
+                        <div class="checkbox-custom">
+                            <svg viewBox="0 0 20 20" class="checkmark">
+                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"></path>
+                            </svg>
+                        </div>
+                        <span>Business</span>
+                        <div class="highlight"></div>
+                    </label>
+                    <!-- Repeat for other domains -->
+                    <label class="checkbox-container">
+                        <input type="checkbox" name="domain" value="Politics">
+                        <div class="checkbox-custom">
+                            <svg viewBox="0 0 20 20" class="checkmark">
+                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"></path>
+                            </svg>
+                        </div>
+                        <span>Politics</span>
+                        <div class="highlight"></div>
+                    </label>
+                    <label class="checkbox-container">
+                        <input type="checkbox" name="domain" value="Sports">
+                        <div class="checkbox-custom">
+                            <svg viewBox="0 0 20 20" class="checkmark">
+                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"></path>
+                            </svg>
+                        </div>
+                        <span>Sports</span>
+                        <div class="highlight"></div>
+                    </label>
+                    <label class="checkbox-container">
+                        <input type="checkbox" name="domain" value="Technology">
+                        <div class="checkbox-custom">
+                            <svg viewBox="0 0 20 20" class="checkmark">
+                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"></path>
+                            </svg>
+                        </div>
+                        <span>Technology</span>
+                        <div class="highlight"></div>
+                    </label>
+                    <label class="checkbox-container">
+                        <input type="checkbox" name="domain" value="Startups">
+                        <div class="checkbox-custom">
+                            <svg viewBox="0 0 20 20" class="checkmark">
+                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"></path>
+                            </svg>
+                        </div>
+                        <span>Startups</span>
+                        <div class="highlight"></div>
+                    </label>
+                    <label class="checkbox-container">
+                        <input type="checkbox" name="domain" value="Science">
+                        <div class="checkbox-custom">
+                            <svg viewBox="0 0 20 20" class="checkmark">
+                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"></path>
+                            </svg>
+                        </div>
+                        <span>Science</span>
+                        <div class="highlight"></div>
+                    </label>
+                    <label class="checkbox-container">
+                        <input type="checkbox" name="domain" value="Travel">
+                        <div class="checkbox-custom">
+                            <svg viewBox="0 0 20 20" class="checkmark">
+                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"></path>
+                            </svg>
+                        </div>
+                        <span>Travel</span>
+                        <div class="highlight"></div>
+                    </label>
+                    <label class="checkbox-container">
+                        <input type="checkbox" name="domain" value="Fashion">
+                        <div class="checkbox-custom">
+                            <svg viewBox="0 0 20 20" class="checkmark">
+                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"></path>
+                            </svg>
+                        </div>
+                        <span>Fashion</span>
+                        <div class="highlight"></div>
+                    </label>
+                    <label class="checkbox-container">
+                        <input type="checkbox" name="domain" value="Entertainment">
+                        <div class="checkbox-custom">
+                            <svg viewBox="0 0 20 20" class="checkmark">
+                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"></path>
+                            </svg>
+                        </div>
+                        <span>Entertainment</span>
+                        <div class="highlight"></div>
+                    </label>
+                </div>
+            </div>
+        </div>
+        <div class="button-container">
+            <button id="next-button" class="next-button">Next</button>
+        </div>
+    </div>
+    <script src="../static/css/select_preference.js"></script>
+</body>
+</html>

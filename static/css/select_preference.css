@@ -1,0 +1,201 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    min-height: 100vh;
+    background-image: url('https://images.unsplash.com/photo-1585241936939-be4099591252?auto=format&fit=crop&q=80');
+    background-size: cover;
+    background-position: center;
+    background-color: rgba(0, 0, 0, 0.85);
+    background-blend-mode: multiply;
+}
+
+.container {
+    max-width: 1024px;
+    margin: 0 auto;
+    padding: 2rem;
+}
+
+.header {
+    text-align: center;
+    margin-bottom: 3rem;
+}
+
+.title {
+    font-family: 'The Seasons', serif;
+    font-size: 4rem;
+    font-weight: 700;
+    color: white;
+    margin-bottom: 1rem;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.subtitle {
+    font-family: 'Playfair Display', serif;
+    color: #ffffff;
+    font-size: 1.25rem;
+    max-width: 42rem;
+    margin: 0 auto;
+}
+
+.torn-paper {
+    position: relative;
+    background-color: transparent;
+    padding: 2rem;
+    border-radius: 2px;
+}
+
+.torn-paper::before,
+.torn-paper::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    height: 20px;
+    background-image: url('data:image/svg+xml;utf8,<svg viewBox="0 0 100 20" xmlns="http://www.w3.org/2000/svg"><path d="M 0,20 C 20,20 20,0 40,0 C 60,0 60,20 80,20 C 100,20 100,0 120,0" fill="none" stroke="%23f5f5f5" stroke-width="2"/></svg>');
+    background-size: 40px 20px;
+    background-repeat: repeat-x;
+}
+
+.torn-paper::before {
+    top: -20px;
+    transform: rotate(180deg);
+}
+
+.torn-paper::after {
+    bottom: -20px;
+}
+
+.section {
+    margin-bottom: 2rem;
+}
+
+.section-title {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: #d4dce6;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid #e5e7eb;
+    margin-bottom: 1rem;
+}
+
+.country-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+}
+
+.domain-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+}
+
+.checkbox-container {
+    position: relative;
+    display: flex;
+    align-items: center;
+    padding: 1rem;
+    cursor: pointer;
+    background-color: #CBBD93;
+    border: 2px solid #1f2937;
+    border-radius: 0.5rem;
+    transition: background-color 0.2s;
+}
+
+.checkbox-container:hover {
+    background-color: #cbb266;
+}
+
+.checkbox-custom {
+    width: 1.25rem;
+    height: 1.25rem;
+    border: 2px solid #1f2937;
+    border-radius: 0.25rem;
+    margin-right: 0.75rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: rgb(255, 255, 255);
+    transition: background-color 0.2s;
+}
+
+.checkmark {
+    width: 0.75rem;
+    height: 0.75rem;
+    fill: white;
+    display: none;
+}
+
+input[type="checkbox"] {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+}
+
+input[type="checkbox"]:checked ~ .checkbox-custom {
+    background-color: #1f2937;
+}
+
+input[type="checkbox"]:checked ~ .checkbox-custom .checkmark {
+    display: block;
+}
+
+input[type="checkbox"]:checked ~ .highlight {
+    opacity: 1;
+}
+
+.highlight {
+    position: absolute;
+    inset: 0;
+    background-color: #f3f4f6;
+    border-radius: 0.5rem;
+    opacity: 0;
+    transition: opacity 0.2s;
+    z-index: -1;
+}
+
+.button-container {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.next-button {
+    background-color: #007BFF;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.next-button:hover {
+    background-color: #0056b3;
+}
+
+@media (max-width: 768px) {
+    .container {
+        padding: 1rem;
+    }
+
+    .title {
+        font-size: 3rem;
+    }
+
+    .domain-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 640px) {
+    .country-grid,
+    .domain-grid {
+        grid-template-columns: 1fr;
+    }
+}

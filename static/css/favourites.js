@@ -79,6 +79,44 @@ function removeFromFavorites(index) {
 // Load favorites when the page loads
 document.addEventListener("DOMContentLoaded", loadFavorites);
 
+// Load user information from the server
+function loadUserInfo() {
+    // Retrieve user data from localStorage
+    const username = localStorage.getItem('username');
+    const name = localStorage.getItem('name');
+    const email = localStorage.getItem('email');
+    const iconBackgroundColor = localStorage.getItem('iconBackgroundColor'); // Retrieve the icon background color
+
+    if (!username || !name) {
+        console.error("User not logged in!");
+        window.location.href = "login.html"; // Redirect to login page if not logged in
+        return;
+    }
+
+    // Debugging: Log the retrieved background color
+    console.log("Retrieved iconBackgroundColor:", iconBackgroundColor);
+
+    // Populate user details dynamically
+    document.getElementById('user-name').innerText = name || "User";
+    document.getElementById('user-email').innerText = email || "user@example.com";
+    document.getElementById('user-initial').innerText = (name && name.charAt(0).toUpperCase()) || "U";
+    document.getElementById('user-name-icon').innerText = username || "User Name";
+
+    // Apply the stored background color to the icon
+    const userInitialElement = document.getElementById('user-initial');
+    userInitialElement.style.backgroundColor = iconBackgroundColor || "#FF5733"; // Default color if none is stored
+}
+
+// Load user info when the page loads
+document.addEventListener("DOMContentLoaded", loadUserInfo);
+
+// Load favorites and user info when the page loads
+document.addEventListener("DOMContentLoaded", () => {
+    loadFavorites();   // Load favorite news
+    loadUserInfo();    // Load user information
+});
+
+
 // Handle active navigation links
 document.addEventListener("DOMContentLoaded", () => {
     const currentPage = window.location.pathname.split("/").pop();

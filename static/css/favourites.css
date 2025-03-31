@@ -89,6 +89,7 @@ body {
     margin-top: 1px;
 }
 
+
 /* Main content styles */
 .main-content {
     flex: 1;
@@ -215,6 +216,70 @@ select {
     max-width: 80rem;
     margin: 0 auto;
     padding: 2rem 1rem;
+}
+
+/* Profile Section Styles */
+.profile-section {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: linear-gradient(to left,#000000, #3b3a3a);
+    padding: 32px;
+    border-radius: 8px;
+    box-shadow: 0 0 14px rgba(0,0,0,0.1);
+    margin-bottom: 20px;
+}
+
+/* User Info on the Left Side */
+.user-info {
+    text-align: left;
+}
+
+.user-info h3 {
+    margin-bottom: 20px;
+    margin-left: 10px;
+    font-size: 25px;
+    color: #ffffff;
+}
+
+.user-info p {
+    margin: 5px 0;
+    margin-left: 10px;
+    color: #ffffff;
+    font-size: 18px;
+}
+
+/* User Icon on the Right Side */
+.user-icon {
+    text-align: center;
+}
+
+.icon-circle {
+    width: 60px;
+    height: 60px;
+    background-color: #4CAF50; /* Green color */
+    color: #fff;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 30px;
+    margin: 0 auto;
+    margin-right: 12px;
+}
+
+/* User Name Below Icon */
+#user-name-icon {
+    margin-top: 8px;
+    margin-right: 10px;
+    font-size: 18px;
+    color: #ffffff;
+}
+
+/* Separator Line */
+.separator {
+    border: 2px solid #e3caca;
+    margin: 20px 0;
 }
 
 .page-header {
