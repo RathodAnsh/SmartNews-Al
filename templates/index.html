@@ -58,7 +58,7 @@
                         <i data-lucide="cloud"></i>
                         Weather
                     </a>
-                    <a href="#" class="nav-link">
+                    <a id="historical-news-button" href="historical.html" class="nav-link">
                         <i data-lucide="history"></i>
                         Historical News
                     </a>
@@ -129,7 +129,7 @@
                             </div>
                             <p class="news-summary"></p>
                             <!-- Updated Need Help Button -->
-                            <button class="help-btn round-help-btn" data-tooltip="Need Help" onclick="window.open('bot.html', '_blank')" style="display: none;">
+                            <button class="help-btn round-help-btn" data-tooltip="Need Help" onclick="openChatbotWithUrl(this)" style="display: none;">
                                 <i class="fas fa-question-circle"></i> Need Help
                             </button>
                         </div>
@@ -180,24 +180,6 @@
                     helpButton.style.display = 'flex'; // Make the button visible
                 }
             }, 30);
-        }
-    
-        // Function to speak the summary text with an Indian accent
-        function speakSummary(text, lang = 'hi-IN') {
-            const utterance = new SpeechSynthesisUtterance(text);
-            utterance.lang = lang;
-    
-            // Find an Indian voice
-            const voices = speechSynthesis.getVoices();
-            const indianVoice = voices.find(voice => voice.lang === 'hi-IN' || voice.lang === 'en-IN');
-    
-            if (indianVoice) {
-                utterance.voice = indianVoice; // Set the Indian voice
-            } else {
-                console.warn('Indian voice not found. Using default voice.');
-            }
-    
-            return utterance;
         }
     
         // Add event listener when the DOM is loaded
@@ -284,42 +266,20 @@
                         newsDesc.style.display = 'block';
                     }, 300);
                 }
-    
-                // Handle voice button click
-                if (target.closest('.voice-btn')) {
-                    const card = target.closest('.news-card');
-                    if (!card) return;
-    
-                    const summaryText = card.querySelector('.news-summary').innerText;
-                    const lang = document.documentElement.lang || 'hi-IN'; // Use Indian English or Hindi
-                    const voiceBtn = card.querySelector('.voice-btn');
-    
-                    // Stop any ongoing speech
-                    if (speechSynthesis.speaking) {
-                        speechSynthesis.cancel();
-                    }
-    
-                    // Start reading the summary with an Indian accent
-                    currentUtterance = speakSummary(summaryText, lang);
-                    speechSynthesis.speak(currentUtterance);
-    
-                    // Change icon to indicate active reading
-                    voiceBtn.innerHTML = '<i class="fas fa-volume-up"></i>';
+            });
+
+            // Stop speech synthesis when the page is hidden or unloaded
+            document.addEventListener('visibilitychange', () => {
+                if (document.hidden && speechSynthesis.speaking) {
+                    speechSynthesis.cancel();
                 }
             });
-    
-            // Handle when speech ends
-            speechSynthesis.onend = () => {
-                const voiceBtn = document.querySelector('.voice-btn');
-                if (voiceBtn) {
-                    voiceBtn.innerHTML = '<i class="fas fa-volume-up"></i>';
+
+            window.addEventListener('beforeunload', () => {
+                if (speechSynthesis.speaking) {
+                    speechSynthesis.cancel();
                 }
-            };
-    
-            // Ensure voices are loaded before using them
-            speechSynthesis.onvoiceschanged = () => {
-                console.log('Voices loaded:', speechSynthesis.getVoices());
-            };
+            });
         });
 
         // Chatbot button click functionality
@@ -327,6 +287,83 @@
             window.open('bot.html', '_blank'); // Open bot.html in a new tab
         });
     </script>
+
+    <script>
+        function openChatbotWithUrl(button) {
+            // Get the news URL from the card
+            const newsUrl = button.closest('.news-card').querySelector('#news-url').href;
+            // Open chatbot with URL as parameter
+            window.open(`bot.html?url=${encodeURIComponent(newsUrl)}`, '_blank');
+        }
+    </script>
+
+    <script>
+        async function playSummaryAudio(summaryText, lang) {
+            try {
+                // Send the summary text and language to the backend
+                const response = await fetch('http://127.0.0.1:5001/generate-audio', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ text: summaryText, lang: lang })
+                });
+
+                if (!response.ok) {
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+
+                // Create an audio element and play the streamed audio
+                const audioBlob = await response.blob();
+                const audioUrl = URL.createObjectURL(audioBlob);
+                const audio = new Audio(audioUrl);
+
+                // Start the reading process immediately
+                console.log("Reading process started with medium speed.");
+                audio.play();
+            } catch (error) {
+                console.error('Error playing audio:', error);
+                alert('Failed to play audio. Please try again.');
+            }
+        }
+
+        // Update the voice button click handler
+        document.addEventListener('click', function (event) {
+            if (event.target.closest('.voice-btn')) {
+                const card = event.target.closest('.news-card');
+                if (!card) return;
+
+                const summaryText = card.querySelector('.news-summary').innerText;
+                const lang = document.documentElement.lang || 'en'; // Default to English
+
+                playSummaryAudio(summaryText, lang);
+            }
+        });
+    </script>
+<!-- 
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const historicalNewsButton = document.getElementById("historical-news-button");
+
+            if (historicalNewsButton) {
+                historicalNewsButton.addEventListener("click", function (event) {
+                    event.preventDefault(); // Prevent the default link behavior
+
+                    // Get username and name from localStorage
+                    const username = localStorage.getItem("username");
+                    const name = localStorage.getItem("name");
+
+                    // Redirect to historical.html with username and name as URL parameters
+                    if (username && name) {
+                        window.location.href = `historical.html?username=${encodeURIComponent(username)}&name=${encodeURIComponent(name)}`;
+                    } else {
+                        // If the user is not logged in, redirect to the login page
+                        window.location.href = "login.html";
+                    }
+                });
+            }
+        });
+    </script> -->
 
 <footer>
     <p>&copy; 2025 Smart News. All rights reserved.</p>

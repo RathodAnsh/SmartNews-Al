@@ -56,7 +56,7 @@
                         <i class="a" data-lucide="cloud"></i>
                         Weather
                     </a>
-                    <a href="#" class="nav-link">
+                    <a href="historical.html" class="nav-link">
                         <i class="a" data-lucide="history"></i>
                         Historical News
                     </a>
@@ -116,6 +116,53 @@
             </main>
         </div>
     </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const articlesContainer = document.getElementById('articles-container');
+            const favorites = JSON.parse(localStorage.getItem('favorites')) || [];
+
+            if (favorites.length === 0) {
+                articlesContainer.innerHTML = `
+                    <div class="no-results">
+                        <i data-lucide="heart"></i>
+                        <h3>No favorite articles found</h3>
+                        <p>Start adding your favorite articles from the Historical News or Dashboard sections.</p>
+                    </div>
+                `;
+                lucide.createIcons();
+                return;
+            }
+
+            favorites.forEach(article => {
+                const articleCard = document.createElement('div');
+                articleCard.className = 'news-card';
+                articleCard.innerHTML = `
+                    <h3 class="news-title">${article.title}</h3>
+                    <div class="news-meta">${article.meta}</div>
+                    <p class="news-desc">${article.description}</p>
+                    <div class="card-footer">
+                        <span class="news-sentiment ${getSentimentClass(article.sentiment)}">${article.sentiment}</span>
+                        <a class="read-more-btn" href="${article.url}" target="_blank">
+                            Read More <i data-lucide="arrow-right" class="icon-xs"></i>
+                        </a>
+                    </div>
+                `;
+                articlesContainer.appendChild(articleCard);
+            });
+
+            lucide.createIcons();
+        });
+
+        function getSentimentClass(sentiment) {
+            if (!sentiment) return 'sentiment-neutral';
+            sentiment = sentiment.toLowerCase();
+            if (sentiment.includes('positive')) return 'sentiment-positive';
+            if (sentiment.includes('negative')) return 'sentiment-negative';
+            return 'sentiment-neutral';
+        }
+    </script>
+    
     <script src="../static/css/favourites.js"></script>
     <script type="text/javascript">
         function googleTranslateElementInit() {

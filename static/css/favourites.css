@@ -222,6 +222,9 @@ select {
 
 /* Profile Section Styles */
 .profile-section {
+    position: sticky; /* Makes the profile section stick to its position */
+    top: 100px; /* Adjust this value to match the height of the title or content above */
+    z-index: 1000; 
     display: flex;
     justify-content: space-between;
     align-items: center;

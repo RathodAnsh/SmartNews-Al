@@ -119,6 +119,13 @@ loginForm.addEventListener("submit", async (e) => {
             localStorage.setItem('username', username);
             localStorage.setItem('name', result.name);
             localStorage.setItem('email', result.email);
+
+            // Set guestMode to false
+            localStorage.setItem('guestMode', 'false');
+
+            console.log("User logged in successfully!");
+            console.log("guestMode:", localStorage.getItem("guestMode"));
+
             
             // Fetch and store preferences
             const preferencesResponse = await fetch(`http://localhost:5000/getPreferences?username=${username}`);

@@ -185,34 +185,34 @@ def summarize_text(text):
 
     return final_summary
 
-def save_to_csv(url, original_content, generated_summary):
-    """Save URL, original content, and generated summary to a CSV file."""
-    csv_file_path = "summarization_results.csv"  # Path to the CSV file
+# def save_to_csv(url, original_content, generated_summary):
+#     """Save URL, original content, and generated summary to a CSV file."""
+#     csv_file_path = "summarization_results.csv"  # Path to the CSV file
 
-    try:
-        # Check if the CSV file already exists
-        file_exists = os.path.isfile(csv_file_path)
+#     try:
+#         # Check if the CSV file already exists
+#         file_exists = os.path.isfile(csv_file_path)
 
-        # Open the CSV file in append mode
-        with open(csv_file_path, mode='a', newline='', encoding='utf-8') as csv_file:
-            fieldnames = ['url', 'original_content', 'generated_summary']
-            writer = csv.DictWriter(csv_file, fieldnames=fieldnames)
+#         # Open the CSV file in append mode
+#         with open(csv_file_path, mode='a', newline='', encoding='utf-8') as csv_file:
+#             fieldnames = ['url', 'original_content', 'generated_summary']
+#             writer = csv.DictWriter(csv_file, fieldnames=fieldnames)
 
-            # Write the header only if the file is new
-            if not file_exists:
-                writer.writeheader()
+#             # Write the header only if the file is new
+#             if not file_exists:
+#                 writer.writeheader()
 
-            # Write the new data
-            writer.writerow({
-                'url': url,
-                'original_content': original_content,
-                'generated_summary': generated_summary
-            })
+#             # Write the new data
+#             writer.writerow({
+#                 'url': url,
+#                 'original_content': original_content,
+#                 'generated_summary': generated_summary
+#             })
 
-        logging.info(f"Data saved to CSV: {csv_file_path}")
+#         logging.info(f"Data saved to CSV: {csv_file_path}")
 
-    except Exception as e:
-        logging.error(f"Error saving to CSV: {str(e)}")
+#     except Exception as e:
+#         logging.error(f"Error saving to CSV: {str(e)}")
 
 @app.route("/summarize", methods=["POST"])
 def summarize():
@@ -232,8 +232,8 @@ def summarize():
 
         summary = summarize_text(content)
 
-         # Save the original content and summary to a CSV file
-        save_to_csv(url, content, summary)
+        #  # Save the original content and summary to a CSV file
+        # save_to_csv(url, content, summary)
         
         return jsonify({"summary": summary})
 
