@@ -14,7 +14,7 @@ function toggleSidebar() {
     mainContent.classList.toggle('expanded');
 }
 
-const API_KEY = "ea641ccea1a542c4b4804508afec633e"
+const API_KEY = "b5eeaeb54ab04261b59cd85195fcbc7a"
 const url = "https://newsapi.org/v2/everything"
 
 let allNews = []
@@ -368,15 +368,25 @@ function updateLoadMoreButton() {
 }
 
 function showPopup(message) {
-  const popup = document.createElement("div");
-  popup.classList.add("popup");
-  popup.innerHTML = `
+    const existingPopup = document.querySelector(".popup");
+    if (existingPopup) {
+        existingPopup.remove(); // Remove any existing popup
+    }
+
+    const popup = document.createElement("div");
+    popup.classList.add("popup");
+    popup.innerHTML = `
         <div class="popup-content">
             <span class="close-btn" onclick="this.parentElement.parentElement.remove()">&times;</span>
             <p>${message}</p>
         </div>
     `;
-  document.body.appendChild(popup);
+    document.body.appendChild(popup);
+
+    // Automatically remove the popup after 5 seconds
+    setTimeout(() => {
+        popup.remove();
+    }, 5000);
 }
 
 // Search Bar Handling (Task 3: Fetching last 7 days news based on title match)
@@ -452,20 +462,27 @@ document.addEventListener("DOMContentLoaded", () => {
   createScrollToTopButton()
 
   function addToFavorites(newsCard) {
-    let favorites = JSON.parse(localStorage.getItem("favorites")) || [];
+    const username = localStorage.getItem("username");
+    if (!username) {
+        alert("You need to log in to add favorites!");
+        return;
+    }
+
+    const favoritesKey = `favorites_${username}`;
+    let favorites = JSON.parse(localStorage.getItem(favoritesKey)) || [];
 
     const newsItem = {
-        image: newsCard.querySelector("img").src,
-        title: newsCard.querySelector(".news-title").innerText,
-        description: newsCard.querySelector(".news-desc").innerText,
-        source: newsCard.querySelector(".news-source").innerText,
-        url: newsCard.querySelector(".read-more-btn").href
+        image: newsCard.querySelector("#news-img").src,
+        title: newsCard.querySelector("#news-title").textContent,
+        source: newsCard.querySelector("#news-source").textContent,
+        description: newsCard.querySelector("#news-desc").textContent,
+        url: newsCard.querySelector("#news-url").href,
     };
 
     // Check if the news is already in favorites
-    if (!favorites.some(fav => fav.title === newsItem.title)) {
+    if (!favorites.some(fav => fav.url === newsItem.url)) {
         favorites.unshift(newsItem); // Add latest news at the beginning
-        localStorage.setItem("favorites", JSON.stringify(favorites));
+        localStorage.setItem(favoritesKey, JSON.stringify(favorites));
         alert("News added to favorites!");
     } else {
         alert("This news is already in favorites!");
@@ -564,36 +581,43 @@ function initializeShareButtons() {
     document.querySelectorAll('.share-btn').forEach(button => {
         button.addEventListener('click', function(e) {
             e.stopPropagation();
-            
+            console.log("Share button clicked");
+
             // Get the news card details
             const newsCard = this.closest('.news-card');
-            // Fix: Get the correct URL from the read-more button
+            if (!newsCard) {
+                console.error("News card not found");
+                return;
+            }
+
             const newsUrl = newsCard.querySelector('.read-more-btn').href;
             const newsTitle = newsCard.querySelector('.news-title').textContent;
-            
+
             // Validate URL before sharing
-            if (newsUrl === '#' || !newsUrl) {
+            if (!newsUrl || newsUrl === '#') {
                 console.error('Invalid news URL');
                 return;
             }
-            
+
+            console.log(`News URL: ${newsUrl}, News Title: ${newsTitle}`);
+
             // Remove any existing share menus
             removeExistingShareMenus();
-            
+
             // Create and show the share menu
             const shareMenu = createShareMenu(newsUrl, newsTitle);
-            
+
             // Position the menu next to the share button
             const buttonRect = this.getBoundingClientRect();
             shareMenu.style.top = `${buttonRect.bottom + window.scrollY + 5}px`;
             shareMenu.style.left = `${buttonRect.left}px`;
-            
+
             // Add overlay
             const overlay = document.createElement('div');
             overlay.className = 'share-menu-overlay';
             document.body.appendChild(overlay);
             overlay.style.display = 'block';
-            
+
             // Close menu when clicking outside
             overlay.addEventListener('click', removeExistingShareMenus);
         });
@@ -601,13 +625,13 @@ function initializeShareButtons() {
 }
 
 function createShareMenu(url, title) {
+    console.log("Creating share menu");
     const shareMenu = document.createElement('div');
     shareMenu.className = 'share-menu';
-    
-    // Make sure we're using the actual news URL
+
     const encodedUrl = encodeURIComponent(url);
     const encodedTitle = encodeURIComponent(title);
-    
+
     const shareOptions = [
         {
             name: 'WhatsApp',
@@ -621,7 +645,7 @@ function createShareMenu(url, title) {
         },
         {
             name: 'X (Twitter)',
-            icon: 'fab fa-x-twitter',
+            icon: 'fab fa-twitter',
             url: `https://twitter.com/intent/tweet?url=${encodedUrl}&text=${encodedTitle}`
         },
         {
@@ -630,7 +654,7 @@ function createShareMenu(url, title) {
             url: `https://www.linkedin.com/sharing/share-offsite/?url=${encodedUrl}`
         }
     ];
-    
+
     shareOptions.forEach(option => {
         const shareOption = document.createElement('div');
         shareOption.className = 'share-option';
@@ -639,12 +663,13 @@ function createShareMenu(url, title) {
             <span>${option.name}</span>
         `;
         shareOption.addEventListener('click', () => {
+            console.log(`Opening ${option.name} share link`);
             window.open(option.url, '_blank');
             removeExistingShareMenus();
         });
         shareMenu.appendChild(shareOption);
     });
-    
+
     // Add copy link option
     const copyOption = document.createElement('div');
     copyOption.className = 'share-option copy-link';
@@ -655,6 +680,7 @@ function createShareMenu(url, title) {
     copyOption.addEventListener('click', () => {
         navigator.clipboard.writeText(url)
             .then(() => {
+                console.log("Link copied to clipboard");
                 copyOption.innerHTML = `
                     <i class="fas fa-check"></i>
                     <span>Copied!</span>
@@ -669,10 +695,10 @@ function createShareMenu(url, title) {
             });
     });
     shareMenu.appendChild(copyOption);
-    
+
     document.body.appendChild(shareMenu);
     setTimeout(() => shareMenu.classList.add('active'), 0);
-    
+
     return shareMenu;
 }
 
@@ -897,6 +923,7 @@ function getFixedColor(name) {
     // User is not logged in
     loginIcon.style.display = "block"; // Show the login icon
     profileIcon.style.display = "none"; // Hide the profile info
+    profileName.textContent = ""; // Clear the username
   }
 
   // Show/Hide dropdown when clicking on profile section (icon or name)
@@ -907,9 +934,17 @@ function getFixedColor(name) {
 
   // Logout functionality
   logoutBtn.addEventListener("click", function () {
-      localStorage.removeItem("username");
-      localStorage.removeItem("name");
-      window.location.href = "login.html"; // Redirect to login
+       // Clear user data from localStorage
+       localStorage.removeItem("username");
+       localStorage.removeItem("name");
+
+       // Update the UI to reflect the logged-out state
+       loginIcon.style.display = "block"; // Show the login icon
+       profileIcon.style.display = "none"; // Hide the profile info
+       profileName.textContent = ""; // Clear the username
+
+       // Refresh the page to reflect the logged-out state
+       window.location.reload();
   });
 
   // Close dropdown when clicking outside
@@ -1026,7 +1061,7 @@ async function fetchGeneralNews() {
     try {
         console.log("Fetching general news...");
 
-        const apiKey = 'ea641ccea1a542c4b4804508afec633e'; // Replace with your NewsAPI key
+        const apiKey = 'b5eeaeb54ab04261b59cd85195fcbc7a'; // Replace with your NewsAPI key
         const response = await fetch(`https://newsapi.org/v2/top-headlines?language=en&apiKey=${apiKey}`);
         const data = await response.json();
 
@@ -1062,7 +1097,7 @@ async function fetchNewsByDomainAndCountry(domain, country) {
     try {
         console.log(`Fetching news for Domain: ${domain}, Country: ${country}`);
 
-        const apiKey = 'ea641ccea1a542c4b4804508afec633e'; // Replace with your NewsAPI key
+        const apiKey = 'b5eeaeb54ab04261b59cd85195fcbc7a'; // Replace with your NewsAPI key
         const response = await fetch(`https://newsapi.org/v2/top-headlines?category=${domain}&country=${country}&apiKey=${apiKey}`);
         const data = await response.json();
 
@@ -1095,6 +1130,8 @@ function displayNews(articles) {
     });
 
     displayedCount += articles.length;
+
+    initializeShareButtons(); // Initialize share buttons for new cards
 }
 
 // Fill data into a news card
@@ -1152,3 +1189,155 @@ function loadMore() {
         updateLoadMoreButton();
     }
 }
+
+document.addEventListener("DOMContentLoaded", () => {
+    document.querySelectorAll(".like-btn").forEach(button => {
+        button.addEventListener("click", function () {
+            const newsCard = this.closest(".news-card");
+            if (!newsCard) return;
+
+            const newsItem = {
+                image: newsCard.querySelector("#news-img").src,
+                title: newsCard.querySelector("#news-title").textContent,
+                source: newsCard.querySelector("#news-source").textContent,
+                description: newsCard.querySelector("#news-desc").textContent,
+                url: newsCard.querySelector("#news-url").href,
+            };
+
+            const favoritesKey = `favorites_${localStorage.getItem("username")}`;
+            let favorites = JSON.parse(localStorage.getItem(favoritesKey)) || [];
+
+            // Check if the news item is already in favorites
+            const isAlreadyFavorite = favorites.some(item => item.url === newsItem.url);
+            if (isAlreadyFavorite) {
+                console.log("This news is already in favorites.");
+                return;
+            }
+
+            favorites.push(newsItem);
+            localStorage.setItem(favoritesKey, JSON.stringify(favorites));
+            console.log("News added to favorites:", newsItem);
+        });
+    });
+});
+
+document.addEventListener("DOMContentLoaded", function () {
+    const profileButton = document.getElementById("profile-button"); // Profile/Favorites button
+    const username = localStorage.getItem("username");
+    const name = localStorage.getItem("name");
+
+    profileButton.addEventListener("click", function () {
+        if (!username || !name) {
+            // User is logged out
+            console.log("User is logged out. Redirecting to favorites page...");
+            localStorage.setItem("guestMode", "true"); // Set guest mode
+            window.location.href = "favourites.html"; // Redirect to favorites page
+        } else {
+            // User is logged in
+            console.log("User is logged in. Redirecting to profile/favorites page...");
+            window.location.href = "favourites.html"; // Redirect to favorites page
+        }
+    });
+});
+
+// const SESSION_TIMEOUT_DURATION = 2 * 60 * 1000; // 10 minutes
+// const WARNING_BEFORE_TIMEOUT = 1 * 60 * 1000; // 1 minute before timeout
+// let sessionTimeout;
+// let warningTimeout;
+
+// // Function to start the session timeout
+// function startSessionTimeout() {
+//     clearTimeout(sessionTimeout); // Clear any existing timeout
+//     clearTimeout(warningTimeout); // Clear any existing warning timeout
+
+//     // Show a warning 1 minute before the session times out
+//     warningTimeout = setTimeout(() => {
+//         alert("You will be logged out in 1 minute due to inactivity.");
+//     }, SESSION_TIMEOUT_DURATION - WARNING_BEFORE_TIMEOUT);
+
+//     // Log out the user after the session timeout duration
+//     sessionTimeout = setTimeout(() => {
+//         console.log("Session timed out. Logging out...");
+//         logoutUser(); // Automatically log out the user
+//     }, SESSION_TIMEOUT_DURATION);
+// }
+
+// // Function to clear the session timeout
+// function clearSessionTimeout() {
+//     clearTimeout(sessionTimeout);
+//     clearTimeout(warningTimeout);
+// }
+
+// // Function to log out the user
+// function logoutUser() {
+//     // Clear user data from localStorage
+//     localStorage.removeItem("username");
+//     localStorage.removeItem("name");
+//     localStorage.removeItem("email")
+//     localStorage.setItem("guestMode", "true"); // Set guest mode
+
+//     // Refresh the page to reflect the logged-out state
+//     window.location.reload();
+// }
+
+// // Attach event listeners to reset the session timeout on user activity
+// document.addEventListener("mousemove", startSessionTimeout);
+// document.addEventListener("keydown", startSessionTimeout);
+
+// // Start the session timeout when the page loads
+// document.addEventListener("DOMContentLoaded", function () {
+//     const username = localStorage.getItem("username");
+//     const name = localStorage.getItem("name");
+
+//     if (username && name) {
+//         console.log("User is logged in. Starting session timeout...");
+//         startSessionTimeout(); // Start the session timeout for logged-in users
+//     }
+// });
+
+// document.addEventListener("DOMContentLoaded", function () {
+//     // Check if the user is logged in
+//     const isLoggedIn = localStorage.getItem("username") && localStorage.getItem("name");
+
+//     // Add event listener for Like button
+//     document.addEventListener("click", function (event) {
+//         if (event.target.closest(".like-btn")) {
+//             if (!isLoggedIn) {
+//                 showPopup("To access all features, please log in or sign up.");
+//                 event.preventDefault(); // Prevent the default action
+//                 return;
+//             }
+//             // Add to favorites logic here (if logged in)
+//             const newsCard = event.target.closest(".news-card");
+//             if (newsCard) {
+//                 addToFavorites(newsCard);
+//             }
+//         }
+//     });
+
+//     // Add event listener for Share button
+//     document.addEventListener("click", function (event) {
+//         if (event.target.closest(".share-btn")) {
+//             if (!isLoggedIn) {
+//                 showPopup("To access all features, please log in or sign up.");
+//                 event.preventDefault(); // Prevent the default action
+//                 return;
+//             }
+//             // Share logic here (if logged in)
+//             console.log("Share button clicked.");
+//         }
+//     });
+
+//     // Add event listener for Summarize button
+//     document.addEventListener("click", function (event) {
+//         if (event.target.closest(".summarize-btn")) {
+//             if (!isLoggedIn) {
+//                 showPopup("To access all features, please log in or sign up.");
+//                 event.preventDefault(); // Prevent the default action
+//                 return;
+//             }
+//             // Summarize logic here (if logged in)
+//             console.log("Summarize button clicked.");
+//         }
+//     });
+// });

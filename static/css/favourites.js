@@ -14,12 +14,49 @@ function toggleSidebar() {
     mainContent.classList.toggle('expanded');
 }
 
-// Function to load favorites from localStorage
-function loadFavorites() {
-    const favoritesContainer = document.getElementById("articles-container"); // Ensure you have this in HTML
-    favoritesContainer.innerHTML = ""; // Clear previous content
+// Function to get the current user's favorites key
+function getFavoritesKey() {
+    const username = localStorage.getItem("username");
+    if (!username) {
+        console.error("User not logged in!");
+        return null;
+    }
+    return `favorites_${username}`;
+}
 
-    let favorites = JSON.parse(localStorage.getItem("favorites")) || [];
+// Function to load favorites for the current user
+function loadFavorites() {
+    const favoritesKey = getFavoritesKey();
+    const guestMode = localStorage.getItem("guestMode");
+    const username = localStorage.getItem("username");
+    const name = localStorage.getItem("name");
+
+    const favoritesContainer = document.getElementById("articles-container");
+    const pageHeader = document.querySelector(".page-header");
+
+    if (!favoritesContainer) {
+        console.error("Favorites container not found!");
+        return;
+    }
+
+    // Clear previous content
+    favoritesContainer.innerHTML = "";
+
+    // Check if the user is logged out or in guest mode
+    if (guestMode === "true" || !username || !name) {
+        console.log("User is logged out. Displaying guest mode message...");
+        pageHeader.innerHTML = `
+            <div class="centered-text">
+                <h2>Welcome to Favorites</h2>
+                <p>To view or add your favorite articles, you need to sign up or log in first.</p>
+            </div>
+        `;
+        favoritesContainer.style.display = "none"; // Hide the articles grid
+        return;
+    }
+
+    // User is logged in, load their favorites
+    const favorites = JSON.parse(localStorage.getItem(favoritesKey)) || [];
 
     if (favorites.length === 0) {
         favoritesContainer.innerHTML = "<p>No favorites added yet.</p>";
@@ -49,16 +86,9 @@ function loadFavorites() {
 
     // Attach event listeners to remove buttons dynamically
     document.querySelectorAll(".remove-btn").forEach(button => {
-        button.addEventListener("click", function (event) {
+        button.addEventListener("click", function () {
             const index = this.getAttribute("data-index");
             removeFromFavorites(index);
-        });
-    });
-
-    // Ensure read-more buttons open correct URLs
-    document.querySelectorAll(".read-more-btn").forEach(button => {
-        button.addEventListener("click", function (event) {
-            event.stopPropagation(); // Prevent interference from parent elements
         });
     });
 
@@ -66,12 +96,24 @@ function loadFavorites() {
     lucide.createIcons();
 }
 
-// Function to remove news from favorites
+// Function to add a news item to favorites
+function addToFavorites(newsItem) {
+    const favoritesKey = getFavoritesKey();
+    if (!favoritesKey) return;
+
+    let favorites = JSON.parse(localStorage.getItem(favoritesKey)) || [];
+    favorites.push(newsItem);
+    localStorage.setItem(favoritesKey, JSON.stringify(favorites));
+}
+
+// Function to remove a news item from favorites
 function removeFromFavorites(index) {
-    let favorites = JSON.parse(localStorage.getItem("favorites")) || [];
-    
+    const favoritesKey = getFavoritesKey();
+    if (!favoritesKey) return;
+
+    let favorites = JSON.parse(localStorage.getItem(favoritesKey)) || [];
     favorites.splice(index, 1); // Remove the selected news
-    localStorage.setItem("favorites", JSON.stringify(favorites));
+    localStorage.setItem(favoritesKey, JSON.stringify(favorites));
 
     loadFavorites(); // Refresh the favorites section
 }
@@ -81,30 +123,64 @@ document.addEventListener("DOMContentLoaded", loadFavorites);
 
 // Load user information from the server
 function loadUserInfo() {
-    // Retrieve user data from localStorage
     const username = localStorage.getItem('username');
     const name = localStorage.getItem('name');
     const email = localStorage.getItem('email');
-    const iconBackgroundColor = localStorage.getItem('iconBackgroundColor'); // Retrieve the icon background color
+    const guestMode = localStorage.getItem('guestMode');
+    const iconBackgroundColor = localStorage.getItem('iconBackgroundColor');
 
-    if (!username || !name) {
-        console.error("User not logged in!");
-        window.location.href = "login.html"; // Redirect to login page if not logged in
-        return;
-    }
-
-    // Debugging: Log the retrieved background color
-    console.log("Retrieved iconBackgroundColor:", iconBackgroundColor);
-
-    // Populate user details dynamically
-    document.getElementById('user-name').innerText = name || "User";
-    document.getElementById('user-email').innerText = email || "user@example.com";
-    document.getElementById('user-initial').innerText = (name && name.charAt(0).toUpperCase()) || "U";
-    document.getElementById('user-name-icon').innerText = username || "User Name";
-
-    // Apply the stored background color to the icon
+    const userNameElement = document.getElementById('user-name');
+    const userEmailElement = document.getElementById('user-email');
     const userInitialElement = document.getElementById('user-initial');
-    userInitialElement.style.backgroundColor = iconBackgroundColor || "#FF5733"; // Default color if none is stored
+    const userNameIconElement = document.getElementById('user-name-icon');
+    const logoutButton = document.getElementById('logout-button'); // Logout button
+
+    if (guestMode === "true" || !username || !name) {
+        console.log("Displaying guest mode UI...");
+        userNameElement.textContent = "User"; // Show "User" as name
+        userEmailElement.innerHTML =`
+            <div class="signup-container">
+                <p>To get the access of every features do </p>
+                <button id="signup-button" class="signup-button"><u>Sign Up</u></button>
+            </div>
+        `; // Replace email field with a "Sign Up" button
+        userInitialElement.textContent = "G"; // Show "G" for Guest
+        userNameIconElement.textContent = "Guest"; // Show "Guest" as username
+
+        // Hide the Logout button
+        logoutButton.style.display = "none";
+
+        // Apply default background color for guest
+        userInitialElement.style.backgroundColor = "#FF5733";
+
+        // Add event listener to the "Sign Up" button
+        const signupButton = document.getElementById("signup-button");
+        signupButton.addEventListener("click", function () {
+            console.log("Redirecting to sign-up page...");
+            window.location.href = "login.html"; // Redirect to sign-up page
+        });
+    } else {
+        console.log("Displaying logged-in user UI...");
+        userNameElement.textContent = name || "User";
+        userEmailElement.textContent = email || "user@example.com";
+        userInitialElement.textContent = (name && name.charAt(0).toUpperCase()) || "U";
+        userNameIconElement.textContent = username || "User Name";
+
+        // Apply the stored background color to the icon
+        userInitialElement.style.backgroundColor = iconBackgroundColor || "#FF5733";
+
+        // Show the Logout button
+        logoutButton.style.display = "block";
+
+        // Add event listener to the Logout button
+        logoutButton.addEventListener("click", function () {
+            console.log("Logging out...");
+            localStorage.removeItem("username");
+            localStorage.removeItem("name");
+            localStorage.setItem("guestMode", "true"); // Set guest mode
+            window.location.reload(); // Refresh the page to reflect the logged-out state
+        });
+    }
 }
 
 // Load user info when the page loads
@@ -112,10 +188,9 @@ document.addEventListener("DOMContentLoaded", loadUserInfo);
 
 // Load favorites and user info when the page loads
 document.addEventListener("DOMContentLoaded", () => {
-    loadFavorites();   // Load favorite news
     loadUserInfo();    // Load user information
+    loadFavorites(); 
 });
-
 
 // Handle active navigation links
 document.addEventListener("DOMContentLoaded", () => {
@@ -157,5 +232,36 @@ document.addEventListener("DOMContentLoaded", () => {
         countrySelect.addEventListener("change", handleCategoryChange);
     } else {
         console.error("Category or Country select elements not found.");
+    }
+});
+
+document.addEventListener("DOMContentLoaded", function () {
+    const usernameElement = document.getElementById("username");
+    const nameElement = document.getElementById("name");
+    const emailElement = document.getElementById("email");
+
+    const username = localStorage.getItem("username");
+    const name = localStorage.getItem("name");
+    const guestMode = localStorage.getItem("guestMode");
+
+    if (guestMode === "true" || !username || !name) {
+        // User is in guest mode or logged out
+        console.log("Displaying guest mode UI...");
+        usernameElement.textContent = "Guest"; // Show "Guest" as username
+        nameElement.textContent = "User"; // Show "User" as name
+
+        // Replace email field with a "Sign Up" button
+        emailElement.innerHTML = `<button id="signup-button">To get the access of every features do Sign Up</button>`;
+        const signupButton = document.getElementById("signup-button");
+        signupButton.addEventListener("click", function () {
+            console.log("Redirecting to sign-up page...");
+            window.location.href = "signup.html"; // Redirect to sign-up page
+        });
+    } else {
+        // User is logged in
+        console.log("Displaying logged-in user UI...");
+        usernameElement.textContent = username; // Show logged-in username
+        nameElement.textContent = name; // Show logged-in name
+        emailElement.textContent = "user@example.com"; // Replace with actual email if available
     }
 });

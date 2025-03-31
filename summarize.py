@@ -1,11 +1,17 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, Response
 from flask_cors import CORS
 import requests
 from bs4 import BeautifulSoup
 from newspaper import Article
 from transformers import pipeline, AutoTokenizer
+from gtts import gTTS
 import re
 import logging
+import os
+import uuid
+import io
+from concurrent.futures import ThreadPoolExecutor
+import csv
 
 app = Flask(__name__)
 CORS(app)  # Enable CORS
@@ -140,40 +146,73 @@ def get_main_content(url):
         return None, f"Error processing article: {str(e)}"
 
 def summarize_text(text):
-    """Summarize text while handling large inputs."""
+    """Summarize text while handling large inputs efficiently and quickly."""
     max_token_length = 1024
 
-    # Split the text into chunks that fit within the model's max token length
-    sentences = text.split('. ')
-    chunks = []
+    # Tokenize the text once to avoid redundant tokenization
+    tokens = tokenizer(text, return_tensors="pt", truncation=False)['input_ids'][0]
+    token_chunks = []
     current_chunk = []
 
-    for sentence in sentences:
-        if len(tokenizer(' '.join(current_chunk + [sentence]), return_tensors="pt")['input_ids'][0]) <= max_token_length:
-            current_chunk.append(sentence)
-        else:
-            chunks.append(' '.join(current_chunk))
-            current_chunk = [sentence]
+    # Efficiently split tokens into chunks
+    for token in tokens:
+        current_chunk.append(token)
+        if len(current_chunk) >= max_token_length:
+            token_chunks.append(current_chunk)
+            current_chunk = []
 
     if current_chunk:
-        chunks.append(' '.join(current_chunk))
+        token_chunks.append(current_chunk)
 
-    # Summarize each chunk and combine the summaries
-    summaries = []
-    for chunk in chunks:
-        summary = summarizer(
+    # Decode token chunks back to text
+    text_chunks = [tokenizer.decode(chunk, skip_special_tokens=True) for chunk in token_chunks]
+
+    # Summarize each chunk in parallel
+    def summarize_chunk(chunk):
+        return summarizer(
             chunk,
             max_length=150,
             min_length=75,
             do_sample=False
         )[0]["summary_text"]
-        summaries.append(summary)
+
+    with ThreadPoolExecutor() as executor:
+        summaries = list(executor.map(summarize_chunk, text_chunks))
 
     # Combine the summaries into a final summary
     final_summary = ' '.join(summaries)
     logging.info(f"Generated summary: {final_summary}")  # Log the generated summary
 
     return final_summary
+
+def save_to_csv(url, original_content, generated_summary):
+    """Save URL, original content, and generated summary to a CSV file."""
+    csv_file_path = "summarization_results.csv"  # Path to the CSV file
+
+    try:
+        # Check if the CSV file already exists
+        file_exists = os.path.isfile(csv_file_path)
+
+        # Open the CSV file in append mode
+        with open(csv_file_path, mode='a', newline='', encoding='utf-8') as csv_file:
+            fieldnames = ['url', 'original_content', 'generated_summary']
+            writer = csv.DictWriter(csv_file, fieldnames=fieldnames)
+
+            # Write the header only if the file is new
+            if not file_exists:
+                writer.writeheader()
+
+            # Write the new data
+            writer.writerow({
+                'url': url,
+                'original_content': original_content,
+                'generated_summary': generated_summary
+            })
+
+        logging.info(f"Data saved to CSV: {csv_file_path}")
+
+    except Exception as e:
+        logging.error(f"Error saving to CSV: {str(e)}")
 
 @app.route("/summarize", methods=["POST"])
 def summarize():
@@ -192,11 +231,59 @@ def summarize():
             return jsonify({"error": error}), 400
 
         summary = summarize_text(content)
+
+         # Save the original content and summary to a CSV file
+        save_to_csv(url, content, summary)
+        
         return jsonify({"summary": summary})
 
     except Exception as e:
         logging.error(f"Unexpected error: {str(e)}")
         return jsonify({"error": "Internal server error"}), 500
 
+@app.route("/generate-audio", methods=["POST"])
+def generate_audio():
+    """API endpoint to stream audio for the summary text."""
+    try:
+        data = request.get_json()
+        text = data.get("text", "").strip()
+        if not text:
+            return jsonify({"error": "Text is empty"}), 400
+
+        # Detect language
+        lang = detect_language(text)
+        logging.info(f"Detected language: {lang}, Text: {text}")
+
+        # Adjust text for better readability
+        adjusted_text = text.replace('.', '. ').replace(',', ', ').replace('!', '! ').replace('?', '? ')
+
+        # Generate audio using GTTS with medium speed (slow=False)
+        tts = gTTS(text=adjusted_text, lang=lang, slow=False)
+        audio_stream = io.BytesIO()
+        tts.write_to_fp(audio_stream)
+        audio_stream.seek(0)
+
+        # Log that the reading process has started
+        logging.info("Reading process started with medium speed.")
+
+        # Stream the audio directly to the client
+        return Response(audio_stream, mimetype="audio/mpeg")
+
+    except Exception as e:
+        logging.error(f"Error generating audio: {str(e)}")
+        return jsonify({"error": "Failed to generate audio"}), 500
+
+def detect_language(text):
+    """Detect the language of the given text."""
+    if any(char in text for char in "अआइईउऊएऐओऔकखगघङचछजझञटठडढणतथदधनपफबभमयरलवशषसह"):
+        return "hi"  # Hindi
+    if any(char in text for char in "अआइईउऊऋएऐओऔकखगघचछजझटठडढणतथदधनपफबभमयरलवशषसहळ"):
+        return "mr"  # Marathi
+    return "en"  # Default to English
+
+# Ensure the static/audio directory exists
+if not os.path.exists("static/audio"):
+    os.makedirs("static/audio")
+
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(port=5001, debug=True)
