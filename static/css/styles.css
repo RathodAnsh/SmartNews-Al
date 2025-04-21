@@ -862,7 +862,7 @@ select {
 
 .scroll-to-top {
     position: fixed;
-    bottom: 100px;
+    bottom: 60px;
     right: 20px;
     background: linear-gradient(to left, #a29999, #030303);
     color: white;

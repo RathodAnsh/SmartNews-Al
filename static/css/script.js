@@ -14,7 +14,7 @@ function toggleSidebar() {
     mainContent.classList.toggle('expanded');
 }
 
-const API_KEY = "3176767f1bf14fa1a1ea1803b5669330"
+const API_KEY = "b5eeaeb54ab04261b59cd85195fcbc7a"
 const url = "https://newsapi.org/v2/everything"
 
 let allNews = []
@@ -1068,7 +1068,7 @@ async function fetchGeneralNews() {
     try {
         console.log("Fetching general news...");
 
-        const apiKey = '3176767f1bf14fa1a1ea1803b5669330'; // Replace with your NewsAPI key
+        const apiKey = 'b5eeaeb54ab04261b59cd85195fcbc7a'; // Replace with your NewsAPI key
         const response = await fetch(`https://newsapi.org/v2/top-headlines?language=en&apiKey=${apiKey}`);
         const data = await response.json();
 
@@ -1104,7 +1104,7 @@ async function fetchNewsByDomainAndCountry(domain, country) {
     try {
         console.log(`Fetching news for Domain: ${domain}, Country: ${country}`);
 
-        const apiKey = '3176767f1bf14fa1a1ea1803b5669330'; // Replace with your NewsAPI key
+        const apiKey = 'b5eeaeb54ab04261b59cd85195fcbc7a'; // Replace with your NewsAPI key
         const response = await fetch(`https://newsapi.org/v2/top-headlines?category=${domain}&country=${country}&apiKey=${apiKey}`);
         const data = await response.json();
 

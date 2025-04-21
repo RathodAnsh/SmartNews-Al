@@ -206,7 +206,7 @@ document.addEventListener('DOMContentLoaded', () => {
         return 'en-US';
     }
 
-    // Robust speech function with Indian language optimization
+    // Robust speech function with error handling
     function speakText(text, buttonElement) {
         // Cancel if already speaking
         if (currentSpeech) {
@@ -218,13 +218,14 @@ document.addEventListener('DOMContentLoaded', () => {
     
         updateVoiceButtonState(buttonElement, 'speaking');
     
-        fetch('http://localhost:5000/speak', {
+        fetch('http://127.0.0.1:5000/speak', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ text }) // No changes needed here
+            body: JSON.stringify({ text }),
+            credentials: 'include' // Include credentials for CORS
         })
         .then(response => {
-            if (!response.ok) throw new Error('TTS failed');
+            if (!response.ok) throw new Error('Failed to generate speech');
             return response.blob();
         })
         .then(blob => {
@@ -327,7 +328,7 @@ document.addEventListener('DOMContentLoaded', () => {
             messagesContainer.appendChild(loadingElement);
 
             try {
-                const response = await fetch('http://localhost:5000/chatbot/query', {
+                const response = await fetch('http://127.0.0.1:5000/chatbot/query', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
@@ -471,7 +472,7 @@ document.addEventListener('DOMContentLoaded', () => {
         messagesContainer.appendChild(loadingElement);
 
         try {
-            const response = await fetch('http://localhost:5000/chatbot/query', {
+            const response = await fetch('http://127.0.0.1:5000/chatbot/query', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -481,7 +482,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     news_url: currentNewsUrl,
                     session_id: currentSessionId
                 }),
-                credentials: 'include'
+                credentials: 'include' // Include credentials for CORS
             });
 
             messagesContainer.removeChild(loadingElement);

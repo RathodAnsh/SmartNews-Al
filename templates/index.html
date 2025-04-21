@@ -8,6 +8,49 @@
     <link href="https://fonts.googleapis.com/css2?family=The+Seasons&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"> 
     <script src="https://cdn.jsdelivr.net/npm/lucide@latest/dist/umd/lucide.min.js"></script>
+    <style>
+        .popup {
+            position: fixed;
+            top: 20%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: #fff;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            z-index: 1000;
+            width: 300px;
+            max-width: 90%;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .popup-content {
+            position: relative;
+        }
+
+        .popup-content p {
+            font-size: 16px;
+            color: #333;
+            margin: 0;
+        }
+
+        .popup-content .close-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: none;
+            border: none;
+            font-size: 18px;
+            cursor: pointer;
+            color: #999;
+            transition: color 0.3s ease;
+        }
+
+        .popup-content .close-btn:hover {
+            color: #333;
+        }
+    </style>
 </head>
 <body>  
     <div class="flex min-h-screen">
@@ -141,9 +184,9 @@
                 <i class="fas fa-arrow-up"></i>
             </div>
 
-            <div class="chatbot-button" id="chatbotButton">
+            <!-- <div class="chatbot-button" id="chatbotButton">
                 <i class="fas fa-robot"></i>
-            </div>
+            </div> -->
 
     <!-- Initialize Lucide icons -->
     <script>
@@ -298,9 +341,34 @@
     </script>
 
     <script>
-        async function playSummaryAudio(summaryText, lang) {
+        let currentAudio = null;
+        let isPaused = false;
+        let currentAudioPosition = 0;
+
+        async function playSummaryAudio(summaryText, lang, button) {
             try {
-                // Send the summary text and language to the backend
+                if (currentAudio && !currentAudio.paused) {
+                    // Pause the audio if it's already playing
+                    currentAudio.pause();
+                    isPaused = true;
+                    currentAudioPosition = currentAudio.currentTime;
+                    button.innerHTML = '<i class="fas fa-volume-up"></i>'; // Change icon to "not reading"
+                    return;
+                }
+
+                if (isPaused && currentAudio) {
+                    // Resume the audio if it was paused
+                    currentAudio.currentTime = currentAudioPosition;
+                    currentAudio.play();
+                    isPaused = false;
+                    button.innerHTML = '<i class="fas fa-pause"></i>'; // Change icon to "reading"
+                    return;
+                }
+
+                // Show loading state on the button
+                button.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
+
+                // Fetch audio from the backend
                 const response = await fetch('http://127.0.0.1:5001/generate-audio', {
                     method: 'POST',
                     headers: {
@@ -316,14 +384,21 @@
                 // Create an audio element and play the streamed audio
                 const audioBlob = await response.blob();
                 const audioUrl = URL.createObjectURL(audioBlob);
-                const audio = new Audio(audioUrl);
+                currentAudio = new Audio(audioUrl);
 
-                // Start the reading process immediately
-                console.log("Reading process started with medium speed.");
-                audio.play();
+                currentAudio.addEventListener('ended', () => {
+                    button.innerHTML = '<i class="fas fa-volume-up"></i>'; // Reset icon after playback ends
+                    currentAudio = null;
+                    isPaused = false;
+                    currentAudioPosition = 0;
+                });
+
+                currentAudio.play();
+                button.innerHTML = '<i class="fas fa-pause"></i>'; // Change icon to "reading"
             } catch (error) {
                 console.error('Error playing audio:', error);
                 alert('Failed to play audio. Please try again.');
+                button.innerHTML = '<i class="fas fa-volume-up"></i>'; // Reset icon on error
             }
         }
 
@@ -335,35 +410,12 @@
 
                 const summaryText = card.querySelector('.news-summary').innerText;
                 const lang = document.documentElement.lang || 'en'; // Default to English
+                const button = event.target.closest('.voice-btn');
 
-                playSummaryAudio(summaryText, lang);
+                playSummaryAudio(summaryText, lang, button);
             }
         });
     </script>
-<!-- 
-    <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            const historicalNewsButton = document.getElementById("historical-news-button");
-
-            if (historicalNewsButton) {
-                historicalNewsButton.addEventListener("click", function (event) {
-                    event.preventDefault(); // Prevent the default link behavior
-
-                    // Get username and name from localStorage
-                    const username = localStorage.getItem("username");
-                    const name = localStorage.getItem("name");
-
-                    // Redirect to historical.html with username and name as URL parameters
-                    if (username && name) {
-                        window.location.href = `historical.html?username=${encodeURIComponent(username)}&name=${encodeURIComponent(name)}`;
-                    } else {
-                        // If the user is not logged in, redirect to the login page
-                        window.location.href = "login.html";
-                    }
-                });
-            }
-        });
-    </script> -->
 
 <footer>
     <p>&copy; 2025 Smart News. All rights reserved.</p>

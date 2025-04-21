@@ -22,8 +22,8 @@ genai.configure(api_key=GEMINI_API_KEY)
 
 app = Flask(__name__, template_folder='templates')
 
-# ✅ Enable CORS
-CORS(app, resources={r"/*": {"origins": "*"}}, supports_credentials=True)
+# ✅ Enable CORS with specific origin and credentials
+CORS(app, resources={r"/*": {"origins": "http://127.0.0.1:5500"}}, supports_credentials=True)
 
 # ✅ Function to extract news content from URL
 def extract_news_content(url):
@@ -104,7 +104,7 @@ def speak():
         return send_file(audio_stream, mimetype="audio/mpeg")
     except Exception as e:
         print(f"Error in /speak endpoint: {e}")
-        return jsonify({"status": "error", "message": str(e)}), 500
+        return jsonify({"status": "error", "message": "Failed to generate speech"}), 500
 
 @app.route('/stop_speech', methods=['POST'])
 def stop_speech():
@@ -147,7 +147,7 @@ def handle_query():
         # Get AI response
         bot_response = chat_with_gemini(query, news_content)
 
-        print("Bot response:", bot_response) # Debugging
+        print("Bot response:", bot_response)  # Debugging
 
         return jsonify({"response": bot_response, "status": "success"})
 
