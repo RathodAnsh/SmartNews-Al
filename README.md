@@ -7,13 +7,13 @@
 
 ## 🚀 Features
 
-🔹 **AI Summarization** using the BART model for concise news
-🔹 **Chatbot Q&A** with Gemini API & voice responses (Text-to-Speech)
-🔹 **Historical News Search** with Sentence-BERT + FAISS
-🔹 **Real-Time News** via News API
-🔹 **Weather Forecasting** through OpenWeatherMap API
-🔹 **Multilingual Translation** with Google Translate
-🔹 **Favorites & Sharing**, Voice-enabled interface, Category filtering
+- **AI Summarization** using the BART model for concise news
+- **Chatbot Q&A** with Gemini API & voice responses (Text-to-Speech)
+- **Historical News Search** with Sentence-BERT + FAISS
+- **Real-Time News** via News API
+- **Weather Forecasting** through OpenWeatherMap API
+- **Multilingual Translation** with Google Translate
+- **Favorites & Sharing**, Voice-enabled interface, Category filtering
 
 ## 🛠️ Tech Stack
 
@@ -34,5 +34,4 @@ To make news consumption smarter, faster, and more accessible through advanced A
 
 🔗 **Developed by**  
 Ansh Rathod, Ayush Sharma, Atharva Thube, Balkrishna Yadav
-
 📍 A.P. Shah Institute of Technology, Data Science Department
