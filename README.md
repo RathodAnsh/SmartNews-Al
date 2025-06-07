@@ -30,8 +30,6 @@
 
 To make news consumption smarter, faster, and more accessible through advanced AI integration and an intuitive, personalized interface.
 
----
-
 🔗 **Developed by**  
 Ansh Rathod, Ayush Sharma, Atharva Thube, Balkrishna Yadav  
 📍 A.P. Shah Institute of Technology, Data Science Department
