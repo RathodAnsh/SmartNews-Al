@@ -35,3 +35,7 @@ To make news consumption smarter, faster, and more accessible through advanced A
 🔗 **Developed by**  
 Ansh Rathod, Ayush Sharma, Atharva Thube, Balkrishna Yadav  
 📍 A.P. Shah Institute of Technology, Data Science Department
+
+## Contact
+
+Feel free to connect with me on [LinkedIn](https://www.linkedin.com/in/anshrathod01/).
